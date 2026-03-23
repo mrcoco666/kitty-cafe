@@ -1,0 +1,475 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+#app{font-family:'Press Start 2P',monospace;background:#1a0f2e;width:100%;max-width:400px;margin:0 auto;min-height:600px;position:relative;overflow:hidden;border-radius:12px;color:white}
+.page{display:none;padding:20px 16px;min-height:600px;flex-direction:column;align-items:center}
+.page.show{display:flex}
+.bigbtn{font-family:'Press Start 2P',monospace;font-size:7px;padding:14px;border:3px solid #c9547a;background:#ff8fab;color:white;cursor:pointer;width:100%;margin-top:12px;display:block;letter-spacing:1px}
+.bigbtn:active{opacity:0.7}
+h2{color:#ffc2d4;font-size:8px;text-align:center;line-height:2;font-family:'Press Start 2P',monospace;margin-bottom:8px}
+.sub{font-size:6px;color:#c9b8f7;text-align:center;line-height:2}
+input{font-family:'Press Start 2P',monospace;font-size:8px;padding:12px;background:rgba(255,255,255,0.1);border:3px solid #ff8fab;color:white;width:100%;margin:10px 0;outline:none;text-align:center}
+.catrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;margin:12px 0}
+.catbtn{background:rgba(255,255,255,0.06);border:3px solid rgba(255,143,171,0.3);padding:10px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:'Press Start 2P',monospace;font-size:5px;color:#ffc2d4}
+.catbtn.picked{border-color:#ff8fab;background:rgba(255,143,171,0.2)}
+.catbtn:active{opacity:0.7}
+.zodrow{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;width:100%;margin:10px 0}
+.zodbtn{background:rgba(255,255,255,0.06);border:2px solid rgba(255,143,171,0.3);padding:6px 2px;cursor:pointer;text-align:center;font-family:'Press Start 2P',monospace;font-size:4px;color:#ffc2d4}
+.zodbtn.picked{border-color:#ff8fab;background:rgba(255,143,171,0.2)}
+.zodbtn:active{opacity:0.7}
+.statbar{flex:1;height:10px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.1);overflow:hidden}
+.statfill{height:100%;transition:width 0.4s}
+.nav{display:flex;width:100%;background:rgba(0,0,0,0.5);border-top:3px solid rgba(255,143,171,0.3);margin-top:auto}
+.navbtn{flex:1;padding:9px 2px;background:none;border:none;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:5px;color:#6b5b73;display:flex;flex-direction:column;align-items:center;gap:3px}
+.navbtn.on{color:#ff8fab}
+.navbtn:active{color:#ffc2d4}
+.foodgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;width:100%;margin:8px 0}
+.foodbtn{background:rgba(255,255,255,0.06);border:2px solid rgba(255,143,171,0.2);padding:8px 3px;text-align:center;cursor:pointer;font-family:'Press Start 2P',monospace}
+.foodbtn:active{opacity:0.7}
+.foodbtn.locked{opacity:0.3;pointer-events:none}
+.gamebtn{width:100%;background:rgba(255,255,255,0.05);border:2px solid rgba(255,143,171,0.2);padding:12px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:10px;font-family:'Press Start 2P',monospace}
+.gamebtn:active{opacity:0.7}
+.gamebtn.done{opacity:0.5;pointer-events:none}
+.epcard{width:100%;background:rgba(255,255,255,0.05);border:2px solid rgba(201,184,247,0.25);padding:12px;margin-bottom:8px;cursor:pointer;font-family:'Press Start 2P',monospace}
+.epcard.locked{opacity:0.4;pointer-events:none}
+.mgoverlay{display:none;position:absolute;inset:0;background:rgba(26,15,46,0.97);z-index:99;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.mgoverlay.show{display:flex}
+#taparea{width:230px;height:230px;background:rgba(255,255,255,0.04);border:3px solid #ff8fab;position:relative;overflow:hidden;flex-shrink:0}
+.taptarget{position:absolute;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer}
+.taptarget:active{opacity:0.5}
+#toastbox{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);background:#2d1b33;border:2px solid #ff8fab;color:#ffc2d4;font-family:'Press Start 2P',monospace;font-size:6px;padding:8px 12px;opacity:0;transition:opacity 0.3s;z-index:200;text-align:center;max-width:260px;line-height:1.8;pointer-events:none;white-space:pre-line}
+.srow{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.srow:last-child{margin-bottom:0}
+.bubble{background:white;border:3px solid #111;padding:8px 10px;font-size:6px;color:#111;line-height:1.8;text-align:center;position:relative;margin-bottom:10px;width:100%}
+.bubble::after{content:'';position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#111}
+.glitter{background:linear-gradient(90deg,#ff8fab,#c9b8f7,#ffd166,#ff8fab);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gl 2s linear infinite;font-size:9px;font-family:'Press Start 2P',monospace;text-align:center;line-height:1.8;display:block;margin-bottom:6px}
+@keyframes gl{to{background-position:200%}}
+.bounce{animation:bc 2s ease-in-out infinite}
+@keyframes bc{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+</style>
+
+<div id="app">
+
+<div class="page show" id="pg_intro" style="justify-content:space-between">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;padding-top:10px">
+    <span class="glitter">KITTY CAFÉ<br>✨ TAMAGOTCHI ✨</span>
+    <p class="sub">a tiny cat who needs your love<br>& fancy smoothies</p>
+    <div style="width:100%;height:2px;background:repeating-linear-gradient(90deg,#ff8fab 0,#ff8fab 6px,transparent 6px,transparent 10px);opacity:0.4;margin:4px 0"></div>
+    <canvas id="c_intro" width="96" height="96" class="bounce" style="image-rendering:pixelated;width:96px;height:96px;display:block"></canvas>
+    <div class="bubble" style="max-width:240px">✨ pick her zodiac · feed her smoothies<br>do her skincare · play mini games! ✨</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <span style="font-size:5px;color:#c9b8f7">🥤 SMOOTHIES</span>
+      <span style="font-size:5px;color:#ff8fab">✨ SKINCARE</span>
+      <span style="font-size:5px;color:#ffd166">⭐ ZODIAC</span>
+    </div>
+  </div>
+  <button class="bigbtn" id="btn_start">▶ START</button>
+</div>
+
+<div class="page" id="pg_name" style="justify-content:space-between">
+  <div style="width:100%;display:flex;flex-direction:column;align-items:center">
+    <h2>WHAT'S YOUR<br>KITTY'S NAME?</h2>
+    <canvas id="c_name" width="80" height="80" class="bounce" style="image-rendering:pixelated;width:80px;height:80px;display:block;margin:10px 0"></canvas>
+    <input id="nameinput" type="text" placeholder="enter name..." maxlength="10">
+    <p class="sub">up to 10 characters ♡</p>
+  </div>
+  <button class="bigbtn" id="btn_name">NEXT ▶</button>
+</div>
+
+<div class="page" id="pg_cat" style="justify-content:space-between">
+  <div style="width:100%">
+    <h2>CHOOSE YOUR KITTY</h2>
+    <p class="sub">each has her own vibe ♡</p>
+    <div class="catrow" id="catgrid"></div>
+  </div>
+  <button class="bigbtn" id="btn_cat">NEXT ▶</button>
+</div>
+
+<div class="page" id="pg_zod" style="justify-content:space-between">
+  <div style="width:100%">
+    <h2>PICK HER BIRTH MONTH</h2>
+    <p class="sub">shapes her whole personality ✨</p>
+    <div class="zodrow" id="zodgrid"></div>
+    <div id="zoddesc" style="font-size:5px;color:#c9b8f7;text-align:center;line-height:2;min-height:22px;padding:0 4px;margin:6px 0"></div>
+  </div>
+  <button class="bigbtn" id="btn_zod">BEGIN ▶▶</button>
+</div>
+
+<div class="page" id="pg_game" style="padding:10px 14px 0">
+  <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div><div style="font-size:6px;color:#ffc2d4" id="g_name">KITTY</div><div style="font-size:5px;color:#6b5b73" id="g_zod">♈ ARIES</div></div>
+    <div style="text-align:right"><div style="font-size:5px;color:#ffd166">⭐ LVL <span id="g_lv">1</span></div><div style="font-size:5px;color:#c9b8f7">DAY <span id="g_day">1</span></div></div>
+  </div>
+  <div style="overflow-y:auto;width:100%;flex:1" id="tabcontent">
+
+    <div id="tab_home">
+      <div class="bubble" id="speechbub">mrrp~ ♡</div>
+      <div style="display:flex;justify-content:center"><canvas id="c_main" width="100" height="100" class="bounce" style="image-rendering:pixelated;width:100px;height:100px;cursor:pointer;display:block"></canvas></div>
+      <p style="font-size:5px;color:#6b5b73;text-align:center;margin:6px 0 10px">tap to pet! ♡</p>
+      <div style="background:rgba(255,255,255,0.05);border:2px solid rgba(255,143,171,0.3);padding:12px;margin-bottom:8px">
+        <div class="srow"><span style="font-size:11px">💖</span><span style="font-size:5px;color:#ffc2d4;width:48px;flex-shrink:0">MOOD</span><div class="statbar"><div class="statfill" id="bar_mood" style="width:80%;background:repeating-linear-gradient(90deg,#ff8fab 0,#ff8fab 4px,#e0607a 4px,#e0607a 8px)"></div></div><span style="font-size:5px;color:#ff8fab;margin-left:4px;width:16px;text-align:right" id="val_mood">80</span></div>
+        <div class="srow"><span style="font-size:11px">🥤</span><span style="font-size:5px;color:#ffc2d4;width:48px;flex-shrink:0">HUNGRY</span><div class="statbar"><div class="statfill" id="bar_hung" style="width:70%;background:repeating-linear-gradient(90deg,#ffcba4 0,#ffcba4 4px,#e8973a 4px,#e8973a 8px)"></div></div><span style="font-size:5px;color:#ffcba4;margin-left:4px;width:16px;text-align:right" id="val_hung">70</span></div>
+        <div class="srow"><span style="font-size:11px">✨</span><span style="font-size:5px;color:#ffc2d4;width:48px;flex-shrink:0">GLOW</span><div class="statbar"><div class="statfill" id="bar_glow" style="width:90%;background:repeating-linear-gradient(90deg,#b5ead7 0,#b5ead7 4px,#4d9e80 4px,#4d9e80 8px)"></div></div><span style="font-size:5px;color:#b5ead7;margin-left:4px;width:16px;text-align:right" id="val_glow">90</span></div>
+        <div class="srow"><span style="font-size:11px">⚡</span><span style="font-size:5px;color:#ffc2d4;width:48px;flex-shrink:0">ENERGY</span><div class="statbar"><div class="statfill" id="bar_nrg" style="width:60%;background:repeating-linear-gradient(90deg,#c9b8f7 0,#c9b8f7 4px,#7c5cbf 4px,#7c5cbf 8px)"></div></div><span style="font-size:5px;color:#c9b8f7;margin-left:4px;width:16px;text-align:right" id="val_nrg">60</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border:2px solid rgba(255,143,171,0.25);padding:8px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:13px">⏳</span>
+        <div><div style="font-size:6px;color:#ffc2d4">DAILY TASKS</div><div style="font-size:5px;color:#6b5b73;margin-top:3px"><span id="g_gd">0</span>/3 games · <span id="g_fd">0</span> meals</div></div>
+      </div>
+    </div>
+
+    <div id="tab_cafe" style="display:none">
+      <h2>KITTY CAFÉ 🥤</h2>
+      <div id="cafehint" style="font-size:5px;color:#c9b8f7;text-align:center;margin:6px 0 10px;line-height:1.8"></div>
+      <div class="foodgrid" id="foodgrid"></div>
+    </div>
+
+    <div id="tab_glow" style="display:none">
+      <h2>SKINCARE RITUAL ✨</h2>
+      <div id="glowhint" style="font-size:5px;color:#c9b8f7;text-align:center;margin:4px 0;line-height:2"></div>
+      <div style="position:relative;width:140px;height:140px;margin:8px auto">
+        <canvas id="c_glow" width="140" height="140" style="image-rendering:pixelated;width:140px;height:140px;display:block;cursor:pointer"></canvas>
+        <div id="dirtyov" style="position:absolute;inset:0;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(100,80,50,0.75) 0%,transparent 70%);opacity:0.1"></div>
+        <div style="position:absolute;bottom:2px;right:2px;font-size:9px;background:rgba(0,0,0,0.6);padding:2px 3px;color:white;pointer-events:none">tap! 👆</div>
+      </div>
+      <div class="foodgrid" id="scgrid"></div>
+    </div>
+
+    <div id="tab_play" style="display:none">
+      <h2>MINI GAMES 🎮</h2>
+      <div style="font-size:5px;color:#c9b8f7;text-align:center;margin:6px 0 12px;line-height:2">play 3 daily to keep her happy ♡</div>
+      <div id="gamelist"></div>
+    </div>
+
+    <div id="tab_stories" style="display:none">
+      <h2>📖 EPISODES</h2>
+      <div id="storyhint" style="font-size:5px;color:#c9b8f7;text-align:center;margin:4px 0 10px;line-height:2"></div>
+      <div id="eplist"></div>
+    </div>
+
+  </div>
+  <div class="nav">
+    <button class="navbtn on" id="nav_home"><span style="font-size:13px">🏠</span>HOME</button>
+    <button class="navbtn" id="nav_cafe"><span style="font-size:13px">🥤</span>CAFÉ</button>
+    <button class="navbtn" id="nav_glow"><span style="font-size:13px">✨</span>GLOW</button>
+    <button class="navbtn" id="nav_play"><span style="font-size:13px">🎮</span>PLAY</button>
+    <button class="navbtn" id="nav_stories"><span style="font-size:13px">📖</span>STORY</button>
+  </div>
+</div>
+
+<div class="mgoverlay" id="mgoverlay">
+  <div style="font-family:'Press Start 2P',monospace;color:#ffc2d4;font-size:8px;margin-bottom:6px;text-align:center" id="mg_title">SMOOTHIE CATCH!</div>
+  <div style="font-size:6px;color:#c9b8f7;margin-bottom:10px" id="mg_score">SCORE: 0</div>
+  <div id="taparea"></div>
+  <div style="font-size:6px;color:#6b5b73;margin-top:10px;text-align:center;line-height:2" id="mg_inst">tap items! get 5 to win!</div>
+  <div style="margin-top:14px;display:flex;gap:10px">
+    <button class="bigbtn" style="width:auto;margin:0;padding:10px 16px" id="btn_mgdone">DONE ✓</button>
+    <button class="bigbtn" style="width:auto;margin:0;padding:10px 16px;border-color:#7c5cbf;background:#c9b8f7;color:#2d1b33" id="btn_mgquit">QUIT ✗</button>
+  </div>
+</div>
+
+<div id="toastbox"></div>
+</div>
+
+<script>
+var PALS=[
+  {b:'#1e1e2e',c:'#2d2d40',e:'#ff8fab',o:'#0a0a14',i:'#9ecfff',n:'#ff8fab'},
+  {b:'#e8a87c',c:'#fde8cc',e:'#ff8fab',o:'#2d1b0e',i:'#5c3d1e',n:'#ff6b8a'},
+  {b:'#8a9ba8',c:'#c5d0d8',e:'#ff8fab',o:'#2a3540',i:'#4fc3f7',n:'#ff8fab'},
+  {b:'#e07b39',c:'#fde8b0',e:'#ff8fab',o:'#7a3a10',i:'#4e8c3b',n:'#ff8fab'},
+  {b:'#d8e8f0',c:'#f0f8ff',e:'#ffb3c6',o:'#4a6070',i:'#98d0e8',n:'#ffb3c6'},
+  {b:'#e8c89a',c:'#fff2e0',e:'#ff8fab',o:'#8a5a2a',i:'#8a5a2a',n:'#ff8fab'}
+];
+function dc(id,ci,mood){
+  var cvs=document.getElementById(id);
+  if(!cvs)return;
+  var ctx=cvs.getContext('2d'),p=PALS[ci%6],w=cvs.width,s=w/96;
+  ctx.clearRect(0,0,w,w);
+  function r(x,y,W,H,col){ctx.fillStyle=col;ctx.fillRect(~~(x*s),~~(y*s),~~(W*s),~~(H*s));}
+  r(20,42,56,40,p.b);r(14,50,8,24,p.b);r(74,50,8,24,p.b);r(22,38,52,8,p.b);
+  r(32,52,32,28,p.c);r(12,48,4,28,p.o);r(80,48,4,28,p.o);r(18,80,60,4,p.o);
+  r(24,26,16,16,p.b);r(56,26,16,16,p.b);r(28,30,8,8,p.e);r(60,30,8,8,p.e);
+  r(20,22,8,8,p.o);r(68,22,8,8,p.o);r(22,32,52,14,p.b);
+  r(30,34,12,8,p.o);r(54,34,12,8,p.o);r(32,35,8,6,p.i);r(56,35,8,6,p.i);
+  r(38,35,2,2,'white');r(62,35,2,2,'white');r(44,44,8,4,p.n);
+  if(mood>50){r(40,50,4,2,p.o);r(52,50,4,2,p.o);r(38,48,4,2,p.o);r(54,48,4,2,p.o);}
+  else{r(38,52,4,2,p.o);r(54,52,4,2,p.o);r(40,50,4,2,p.o);r(52,50,4,2,p.o);}
+  r(8,44,20,2,p.o);r(8,50,18,2,p.o);r(68,44,20,2,p.o);r(70,50,18,2,p.o);
+  r(70,72,12,8,p.b);r(76,64,8,12,p.b);r(80,62,4,4,p.o);
+}
+var ZS=[
+  {s:'♈',n:'ARIES',m:'competitive',fav:'🌶️ Spicy Mango',st:'Competitor Arc',d:'Feisty & fierce. Intense games & bold flavors.'},
+  {s:'♉',n:'TAURUS',m:'cozy',fav:'🍓 Strawberry Velvet',st:'Luxury Arc',d:'Comfy & luxe. Slow mornings & rich food.'},
+  {s:'♊',n:'GEMINI',m:'social',fav:'🫐 Double Berry',st:'Gossip Arc',d:'Chatty & curious. Cravings change twice daily!'},
+  {s:'♋',n:'CANCER',m:'emotional',fav:'🥛 Moon Milk',st:'Homesick Arc',d:'Soft & sensitive. Needs extra comfort & care.'},
+  {s:'♌',n:'LEO',m:'extra',fav:'🍊 Gold Rush',st:'Influencer Arc',d:'Glamorous & dramatic. Mediocre care = drama.'},
+  {s:'♍',n:'VIRGO',m:'perfectionist',fav:'🥦 Green Goddess',st:'Organizer Arc',d:'Picky & precise. Needs exactly the right food.'},
+  {s:'♎',n:'LIBRA',m:'balanced',fav:'🍑 Peach Harmony',st:'Drama Arc',d:'Balanced & social. All stats must stay equal.'},
+  {s:'♏',n:'SCORPIO',m:'secretive',fav:'🫙 Dark Elixir',st:'Secret Garden Arc',d:'Intense & mysterious. Hides when upset.'},
+  {s:'♐',n:'SAGITT.',m:'restless',fav:'🥭 Tropical Escape',st:'Escape Arc',d:'Adventurous & free. Routine bores her instantly.'},
+  {s:'♑',n:'CAPRICORN',m:'driven',fav:'☕ Matcha Power',st:'Empire Arc',d:'Ambitious. Demands consistent daily progress.'},
+  {s:'♒',n:'AQUARIUS',m:'eccentric',fav:'💜 Lavender Cloud',st:'Rebel Arc',d:'Quirky & unique. Only accepts specialty items.'},
+  {s:'♓',n:'PISCES',m:'dreamy',fav:'🌊 Butterfly Pea',st:'Daydream Arc',d:'Dreamy & delicate. Mood drifts like the tide.'}
+];
+var ZMON=['MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB'];
+var CATS=[['NOIR','mysterious'],['CALI','bold'],['ASH','chill'],['GINGER','playful'],['LUNA','dreamy'],['MOCHI','sweet']];
+var FOODS=[
+  {e:'🥤',n:'PLAIN',ms:['competitive','balanced','driven'],b:10,u:1},
+  {e:'🍓',n:'STRAWBERRY',ms:['cozy','emotional','balanced'],b:18,u:1},
+  {e:'🫐',n:'DBL BERRY',ms:['social','secretive','balanced'],b:18,u:1},
+  {e:'🥛',n:'MOON MILK',ms:['emotional','dreamy','cozy'],b:20,u:1},
+  {e:'🍊',n:'GOLD RUSH',ms:['extra','competitive'],b:20,u:0},
+  {e:'🌶️',n:'SPICY MANGO',ms:['competitive','restless'],b:22,u:0},
+  {e:'🥦',n:'GRN GODDESS',ms:['perfectionist','driven'],b:22,u:0},
+  {e:'🍑',n:'PEACH',ms:['balanced','cozy'],b:18,u:0},
+  {e:'🫙',n:'DARK ELIXIR',ms:['secretive','eccentric'],b:24,u:0},
+  {e:'🥭',n:'TROPICAL',ms:['restless','social'],b:22,u:0},
+  {e:'☕',n:'MATCHA',ms:['driven','perfectionist'],b:24,u:0},
+  {e:'💜',n:'LAVENDER',ms:['eccentric','dreamy'],b:26,u:0},
+  {e:'🌊',n:'BUTTERFLY',ms:['dreamy','emotional'],b:28,u:0}
+];
+var SKC=[
+  {e:'🧴',n:'CLEANSER',ef:'clean',pw:20},{e:'💧',n:'TONER',ef:'clean',pw:15},
+  {e:'🌸',n:'SERUM',ef:'glow',pw:18},{e:'✨',n:'MOISTURIZER',ef:'glow',pw:22},
+  {e:'🌙',n:'NIGHT MASK',ef:'all',pw:25},{e:'☀️',n:'SPF MIST',ef:'mood',pw:12}
+];
+var EPS=[
+  {id:0,req:0,t:'CH.1: A NEW BEGINNING',e:'🏠',d:'Your kitty arrives at the café. One sip of smoothie and she declares herself a connoisseur.'},
+  {id:1,req:3,t:'CH.2: THE RIVAL CAT',e:'😤',d:'A suspicious new cat shows up. Your kitty must prove her skincare is superior.'},
+  {id:2,req:7,t:'CH.3: SMOOTHIE CRISIS',e:'😱',d:'The café blender breaks! Improvise with hand-blended smoothies.'},
+  {id:3,req:12,t:'CH.4: THE GLOW-UP',e:'✨',d:'After weeks of perfect skincare, something magical happens.'},
+  {id:4,req:20,t:'CH.5: ZODIAC DESTINY',e:'⭐',d:'Her true zodiac destiny awakens. A celestial event ties to her birth sign.'},
+  {id:5,req:30,t:'CH.6: THE GRAND GALA',e:'🏆',d:'The Kitty Café Grand Smoothie Gala. Can your kitty win best in show?'}
+];
+var MGS=[
+  {t:'🥤 SMOOTHIE CATCH',d:'tap the smoothies!',e:'🥤',tg:['🥤','🍓','🫐','🥭','💜']},
+  {t:'✨ GROOM SESSION',d:'tap the dirt spots!',e:'🧴',tg:['💩','🌑','⬛','💧','✨']},
+  {t:'🎵 RHYTHM DANCE',d:'tap to the beat!',e:'🎵',tg:['♪','♫','🎵','⭐','💖']}
+];
+var G={name:'KITTY',ci:0,zi:0,mood:80,hunger:70,clean:90,energy:60,lv:1,day:1,gd:0,fd:0,td:0,ueps:[0],mgA:false,mgS:0,mgI:null};
+
+function showPage(id){
+  var pages=['pg_intro','pg_name','pg_cat','pg_zod','pg_game'];
+  pages.forEach(function(p){document.getElementById(p).classList.remove('show');});
+  document.getElementById(id).classList.add('show');
+}
+
+function showTab(t){
+  var tabs=['tab_home','tab_cafe','tab_glow','tab_play','tab_stories'];
+  var navs=['nav_home','nav_cafe','nav_glow','nav_play','nav_stories'];
+  var map={home:0,cafe:1,glow:2,play:3,stories:4};
+  var idx=map[t];
+  tabs.forEach(function(tab,i){document.getElementById(tab).style.display=i===idx?'block':'none';});
+  navs.forEach(function(nav,i){document.getElementById(nav).classList.toggle('on',i===idx);});
+  if(t==='cafe')buildCafe();
+  if(t==='glow')buildGlow();
+  if(t==='play')buildPlay();
+  if(t==='stories')buildStories();
+}
+
+function updStats(){
+  var data=[['bar_mood','val_mood',G.mood],['bar_hung','val_hung',G.hunger],['bar_glow','val_glow',G.clean],['bar_nrg','val_nrg',G.energy]];
+  data.forEach(function(d){
+    var b=document.getElementById(d[0]),v=document.getElementById(d[1]);
+    if(b)b.style.width=Math.max(0,Math.min(100,d[2]))+'%';
+    if(v)v.textContent=Math.round(d[2]);
+  });
+  document.getElementById('g_gd').textContent=G.gd;
+  document.getElementById('g_fd').textContent=G.fd;
+  document.getElementById('g_lv').textContent=G.lv;
+  var ov=document.getElementById('dirtyov');
+  if(ov)ov.style.opacity=(1-G.clean/100)*0.85;
+}
+
+var SPEECH={
+  happy:['mrrp~ feeling good! ♡','my skincare is WORKING ✨','that smoothie was *chef kiss*','purrr~ 🌸'],
+  hungry:['...i could eat.','smoothie time?? 🥤','tummy grumbling...'],
+  dirty:['my pores are STRESSED 😩','skincare emergency!!','serum NOW please'],
+  sad:['...','feeling neglected 💔','*sighs in cat*'],
+  ok:['*flops over*','vibes are okay~','what should we do~?','i watched a butterfly for 3hrs']
+};
+function updSpeech(){
+  var pool=SPEECH.ok;
+  if(G.mood<35)pool=SPEECH.sad;
+  else if(G.hunger<30)pool=SPEECH.hungry;
+  else if(G.clean<30)pool=SPEECH.dirty;
+  else if(G.mood>75)pool=SPEECH.happy;
+  var el=document.getElementById('speechbub');
+  if(el)el.textContent=pool[~~(Math.random()*pool.length)];
+  dc('c_main',G.ci,G.mood);
+  dc('c_glow',G.ci,G.mood);
+}
+
+function decay(){
+  G.hunger=Math.max(0,G.hunger-4);G.clean=Math.max(0,G.clean-3);G.energy=Math.max(0,G.energy-2);
+  if(G.clean<40)G.mood=Math.max(0,G.mood-2);
+  if(G.hunger<30)G.mood=Math.max(0,G.mood-3);
+  if(G.gd<3)G.mood=Math.max(0,G.mood-1);
+  updStats();updSpeech();
+  var nl=Math.floor(G.td/5)+1;
+  if(nl>G.lv){G.lv=nl;toast('⭐ LEVEL UP! Level '+G.lv+'!\nNew smoothies unlocked!');var cnt=0;FOODS.forEach(function(f){if(!f.u&&cnt<G.lv-1){f.u=1;cnt++;}});}
+  EPS.forEach(function(ep){if(G.ueps.indexOf(ep.id)<0&&G.td>=ep.req){G.ueps.push(ep.id);toast('📖 New episode unlocked!\n'+ep.e+' '+ep.t);}});
+}
+
+function buildCafe(){
+  var z=ZS[G.zi];
+  document.getElementById('cafehint').textContent=G.name+' is feeling '+z.m+'~ fave: '+z.fav;
+  var g=document.getElementById('foodgrid');g.innerHTML='';
+  FOODS.forEach(function(f,i){
+    var w=f.ms.indexOf(z.m)>=0;
+    var d=document.createElement('div');d.className='foodbtn'+(f.u?'':' locked');
+    d.innerHTML='<div style="font-size:18px;margin-bottom:3px">'+f.e+'</div><div style="font-size:4px;color:#ffc2d4">'+f.n+'</div><div style="font-size:4px;color:#c9b8f7;margin-top:2px">'+(f.u?(w?'♡ WANTS':'~ok'):'🔒')+'</div>';
+    if(f.u){(function(fi,fw){d.addEventListener('click',function(){
+      if(fw){G.hunger=Math.min(100,G.hunger+FOODS[fi].b);G.mood=Math.min(100,G.mood+8);G.fd++;G.td=Math.max(G.td,1);updStats();updSpeech();toast(FOODS[fi].e+' she LOVED that!\nmood +8');}
+      else{G.hunger=Math.min(100,G.hunger+~~(FOODS[fi].b*0.4));G.mood=Math.max(0,G.mood-5);updStats();updSpeech();toast('😾 she sniffed it and\nwalked away... mood -5');}
+    });})(i,w);}
+    g.appendChild(d);
+  });
+}
+
+function buildGlow(){
+  var dp=~~((1-G.clean/100)*100);
+  document.getElementById('glowhint').textContent=dp>50?'😩 URGENT: face needs help!':dp>20?'🧴 time for a refresh~':'✨ glow is IMMACULATE!';
+  dc('c_glow',G.ci,G.mood);
+  var ov=document.getElementById('dirtyov');if(ov)ov.style.opacity=(1-G.clean/100)*0.85;
+  var g=document.getElementById('scgrid');g.innerHTML='';
+  SKC.forEach(function(s,i){
+    var d=document.createElement('div');d.className='foodbtn';
+    d.innerHTML='<div style="font-size:18px;margin-bottom:3px">'+s.e+'</div><div style="font-size:4px;color:#c9b8f7">'+s.n+'</div>';
+    (function(si){d.addEventListener('click',function(){
+      var sk=SKC[si];
+      if(sk.ef==='clean'||sk.ef==='all')G.clean=Math.min(100,G.clean+sk.pw);
+      if(sk.ef==='glow'||sk.ef==='all'){G.clean=Math.min(100,G.clean+sk.pw*0.5);G.mood=Math.min(100,G.mood+5);}
+      if(sk.ef==='mood')G.mood=Math.min(100,G.mood+sk.pw);
+      updStats();updSpeech();buildGlow();toast(sk.e+' '+sk.n+' applied!\nshe feels fresher~');
+    });})(i);
+    g.appendChild(d);
+  });
+}
+
+function buildPlay(){
+  var l=document.getElementById('gamelist');l.innerHTML='';
+  MGS.forEach(function(g,i){
+    var done=i<G.gd;
+    var d=document.createElement('div');d.className='gamebtn'+(done?' done':'');
+    d.innerHTML='<div style="font-size:20px">'+g.e+'</div><div style="flex:1"><div style="font-size:6px;color:#ffc2d4;margin-bottom:3px">'+g.t+'</div><div style="font-size:5px;color:#6b5b73;line-height:1.8">'+g.d+'<br>'+(done?'✅ done today':'⬡ tap to play')+'</div></div><div>'+(done?'✅':'')+'</div>';
+    if(!done){(function(gi){d.addEventListener('click',function(){startMG(gi);});})(i);}
+    l.appendChild(d);
+  });
+}
+
+function startMG(i){
+  G.mgA=true;G.mgS=0;
+  document.getElementById('mg_title').textContent=MGS[i].t;
+  document.getElementById('mg_score').textContent='SCORE: 0';
+  document.getElementById('mg_inst').textContent=MGS[i].d+' · get 5 to win!';
+  document.getElementById('mgoverlay').classList.add('show');
+  document.getElementById('taparea').innerHTML='';
+  var tg=MGS[i].tg,sp=0;
+  function spawnOne(){
+    if(!G.mgA||sp>=25)return;
+    var t=document.createElement('div');t.className='taptarget';
+    t.textContent=tg[~~(Math.random()*tg.length)];
+    t.style.left=~~(Math.random()*185)+'px';t.style.top=~~(Math.random()*185)+'px';
+    t.addEventListener('click',function(){G.mgS++;document.getElementById('mg_score').textContent='SCORE: '+G.mgS;t.remove();if(G.mgS>=5)closeMG(true);});
+    document.getElementById('taparea').appendChild(t);sp++;
+    setTimeout(function(){if(t.parentNode)t.remove();},1800);
+    setTimeout(spawnOne,650);
+  }
+  spawnOne();
+}
+
+function closeMG(ok){
+  G.mgA=false;
+  document.getElementById('mgoverlay').classList.remove('show');
+  document.getElementById('taparea').innerHTML='';
+  if(ok&&G.gd<3){
+    G.gd++;G.mood=Math.min(100,G.mood+10);G.energy=Math.max(0,G.energy-5);G.td=Math.max(G.td,G.day);
+    updStats();updSpeech();toast('🎮 great game! mood +10\n('+G.gd+'/3 today)');
+    if(G.gd>=3){G.mood=Math.min(100,G.mood+15);G.day++;G.td++;document.getElementById('g_day').textContent=G.day;G.gd=0;G.fd=0;toast('🌟 ALL games done!\nday '+G.day+' begins! ✨');}
+  }
+  buildPlay();
+}
+
+function buildStories(){
+  var z=ZS[G.zi];
+  document.getElementById('storyhint').textContent=z.s+' '+z.n+' · '+z.st;
+  var l=document.getElementById('eplist');l.innerHTML='';
+  EPS.forEach(function(ep){
+    var u=G.ueps.indexOf(ep.id)>=0;
+    var d=document.createElement('div');d.className='epcard'+(u?'':' locked');
+    d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:15px">'+ep.e+'</span><div><div style="font-size:4px;color:#c9b8f7">EP '+(ep.id+1)+' · '+(u?'UNLOCKED':'🔒 day '+ep.req)+'</div><div style="font-size:6px;color:#ffc2d4">'+ep.t+'</div></div></div><div style="font-size:5px;color:#6b5b73;line-height:1.8">'+(u?ep.d:'???')+'</div>';
+    if(u)d.addEventListener('click',function(){G.mood=Math.min(100,G.mood+5);updStats();updSpeech();toast('📖 reading...\nmood +5 ✨');});
+    l.appendChild(d);
+  });
+}
+
+var toastTimer=null;
+function toast(msg){
+  var t=document.getElementById('toastbox');t.textContent=msg;t.style.opacity='1';
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.style.opacity='0';},3000);
+}
+
+/* BUILD STATIC GRIDS */
+var cg=document.getElementById('catgrid');
+CATS.forEach(function(cat,i){
+  var btn=document.createElement('button');
+  btn.className='catbtn'+(i===0?' picked':'');
+  var cvs=document.createElement('canvas');
+  cvs.width=44;cvs.height=44;cvs.id='cp_'+i;
+  cvs.style.cssText='image-rendering:pixelated;width:44px;height:44px;display:block;pointer-events:none';
+  btn.appendChild(cvs);
+  var nm=document.createElement('span');nm.textContent=cat[0];btn.appendChild(nm);
+  var vb=document.createElement('span');vb.style.cssText='font-size:4px;color:#6b5b73';vb.textContent=cat[1];btn.appendChild(vb);
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.catbtn').forEach(function(x){x.classList.remove('picked');});
+    btn.classList.add('picked');G.ci=i;dc('c_name',i,80);
+  });
+  cg.appendChild(btn);
+});
+
+var zg=document.getElementById('zodgrid');
+ZS.forEach(function(z,i){
+  var btn=document.createElement('button');btn.className='zodbtn';
+  btn.innerHTML='<span style="font-size:13px;display:block">'+z.s+'</span><span style="font-size:4px;display:block">'+z.n.substring(0,6)+'</span><span style="font-size:4px;color:#6b5b73;display:block">'+ZMON[i]+'</span>';
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.zodbtn').forEach(function(x){x.classList.remove('picked');});
+    btn.classList.add('picked');G.zi=i;
+    document.getElementById('zoddesc').textContent=z.s+' '+z.n+' · '+z.d;
+  });
+  zg.appendChild(btn);
+});
+
+/* WIRE BUTTONS */
+document.getElementById('btn_start').addEventListener('click',function(){showPage('pg_name');});
+document.getElementById('btn_name').addEventListener('click',function(){
+  var v=document.getElementById('nameinput').value.trim();
+  if(v)G.name=v.toUpperCase();
+  dc('c_name',G.ci,80);showPage('pg_cat');
+});
+document.getElementById('btn_cat').addEventListener('click',function(){showPage('pg_zod');});
+document.getElementById('btn_zod').addEventListener('click',function(){
+  showPage('pg_game');
+  document.getElementById('g_name').textContent=G.name;
+  document.getElementById('g_zod').textContent=ZS[G.zi].s+' '+ZS[G.zi].n;
+  dc('c_main',G.ci,G.mood);dc('c_glow',G.ci,G.mood);
+  updStats();updSpeech();showTab('home');
+  setInterval(decay,30000);
+});
+document.getElementById('c_main').addEventListener('click',function(){G.mood=Math.min(100,G.mood+3);G.energy=Math.min(100,G.energy+2);updStats();updSpeech();toast('💖 purr~ she likes that!');});
+document.getElementById('c_glow').addEventListener('click',function(){
+  var s=SKC[0];G.clean=Math.min(100,G.clean+s.pw);updStats();updSpeech();buildGlow();toast(s.e+' '+s.n+' applied!\nshe feels fresher~');
+});
+document.getElementById('nav_home').addEventListener('click',function(){showTab('home');});
+document.getElementById('nav_cafe').addEventListener('click',function(){showTab('cafe');});
+document.getElementById('nav_glow').addEventListener('click',function(){showTab('glow');});
+document.getElementById('nav_play').addEventListener('click',function(){showTab('play');});
+document.getElementById('nav_stories').addEventListener('click',function(){showTab('stories');});
+document.getElementById('btn_mgdone').addEventListener('click',function(){closeMG(true);});
+document.getElementById('btn_mgquit').addEventListener('click',function(){closeMG(false);});
+
+/* INIT DRAW */
+dc('c_intro',4,80);dc('c_name',0,80);
+for(var i=0;i<6;i++){dc('cp_'+i,i,80);}
+</script>
