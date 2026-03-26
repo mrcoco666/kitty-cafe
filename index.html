@@ -1,177 +1,330 @@
 
-<div id="app" style="background:#1a0f2e;min-height:620px;width:100%;max-width:400px;margin:0 auto;font-family:monospace;position:relative;overflow:hidden;border-radius:12px">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+#app{
+  background:linear-gradient(145deg,#fff5f8 0%,#f0fce8 30%,#fef9e0 55%,#f5eeff 80%,#fde8f0 100%);
+  width:100%;max-width:400px;margin:0 auto;min-height:640px;position:relative;overflow:hidden;border-radius:20px;
+  font-family:'Press Start 2P',monospace;
+}
+/* aura blobs */
+#app::before{content:'';position:absolute;top:-60px;left:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(255,182,193,0.55) 0%,transparent 70%);pointer-events:none;z-index:0}
+#app::after{content:'';position:absolute;bottom:-40px;right:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(180,240,180,0.5) 0%,transparent 70%);pointer-events:none;z-index:0}
+.aura-mid{position:absolute;top:40%;left:30%;width:200px;height:200px;background:radial-gradient(circle,rgba(255,230,120,0.4) 0%,transparent 70%);pointer-events:none;z-index:0}
+.page{display:none;flex-direction:column;align-items:center;padding:20px 14px;min-height:640px;justify-content:space-between;position:relative;z-index:1}
+.page.show{display:flex}
+.bigbtn{font-family:'Press Start 2P',monospace;font-size:7px;padding:13px;border:2.5px solid #e8609a;background:linear-gradient(135deg,#ff9fc8,#ffb3e0);color:white;cursor:pointer;width:100%;margin-top:10px;letter-spacing:1px;border-radius:20px;box-shadow:0 4px 16px rgba(255,143,171,0.35)}
+.bigbtn:active{opacity:0.8;transform:scale(0.97)}
+.title{font-size:9px;text-align:center;line-height:2;background:linear-gradient(90deg,#e8609a,#a78bfa,#f59e0b,#34d399,#e8609a);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gl 3s linear infinite}
+@keyframes gl{to{background-position:300%}}
+.hdg{font-size:8px;color:#c0547a;text-align:center;line-height:1.8;margin-bottom:6px}
+.sub{font-size:6px;color:#a07090;text-align:center;line-height:2}
+.divider{width:100%;height:3px;background:repeating-linear-gradient(90deg,#ffb3c8 0,#ffb3c8 8px,#c8f0b0 8px,#c8f0b0 16px,#ffe08a 16px,#ffe08a 24px,#d0b8ff 24px,#d0b8ff 32px,transparent 32px,transparent 36px);margin:8px 0;opacity:0.9;border-radius:4px}
+.bubble{background:rgba(255,255,255,0.85);border:2.5px solid #ffb3c8;padding:9px;font-size:6px;color:#c0547a;line-height:1.8;text-align:center;width:100%;margin-bottom:10px;border-radius:16px;box-shadow:0 2px 12px rgba(255,143,171,0.2)}
+.bubble::after{content:'';position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#ffb3c8}
+input[type=text]{font-family:'Press Start 2P',monospace;font-size:8px;padding:11px;background:rgba(255,255,255,0.8);border:2.5px solid #ffb3c8;color:#c0547a;width:100%;text-align:center;outline:none;margin:8px 0;border-radius:12px;box-shadow:inset 0 2px 6px rgba(255,143,171,0.1)}
+input::placeholder{color:#e0a0b8}
+.catgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;margin:10px 0}
+.catbtn{background:rgba(255,255,255,0.7);border:2.5px solid rgba(255,179,200,0.5);padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:5px;color:#c0547a;width:100%;border-radius:14px;font-family:'Press Start 2P',monospace;backdrop-filter:blur(4px)}
+.catbtn.sel{border-color:#ff8fab;background:rgba(255,179,200,0.3);box-shadow:0 0 12px rgba(255,143,171,0.4)}
+.zodgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;width:100%;margin:10px 0}
+.zodbtn{background:rgba(255,255,255,0.65);border:2px solid rgba(255,179,200,0.4);padding:5px 2px;cursor:pointer;text-align:center;font-size:4px;color:#c0547a;width:100%;border-radius:10px;font-family:'Press Start 2P',monospace}
+.zodbtn.sel{border-color:#ff8fab;background:rgba(255,179,200,0.35);box-shadow:0 0 8px rgba(255,143,171,0.3)}
+#pg4{padding:8px 12px 0;justify-content:flex-start;min-height:640px}
+.srow{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.srow:last-child{margin-bottom:0}
+.sbar{flex:1;height:10px;background:rgba(200,160,180,0.15);border:1.5px solid rgba(255,143,171,0.3);overflow:hidden;border-radius:8px}
+.sfill{height:100%;transition:width 0.4s;border-radius:7px}
+.nav{display:flex;background:rgba(255,255,255,0.75);border-top:2.5px solid #ffccd8;width:100%;flex-shrink:0;backdrop-filter:blur(8px)}
+.navbtn{flex:1;padding:8px 2px;background:none;border:none;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:5px;color:#c8a0b0;display:flex;flex-direction:column;align-items:center;gap:3px}
+.navbtn.on{color:#e8609a}
+.foodgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;margin:6px 0}
+.fbtn{background:rgba(255,255,255,0.75);border:2px solid rgba(255,179,200,0.4);padding:8px 3px;text-align:center;cursor:pointer;border-radius:12px;transition:all 0.15s;backdrop-filter:blur(4px)}
+.fbtn:active{transform:scale(0.94)}
+.fbtn.wants{border-color:#ff8fab;background:rgba(255,179,200,0.25);box-shadow:0 0 10px rgba(255,143,171,0.3)}
+.fbtn.locked{opacity:0.35;pointer-events:none}
+.scbtn{background:rgba(255,255,255,0.75);border:2px solid rgba(196,180,255,0.5);padding:8px 3px;text-align:center;cursor:pointer;border-radius:12px;backdrop-filter:blur(4px)}
+.scbtn:active{transform:scale(0.94)}
+.gbtn{width:100%;background:rgba(255,255,255,0.7);border:2px solid rgba(255,179,200,0.4);padding:11px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:10px;border-radius:14px;backdrop-filter:blur(4px)}
+.gbtn:active{opacity:0.7}
+.gbtn.done{opacity:0.5;pointer-events:none}
+.epc{width:100%;background:rgba(255,255,255,0.7);border:2px solid rgba(196,180,255,0.4);padding:11px;margin-bottom:8px;cursor:pointer;border-radius:14px;backdrop-filter:blur(4px)}
+.epc.lk{opacity:0.45;pointer-events:none}
+#mgo{display:none;position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,240,248,0.97) 0%,rgba(240,255,232,0.97) 50%,rgba(255,240,255,0.97) 100%);z-index:99;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:8px;min-height:640px}
+#mgo::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 30% 20%,rgba(255,182,193,0.4) 0%,transparent 50%),radial-gradient(ellipse at 70% 70%,rgba(180,240,180,0.4) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(255,230,120,0.3) 0%,transparent 60%);pointer-events:none}
+#mgo.show{display:flex}
+.mg-prompt{font-size:8px;color:#c0547a;text-align:center;line-height:1.8;margin-bottom:8px;position:relative;z-index:1}
+.mg-choice{background:rgba(255,255,255,0.85);border:2.5px solid rgba(255,143,171,0.5);padding:12px 8px;cursor:pointer;font-size:7px;color:#c0547a;text-align:center;width:100%;margin-bottom:7px;border-radius:14px;font-family:'Press Start 2P',monospace;position:relative;z-index:1;backdrop-filter:blur(4px)}
+.mg-choice:active{opacity:0.7}
+.mg-choice.correct{border-color:#7acc8a;background:rgba(180,240,180,0.3);color:#2d8a40}
+.mg-choice.wrong{border-color:#ff8080;background:rgba(255,180,180,0.25);color:#c04040}
+.mg-tapitem{display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.7);border:2.5px solid rgba(255,143,171,0.4);box-shadow:0 2px 10px rgba(255,143,171,0.2)}
+.mg-tapitem:active{transform:scale(0.82)}
+#toast{position:absolute;bottom:68px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.92);border:2.5px solid #ffb3c8;color:#c0547a;font-size:6px;padding:8px 12px;opacity:0;transition:opacity 0.3s;z-index:200;text-align:center;max-width:260px;line-height:1.8;pointer-events:none;white-space:pre-line;border-radius:14px;box-shadow:0 4px 16px rgba(255,143,171,0.3)}
+.bnc{animation:bn 2.2s ease-in-out infinite}
+@keyframes bn{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.star-badge{display:inline-block;background:linear-gradient(135deg,#ffe08a,#ffb347);color:#7a4800;font-size:5px;padding:2px 6px;border-radius:10px;margin-top:2px}
+.slot-tag{display:inline-block;font-size:5px;padding:2px 5px;border-radius:8px;margin-top:2px}
+.tier0{background:rgba(200,200,220,0.3);color:#9090b0}
+.tier1{background:rgba(196,180,255,0.3);color:#7060c0}
+.progress-bar{width:100%;height:12px;background:rgba(200,160,180,0.2);border:2px solid rgba(255,143,171,0.3);border-radius:8px;overflow:hidden;margin:4px 0;position:relative;z-index:1}
+.progress-fill{height:100%;background:linear-gradient(90deg,#ffb3c8,#c8f0a0,#ffe08a);transition:width 0.3s;border-radius:6px}
+.hearts{font-size:14px;letter-spacing:2px;text-align:center;display:block;margin:4px 0;position:relative;z-index:1}
+/* floating sparkles */
+.sparkle{position:absolute;pointer-events:none;animation:sparkle-float 4s ease-in-out infinite;font-size:10px;opacity:0.6;z-index:0}
+@keyframes sparkle-float{0%,100%{transform:translateY(0) rotate(0deg);opacity:0.4}50%{transform:translateY(-12px) rotate(180deg);opacity:0.8}}
+/* stat panel */
+.stat-panel{background:rgba(255,255,255,0.65);border:2px solid rgba(255,179,200,0.4);padding:10px;margin-bottom:8px;border-radius:14px;backdrop-filter:blur(6px)}
+.task-panel{background:rgba(255,255,255,0.65);border:2px solid rgba(255,209,100,0.4);padding:8px;display:flex;align-items:center;gap:8px;border-radius:14px;backdrop-filter:blur(6px)}
+</style>
 
-<div id="pg0" style="display:flex;flex-direction:column;align-items:center;padding:24px 16px;gap:12px;min-height:620px;justify-content:space-between">
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%">
-    <div style="font-size:11px;font-weight:bold;text-align:center;line-height:1.8;background:linear-gradient(90deg,#ff8fab,#c9b8f7,#ffd166);-webkit-background-clip:text;-webkit-text-fill-color:transparent">KITTY CAFÉ<br>✨ TAMAGOTCHI ✨</div>
-    <div style="font-size:8px;color:#c9b8f7;text-align:center;line-height:2">a tiny cat who needs your love<br>&amp; fancy smoothies</div>
-    <div style="width:100%;height:2px;background:repeating-linear-gradient(90deg,#ff8fab 0,#ff8fab 6px,transparent 6px,transparent 10px);opacity:0.4"></div>
-    <canvas id="c0" width="96" height="96" style="image-rendering:pixelated;width:96px;height:96px;display:block"></canvas>
-    <div style="background:white;border:3px solid #111;padding:10px;font-size:7px;color:#111;line-height:1.8;text-align:center;width:100%">pick her zodiac · feed her smoothies<br>do her skincare · play mini games!</div>
+<div id="app">
+<div class="aura-mid"></div>
+
+<!-- sparkle decorations -->
+<div class="sparkle" style="top:8%;left:10%;animation-delay:0s">✦</div>
+<div class="sparkle" style="top:15%;right:12%;animation-delay:0.8s">✧</div>
+<div class="sparkle" style="top:55%;left:5%;animation-delay:1.6s">✦</div>
+<div class="sparkle" style="top:70%;right:8%;animation-delay:0.4s">✧</div>
+<div class="sparkle" style="top:85%;left:20%;animation-delay:2s">✦</div>
+
+<!-- INTRO -->
+<div class="page show" id="pg0">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;padding-top:8px">
+    <div style="font-size:6px;color:#c8a0b8;text-align:center;letter-spacing:2px">✦ TOP TOYS ONLINE PRESENTS ✦</div>
+    <div class="title">KITTY CAFÉ<br>✨ TAMAGOTCHI ✨</div>
+    <div class="sub">a tiny cat who needs your love<br>&amp; fancy smoothies</div>
+    <div class="divider"></div>
+    <div style="position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(255,182,193,0.5) 0%,rgba(180,240,180,0.3) 50%,transparent 75%);border-radius:50%"></div>
+      <canvas id="c0" width="96" height="96" class="bnc" style="image-rendering:pixelated;width:96px;height:96px;display:block;position:relative;z-index:1"></canvas>
+    </div>
+    <div class="bubble" style="position:relative">pick their zodiac · feed them smoothies<br>do their skincare · play mini games!</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+      <span style="font-size:6px;color:#e8609a;background:rgba(255,179,200,0.3);padding:2px 8px;border-radius:10px">★ PLAY NOW</span>
+      <span style="font-size:6px;color:#7c5cbf;background:rgba(196,180,255,0.3);padding:2px 8px;border-radius:10px">♡ FREE GIFT</span>
+      <span style="font-size:6px;color:#6aaa50;background:rgba(180,240,180,0.3);padding:2px 8px;border-radius:10px">🌸 CUTE</span>
+    </div>
   </div>
-  <button id="b0" style="background:#ff8fab;color:white;border:3px solid #c9547a;padding:14px;font-size:8px;width:100%;cursor:pointer;font-family:monospace;font-weight:bold">▶ START GAME</button>
+  <button class="bigbtn" id="b0">▶ START GAME</button>
 </div>
 
-<div id="pg1" style="display:none;flex-direction:column;align-items:center;padding:24px 16px;gap:12px;min-height:620px;justify-content:space-between">
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%">
-    <div style="font-size:9px;color:#ffc2d4;text-align:center;line-height:1.8;font-weight:bold">WHAT'S YOUR KITTY'S NAME?</div>
-    <canvas id="c1" width="80" height="80" style="image-rendering:pixelated;width:80px;height:80px;display:block"></canvas>
-    <input id="namein" type="text" maxlength="10" placeholder="enter name..." style="font-family:monospace;font-size:9px;padding:12px;background:rgba(255,255,255,0.1);border:3px solid #ff8fab;color:white;width:100%;text-align:center;outline:none">
-    <div style="font-size:7px;color:#c9b8f7">up to 10 characters ♡</div>
+<!-- NAME -->
+<div class="page" id="pg1">
+  <div style="display:flex;flex-direction:column;align-items:center;width:100%;gap:8px">
+    <div class="hdg">WHAT'S YOUR KITTY'S NAME?</div>
+    <div style="position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(255,182,193,0.4) 0%,transparent 70%);border-radius:50%"></div>
+      <canvas id="c1" width="80" height="80" class="bnc" style="image-rendering:pixelated;width:80px;height:80px;display:block;position:relative;z-index:1"></canvas>
+    </div>
+    <input id="namein" type="text" maxlength="10" placeholder="enter name...">
+    <div class="sub">up to 10 characters ♡</div>
   </div>
-  <button id="b1" style="background:#ff8fab;color:white;border:3px solid #c9547a;padding:14px;font-size:8px;width:100%;cursor:pointer;font-family:monospace;font-weight:bold">NEXT ▶</button>
+  <button class="bigbtn" id="b1">NEXT ▶</button>
 </div>
 
-<div id="pg2" style="display:none;flex-direction:column;align-items:center;padding:24px 16px;gap:12px;min-height:620px;justify-content:space-between">
+<!-- CAT PICK -->
+<div class="page" id="pg2">
   <div style="width:100%">
-    <div style="font-size:9px;color:#ffc2d4;text-align:center;line-height:1.8;font-weight:bold;margin-bottom:6px">CHOOSE YOUR KITTY</div>
-    <div style="font-size:7px;color:#c9b8f7;text-align:center;margin-bottom:12px">each has her own vibe ♡</div>
-    <div id="catgrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%"></div>
+    <div class="hdg">CHOOSE YOUR KITTY</div>
+    <div class="sub" style="margin-bottom:8px">all genders welcome ♡</div>
+    <div class="catgrid" id="catgrid"></div>
   </div>
-  <button id="b2" style="background:#ff8fab;color:white;border:3px solid #c9547a;padding:14px;font-size:8px;width:100%;cursor:pointer;font-family:monospace;font-weight:bold">NEXT ▶</button>
+  <button class="bigbtn" id="b2">NEXT ▶</button>
 </div>
 
-<div id="pg3" style="display:none;flex-direction:column;align-items:center;padding:24px 16px;gap:12px;min-height:620px;justify-content:space-between">
+<!-- ZODIAC -->
+<div class="page" id="pg3">
   <div style="width:100%">
-    <div style="font-size:9px;color:#ffc2d4;text-align:center;line-height:1.8;font-weight:bold;margin-bottom:4px">PICK HER BIRTH MONTH</div>
-    <div style="font-size:7px;color:#c9b8f7;text-align:center;margin-bottom:10px">shapes her whole personality ✨</div>
-    <div id="zodgrid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;width:100%"></div>
-    <div id="zdesc" style="font-size:7px;color:#c9b8f7;text-align:center;line-height:1.8;margin-top:10px;min-height:20px"></div>
+    <div class="hdg">PICK THEIR BIRTH MONTH</div>
+    <div class="sub" style="margin-bottom:8px">shapes their whole personality ✨</div>
+    <div class="zodgrid" id="zodgrid"></div>
+    <div id="zdesc" style="font-size:6px;color:#a07090;text-align:center;line-height:1.8;margin-top:8px;min-height:20px;background:rgba(255,255,255,0.5);padding:6px;border-radius:10px"></div>
   </div>
-  <button id="b3" style="background:#ff8fab;color:white;border:3px solid #c9547a;padding:14px;font-size:8px;width:100%;cursor:pointer;font-family:monospace;font-weight:bold">BEGIN ▶▶</button>
+  <button class="bigbtn" id="b3">BEGIN ▶▶</button>
 </div>
 
-<div id="pg4" style="display:none;flex-direction:column;min-height:620px">
-  <div style="display:flex;justify-content:space-between;padding:10px 14px 6px">
-    <div><div id="gname" style="font-size:7px;color:#ffc2d4">KITTY</div><div id="gzod" style="font-size:6px;color:#6b5b73">♈ ARIES</div></div>
-    <div style="text-align:right"><div style="font-size:6px;color:#ffd166">⭐ LVL <span id="glv">1</span></div><div style="font-size:6px;color:#c9b8f7">DAY <span id="gday">1</span></div></div>
+<!-- GAME -->
+<div class="page" id="pg4">
+  <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:6px">
+    <div>
+      <div id="gname" style="font-size:7px;color:#e8609a">KITTY</div>
+      <div id="gzod" style="font-size:5px;color:#a07090">♈ ARIES</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:5px;color:#d4940a">★ LVL <span id="glv">1</span></div>
+      <div style="font-size:5px;color:#9070b0">DAY <span id="gday">1</span></div>
+    </div>
   </div>
-  <div id="tabs" style="flex:1;overflow-y:auto;padding:0 14px 8px">
+  <div style="flex:1;overflow-y:auto;width:100%;padding-bottom:4px" id="tabs">
 
+    <!-- HOME TAB -->
     <div id="th">
-      <div id="speech" style="background:white;border:3px solid #111;padding:8px;font-size:7px;color:#111;line-height:1.8;text-align:center;margin-bottom:10px;position:relative">mrrp~ ♡</div>
-      <div style="display:flex;justify-content:center;margin-bottom:4px"><canvas id="cm" width="100" height="100" style="image-rendering:pixelated;width:100px;height:100px;cursor:pointer;display:block"></canvas></div>
-      <div style="font-size:6px;color:#6b5b73;text-align:center;margin-bottom:10px">tap to pet! ♡</div>
-      <div style="background:rgba(255,255,255,0.05);border:2px solid rgba(255,143,171,0.3);padding:12px;margin-bottom:8px">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:12px">💖</span><span style="font-size:6px;color:#ffc2d4;width:50px;flex-shrink:0">MOOD</span><div style="flex:1;height:10px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.1);overflow:hidden"><div id="bm" style="height:100%;width:80%;background:repeating-linear-gradient(90deg,#ff8fab 0,#ff8fab 4px,#e0607a 4px,#e0607a 8px);transition:width 0.4s"></div></div><span id="vm" style="font-size:6px;color:#ff8fab;margin-left:4px;width:18px;text-align:right">80</span></div>
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:12px">🥤</span><span style="font-size:6px;color:#ffc2d4;width:50px;flex-shrink:0">HUNGRY</span><div style="flex:1;height:10px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.1);overflow:hidden"><div id="bh" style="height:100%;width:70%;background:repeating-linear-gradient(90deg,#ffcba4 0,#ffcba4 4px,#e8973a 4px,#e8973a 8px);transition:width 0.4s"></div></div><span id="vh" style="font-size:6px;color:#ffcba4;margin-left:4px;width:18px;text-align:right">70</span></div>
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:12px">✨</span><span style="font-size:6px;color:#ffc2d4;width:50px;flex-shrink:0">GLOW</span><div style="flex:1;height:10px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.1);overflow:hidden"><div id="bg" style="height:100%;width:90%;background:repeating-linear-gradient(90deg,#b5ead7 0,#b5ead7 4px,#4d9e80 4px,#4d9e80 8px);transition:width 0.4s"></div></div><span id="vg" style="font-size:6px;color:#b5ead7;margin-left:4px;width:18px;text-align:right">90</span></div>
-        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px">⚡</span><span style="font-size:6px;color:#ffc2d4;width:50px;flex-shrink:0">ENERGY</span><div style="flex:1;height:10px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.1);overflow:hidden"><div id="be" style="height:100%;width:60%;background:repeating-linear-gradient(90deg,#c9b8f7 0,#c9b8f7 4px,#7c5cbf 4px,#7c5cbf 8px);transition:width 0.4s"></div></div><span id="ve" style="font-size:6px;color:#c9b8f7;margin-left:4px;width:18px;text-align:right">60</span></div>
+      <div class="bubble" id="speech" style="position:relative">mrrp~ ♡</div>
+      <div style="display:flex;justify-content:center;margin-bottom:4px;position:relative">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:130px;height:130px;background:radial-gradient(circle,rgba(255,182,193,0.4) 0%,rgba(180,240,180,0.2) 50%,transparent 75%);border-radius:50%;pointer-events:none"></div>
+        <canvas id="cm" width="100" height="100" class="bnc" style="image-rendering:pixelated;width:100px;height:100px;cursor:pointer;display:block;position:relative;z-index:1"></canvas>
       </div>
-      <div style="background:rgba(255,255,255,0.05);border:2px solid rgba(255,143,171,0.25);padding:8px;display:flex;align-items:center;gap:8px">
+      <div style="font-size:6px;color:#c8a0b8;text-align:center;margin-bottom:8px">tap to pet! ♡</div>
+      <div class="stat-panel">
+        <div class="srow"><span style="font-size:11px">💖</span><span style="font-size:5px;color:#e8609a;width:50px;flex-shrink:0">MOOD</span><div class="sbar"><div class="sfill" id="bm" style="width:80%;background:linear-gradient(90deg,#ffb3c8,#ff8fab)"></div></div><span id="vm" style="font-size:5px;color:#e8609a;margin-left:4px;width:16px;text-align:right">80</span></div>
+        <div class="srow"><span style="font-size:11px">🥤</span><span style="font-size:5px;color:#d4820a;width:50px;flex-shrink:0">HUNGRY</span><div class="sbar"><div class="sfill" id="bh" style="width:70%;background:linear-gradient(90deg,#ffe08a,#e8973a)"></div></div><span id="vh" style="font-size:5px;color:#d4820a;margin-left:4px;width:16px;text-align:right">70</span></div>
+        <div class="srow"><span style="font-size:11px">✨</span><span style="font-size:5px;color:#3daa60;width:50px;flex-shrink:0">GLOW</span><div class="sbar"><div class="sfill" id="bg2" style="width:90%;background:linear-gradient(90deg,#c8f0a0,#5ab870)"></div></div><span id="vg" style="font-size:5px;color:#3daa60;margin-left:4px;width:16px;text-align:right">90</span></div>
+        <div class="srow"><span style="font-size:11px">⚡</span><span style="font-size:5px;color:#7c5cbf;width:50px;flex-shrink:0">ENERGY</span><div class="sbar"><div class="sfill" id="be" style="width:60%;background:linear-gradient(90deg,#d0b8ff,#9070d0)"></div></div><span id="ve" style="font-size:5px;color:#7c5cbf;margin-left:4px;width:16px;text-align:right">60</span></div>
+      </div>
+      <div class="task-panel">
         <span style="font-size:14px">⏳</span>
-        <div><div style="font-size:7px;color:#ffc2d4">DAILY TASKS</div><div style="font-size:6px;color:#6b5b73;margin-top:3px"><span id="ggd">0</span>/3 games · <span id="gfd">0</span> meals</div></div>
+        <div>
+          <div style="font-size:6px;color:#d4940a">DAILY TASKS</div>
+          <div style="font-size:5px;color:#c8a0b8;margin-top:2px"><span id="ggd">0</span>/3 games · <span id="gfd">0</span> meals today</div>
+        </div>
       </div>
     </div>
 
+    <!-- CAFÉ TAB -->
     <div id="tc" style="display:none">
-      <div style="font-size:9px;color:#ffc2d4;text-align:center;font-weight:bold;margin-bottom:8px">KITTY CAFÉ 🥤</div>
-      <div id="chint" style="font-size:7px;color:#c9b8f7;text-align:center;margin-bottom:10px;line-height:1.8"></div>
-      <div id="fg" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"></div>
+      <div class="hdg">KITTY CAFÉ 🥤</div>
+      <div id="chint" style="font-size:6px;color:#a07090;text-align:center;margin-bottom:4px;line-height:1.8"></div>
+      <div id="timeslot" style="font-size:6px;color:#d4940a;text-align:center;margin-bottom:8px;padding:5px;background:rgba(255,230,120,0.2);border-radius:10px;border:1.5px solid rgba(255,209,100,0.4)"></div>
+      <div class="foodgrid" id="fg"></div>
+      <div style="font-size:5px;color:#c8a0b8;text-align:center;margin-top:4px;line-height:2">🌅 morning · ☀️ afternoon · 🌙 evening<br>menu rotates each session!</div>
     </div>
 
+    <!-- GLOW TAB -->
     <div id="tg" style="display:none">
-      <div style="font-size:9px;color:#ffc2d4;text-align:center;font-weight:bold;margin-bottom:6px">SKINCARE RITUAL ✨</div>
-      <div id="ghint" style="font-size:7px;color:#c9b8f7;text-align:center;margin-bottom:8px;line-height:1.8"></div>
-      <div style="position:relative;width:140px;height:140px;margin:0 auto 10px">
-        <canvas id="cglow" width="140" height="140" style="image-rendering:pixelated;width:140px;height:140px;display:block;cursor:pointer"></canvas>
-        <div id="dov" style="position:absolute;inset:0;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(100,80,50,0.75) 0%,transparent 70%);opacity:0.1"></div>
-        <div style="position:absolute;bottom:2px;right:2px;font-size:9px;background:rgba(0,0,0,0.6);padding:2px 3px;color:white;pointer-events:none">tap! 👆</div>
+      <div class="hdg">SKINCARE RITUAL ✨</div>
+      <div id="ghint" style="font-size:6px;color:#a07090;text-align:center;margin-bottom:8px;line-height:1.8"></div>
+      <div style="position:relative;width:150px;height:150px;margin:0 auto 10px">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(196,180,255,0.4) 0%,rgba(255,182,193,0.2) 50%,transparent 75%);border-radius:50%;pointer-events:none"></div>
+        <canvas id="cglow" width="140" height="140" style="image-rendering:pixelated;width:140px;height:140px;display:block;cursor:pointer;position:relative;z-index:1;margin:5px"></canvas>
+        <div id="dov" style="position:absolute;inset:0;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(130,100,60,0.7) 0%,transparent 70%);opacity:0.1;z-index:2"></div>
+        <div style="position:absolute;bottom:6px;right:6px;font-size:9px;background:rgba(255,143,171,0.85);padding:2px 5px;color:white;pointer-events:none;border-radius:8px;z-index:3">tap 👆</div>
       </div>
-      <div id="sg" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"></div>
+      <div class="foodgrid" id="sg"></div>
     </div>
 
+    <!-- PLAY TAB -->
     <div id="tp" style="display:none">
-      <div style="font-size:9px;color:#ffc2d4;text-align:center;font-weight:bold;margin-bottom:6px">MINI GAMES 🎮</div>
-      <div style="font-size:7px;color:#c9b8f7;text-align:center;margin-bottom:12px;line-height:1.8">play 3 daily to keep her happy ♡</div>
+      <div class="hdg">MINI GAMES 🎮</div>
+      <div style="font-size:6px;color:#a07090;text-align:center;margin-bottom:10px;line-height:2">play 3 daily to keep them happy ♡</div>
       <div id="gl"></div>
     </div>
 
+    <!-- STORIES TAB -->
     <div id="ts" style="display:none">
-      <div style="font-size:9px;color:#ffc2d4;text-align:center;font-weight:bold;margin-bottom:6px">📖 EPISODES</div>
-      <div id="shint" style="font-size:7px;color:#c9b8f7;text-align:center;margin-bottom:10px;line-height:1.8"></div>
+      <div class="hdg">📖 EPISODES</div>
+      <div id="shint" style="font-size:6px;color:#a07090;text-align:center;margin-bottom:8px;line-height:1.8"></div>
       <div id="el"></div>
     </div>
-
   </div>
-  <div style="display:flex;background:rgba(0,0,0,0.5);border-top:3px solid rgba(255,143,171,0.3)">
-    <button id="nh" style="flex:1;padding:9px 2px;background:none;border:none;cursor:pointer;font-family:monospace;font-size:6px;color:#ff8fab;display:flex;flex-direction:column;align-items:center;gap:3px"><span style="font-size:14px">🏠</span>HOME</button>
-    <button id="nc" style="flex:1;padding:9px 2px;background:none;border:none;cursor:pointer;font-family:monospace;font-size:6px;color:#6b5b73;display:flex;flex-direction:column;align-items:center;gap:3px"><span style="font-size:14px">🥤</span>CAFÉ</button>
-    <button id="ng" style="flex:1;padding:9px 2px;background:none;border:none;cursor:pointer;font-family:monospace;font-size:6px;color:#6b5b73;display:flex;flex-direction:column;align-items:center;gap:3px"><span style="font-size:14px">✨</span>GLOW</button>
-    <button id="np" style="flex:1;padding:9px 2px;background:none;border:none;cursor:pointer;font-family:monospace;font-size:6px;color:#6b5b73;display:flex;flex-direction:column;align-items:center;gap:3px"><span style="font-size:14px">🎮</span>PLAY</button>
-    <button id="ns" style="flex:1;padding:9px 2px;background:none;border:none;cursor:pointer;font-family:monospace;font-size:6px;color:#6b5b73;display:flex;flex-direction:column;align-items:center;gap:3px"><span style="font-size:14px">📖</span>STORY</button>
-  </div>
-</div>
-
-<div id="mgo" style="display:none;position:absolute;inset:0;background:rgba(26,15,46,0.97);z-index:99;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:10px">
-  <div id="mgt" style="font-size:9px;color:#ffc2d4;text-align:center;font-weight:bold">SMOOTHIE CATCH!</div>
-  <div id="mgs" style="font-size:7px;color:#c9b8f7">SCORE: 0</div>
-  <div id="ta" style="width:230px;height:230px;background:rgba(255,255,255,0.04);border:3px solid #ff8fab;position:relative;overflow:hidden;flex-shrink:0"></div>
-  <div id="mgi" style="font-size:7px;color:#6b5b73;text-align:center">tap items! get 5 to win!</div>
-  <div style="display:flex;gap:10px;margin-top:4px">
-    <button id="mgd" style="background:#ff8fab;color:white;border:3px solid #c9547a;padding:12px 18px;font-size:7px;cursor:pointer;font-family:monospace">DONE ✓</button>
-    <button id="mgq" style="background:#c9b8f7;color:#1a0f2e;border:3px solid #7c5cbf;padding:12px 18px;font-size:7px;cursor:pointer;font-family:monospace">QUIT ✗</button>
+  <div class="nav">
+    <button class="navbtn on" id="nh"><span style="font-size:13px">🏠</span>HOME</button>
+    <button class="navbtn" id="nc"><span style="font-size:13px">🥤</span>CAFÉ</button>
+    <button class="navbtn" id="ng"><span style="font-size:13px">✨</span>GLOW</button>
+    <button class="navbtn" id="np"><span style="font-size:13px">🎮</span>PLAY</button>
+    <button class="navbtn" id="ns"><span style="font-size:13px">📖</span>STORY</button>
   </div>
 </div>
 
-<div id="toast" style="position:absolute;bottom:70px;left:50%;transform:translateX(-50%);background:#2d1b33;border:2px solid #ff8fab;color:#ffc2d4;font-size:7px;padding:8px 12px;opacity:0;transition:opacity 0.3s;z-index:200;text-align:center;max-width:260px;line-height:1.8;pointer-events:none;white-space:pre-line;font-family:monospace"></div>
+<!-- MINI GAME OVERLAY -->
+<div id="mgo">
+  <div id="mgt" style="font-size:9px;color:#e8609a;text-align:center;margin-bottom:4px;position:relative;z-index:1"></div>
+  <span class="hearts" id="mghp">💖💖💖</span>
+  <div class="progress-bar"><div class="progress-fill" id="mgprog" style="width:0%"></div></div>
+  <div id="mginner" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:6px;position:relative;z-index:1"></div>
+  <button id="mgq" style="background:rgba(255,255,255,0.6);color:#c8a0b8;border:1.5px solid rgba(200,160,180,0.4);padding:8px 14px;font-size:6px;cursor:pointer;border-radius:10px;font-family:'Press Start 2P',monospace;margin-top:4px;position:relative;z-index:1">quit ✗</button>
+</div>
+
+<div id="toast"></div>
 </div>
 
 <script>
-var P=[
-  {b:'#1e1e2e',c:'#2d2d40',e:'#ff8fab',o:'#0a0a14',i:'#9ecfff',n:'#ff8fab'},
-  {b:'#e8a87c',c:'#fde8cc',e:'#ff8fab',o:'#2d1b0e',i:'#5c3d1e',n:'#ff6b8a'},
-  {b:'#8a9ba8',c:'#c5d0d8',e:'#ff8fab',o:'#2a3540',i:'#4fc3f7',n:'#ff8fab'},
-  {b:'#e07b39',c:'#fde8b0',e:'#ff8fab',o:'#7a3a10',i:'#4e8c3b',n:'#ff8fab'},
-  {b:'#d8e8f0',c:'#f0f8ff',e:'#ffb3c6',o:'#4a6070',i:'#98d0e8',n:'#ffb3c6'},
-  {b:'#e8c89a',c:'#fff2e0',e:'#ff8fab',o:'#8a5a2a',i:'#8a5a2a',n:'#ff8fab'}
+var PALS=[
+  {b:'#2a2840',c:'#3a3860',e:'#ffb0c8',o:'#14122a',i:'#90d0ff',n:'#ffb0c8',bl:'#ffb8d0'},
+  {b:'#c87840',c:'#f8d8a8',e:'#ffb0c8',o:'#301800',i:'#704820',n:'#ff7898',bl:'#ffa888'},
+  {b:'#8898a8',c:'#c0d8e8',e:'#ffb0c8',o:'#283040',i:'#58b8d8',n:'#ffb0c8',bl:'#ffb8c8'},
+  {b:'#d07030',c:'#f8e098',e:'#ffb0c8',o:'#601808',i:'#389830',n:'#ffb0c8',bl:'#ffb888'},
+  {b:'#b0c8e0',c:'#d8f0ff',e:'#ffc8d8',o:'#304858',i:'#70b8d8',n:'#ffc8d8',bl:'#ffd0e8'},
+  {b:'#e0c090',c:'#fff8d8',e:'#ffb0c8',o:'#705020',i:'#705020',n:'#ffb0c8',bl:'#ffd0b0'}
 ];
+
 function dc(id,ci,mood){
   var v=document.getElementById(id);if(!v)return;
-  var x=v.getContext('2d'),p=P[ci%6],w=v.width,s=w/96;
+  var x=v.getContext('2d'),p=PALS[ci%6],w=v.width,s=w/96;
   x.clearRect(0,0,w,w);
-  function r(a,b,c,d,col){x.fillStyle=col;x.fillRect(~~(a*s),~~(b*s),~~(c*s),~~(d*s));}
-  r(20,42,56,40,p.b);r(14,50,8,24,p.b);r(74,50,8,24,p.b);r(22,38,52,8,p.b);
-  r(32,52,32,28,p.c);r(12,48,4,28,p.o);r(80,48,4,28,p.o);r(18,80,60,4,p.o);
-  r(24,26,16,16,p.b);r(56,26,16,16,p.b);r(28,30,8,8,p.e);r(60,30,8,8,p.e);
-  r(20,22,8,8,p.o);r(68,22,8,8,p.o);r(22,32,52,14,p.b);
-  r(30,34,12,8,p.o);r(54,34,12,8,p.o);r(32,35,8,6,p.i);r(56,35,8,6,p.i);
-  r(38,35,2,2,'white');r(62,35,2,2,'white');r(44,44,8,4,p.n);
-  if(mood>50){r(40,50,4,2,p.o);r(52,50,4,2,p.o);r(38,48,4,2,p.o);r(54,48,4,2,p.o);}
-  else{r(38,52,4,2,p.o);r(54,52,4,2,p.o);r(40,50,4,2,p.o);r(52,50,4,2,p.o);}
-  r(8,44,20,2,p.o);r(8,50,18,2,p.o);r(68,44,20,2,p.o);r(70,50,18,2,p.o);
-  r(70,72,12,8,p.b);r(76,64,8,12,p.b);r(80,62,4,4,p.o);
+  function r(a,b,c,d,col,al){
+    if(al!==undefined){x.globalAlpha=al;}
+    x.fillStyle=col;x.fillRect(~~(a*s),~~(b*s),~~(c*s),~~(d*s));
+    if(al!==undefined){x.globalAlpha=1;}
+  }
+  r(16,46,64,32,p.b);r(10,52,8,22,p.b);r(78,52,8,22,p.b);r(18,40,60,10,p.b);
+  r(28,54,40,24,p.c);
+  r(8,50,4,26,p.o);r(84,50,4,26,p.o);r(14,76,68,4,p.o);
+  r(20,22,16,20,p.b);r(60,22,16,20,p.b);
+  r(24,25,9,13,p.e);r(64,25,9,13,p.e);
+  r(18,17,10,9,p.o);r(68,17,10,9,p.o);
+  r(18,34,60,14,p.b);
+  // eyes - cute round prominent
+  r(26,35,16,11,p.o);r(54,35,16,11,p.o);
+  r(27,36,14,9,p.i);r(55,36,14,9,p.i);
+  // pupil small centered
+  r(31,38,7,6,'#222');r(59,38,7,6,'#222');
+  // shine 2 dots
+  r(36,38,2,2,'white');r(64,38,2,2,'white');
+  r(34,37,1,1,'rgba(255,255,255,0.8)');r(62,37,1,1,'rgba(255,255,255,0.8)');
+  // lashes
+  r(27,35,2,2,p.o);r(30,35,2,2,p.o);r(33,35,2,2,p.o);r(36,35,2,2,p.o);
+  r(55,35,2,2,p.o);r(58,35,2,2,p.o);r(61,35,2,2,p.o);r(64,35,2,2,p.o);
+  // blush
+  r(12,44,13,5,p.bl,0.45);r(71,44,13,5,p.bl,0.45);
+  r(45,46,6,4,p.n);
+  if(mood>50){r(40,52,6,2,p.o);r(50,52,6,2,p.o);r(37,50,5,2,p.o);r(53,50,5,2,p.o);}
+  else{r(37,54,6,2,p.o);r(53,54,6,2,p.o);r(40,52,5,2,p.o);r(51,52,5,2,p.o);}
+  r(4,46,20,2,p.o);r(4,51,17,2,p.o);r(72,46,20,2,p.o);r(79,51,17,2,p.o);
+  r(74,66,10,8,p.b);r(78,58,8,12,p.b);r(82,56,5,6,p.o);
 }
+
 var ZS=[
-  {s:'♈',n:'ARIES',m:'competitive',fav:'🌶️ Spicy Mango',st:'Competitor Arc',d:'Feisty & fierce. Intense games & bold flavors.'},
-  {s:'♉',n:'TAURUS',m:'cozy',fav:'🍓 Strawberry Velvet',st:'Luxury Arc',d:'Comfy & luxe. Slow mornings & rich food.'},
-  {s:'♊',n:'GEMINI',m:'social',fav:'🫐 Double Berry',st:'Gossip Arc',d:'Chatty & curious. Cravings change twice daily!'},
-  {s:'♋',n:'CANCER',m:'emotional',fav:'🥛 Moon Milk',st:'Homesick Arc',d:'Soft & sensitive. Needs extra comfort.'},
-  {s:'♌',n:'LEO',m:'extra',fav:'🍊 Gold Rush',st:'Influencer Arc',d:'Glamorous & dramatic. Mediocre care = drama.'},
-  {s:'♍',n:'VIRGO',m:'perfectionist',fav:'🥦 Green Goddess',st:'Organizer Arc',d:'Picky & precise. Needs exactly the right food.'},
-  {s:'♎',n:'LIBRA',m:'balanced',fav:'🍑 Peach Harmony',st:'Drama Arc',d:'Balanced & social. All stats must stay equal.'},
-  {s:'♏',n:'SCORPIO',m:'secretive',fav:'🫙 Dark Elixir',st:'Secret Garden Arc',d:'Intense & mysterious. Hides when upset.'},
-  {s:'♐',n:'SAGITT.',m:'restless',fav:'🥭 Tropical Escape',st:'Escape Arc',d:'Adventurous & free. Routine bores her.'},
-  {s:'♑',n:'CAPRI.',m:'driven',fav:'☕ Matcha Power',st:'Empire Arc',d:'Ambitious. Demands consistent progress.'},
-  {s:'♒',n:'AQUAR.',m:'eccentric',fav:'💜 Lavender Cloud',st:'Rebel Arc',d:'Quirky & unique. Only accepts specialty items.'},
-  {s:'♓',n:'PISCES',m:'dreamy',fav:'🌊 Butterfly Pea',st:'Daydream Arc',d:'Dreamy & delicate. Mood drifts like the tide.'}
+  {s:'♈',n:'ARIES',m:'competitive',fav:'🌶️ Spicy Mango Blast',st:'Competitor Arc',d:'Feisty & fierce. Craves bold flavors & intense games.'},
+  {s:'♉',n:'TAURUS',m:'cozy',fav:'🍓 Strawberry Velvet',st:'Luxury Arc',d:'Comfort-loving & luxe. Rich food, slow mornings only.'},
+  {s:'♊',n:'GEMINI',m:'social',fav:'🫐 Double Berry Fizz',st:'Gossip Arc',d:'Chatty & curious. Cravings shift every session!'},
+  {s:'♋',n:'CANCER',m:'emotional',fav:'🥛 Moon Milk Latte',st:'Homesick Arc',d:'Soft & sensitive. Needs comfort food & gentle care.'},
+  {s:'♌',n:'LEO',m:'extra',fav:'🍊 Gold Rush Sparkle',st:'Influencer Arc',d:'Glamorous & dramatic. Only the fanciest will do.'},
+  {s:'♍',n:'VIRGO',m:'perfectionist',fav:'🥦 Green Goddess Detox',st:'Organizer Arc',d:'Picky & precise. Right item at the right time only.'},
+  {s:'♎',n:'LIBRA',m:'balanced',fav:'🍑 Peach Harmony',st:'Drama Arc',d:'Needs ALL stats balanced. Neglect one = spiral.'},
+  {s:'♏',n:'SCORPIO',m:'secretive',fav:'🫙 Midnight Elixir',st:'Secret Garden Arc',d:'Intense & mysterious. Earn trust through consistency.'},
+  {s:'♐',n:'SAGITT.',m:'restless',fav:'🥭 Tropical Storm',st:'Escape Arc',d:'Free spirit. Same routine twice = instant boredom.'},
+  {s:'♑',n:'CAPRI.',m:'driven',fav:'☕ Matcha Focus Shot',st:'Empire Arc',d:'Ambitious. Streak days matter — miss one, they notice.'},
+  {s:'♒',n:'AQUAR.',m:'eccentric',fav:'💜 Lavender Cosmic',st:'Rebel Arc',d:'Quirky. Only rare or special items catch their eye.'},
+  {s:'♓',n:'PISCES',m:'dreamy',fav:'🌊 Butterfly Pea Dream',st:'Daydream Arc',d:'Dreamy & delicate. Mood drifts — anchor with care.'}
 ];
 var ZMON=['MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB'];
-var CATS=[['NOIR','mysterious'],['CALI','bold'],['ASH','chill'],['GINGER','playful'],['LUNA','dreamy'],['MOCHI','sweet']];
+var CATS=[['NOIR','mysterious'],['CALI','bold & bright'],['ASH','calm & cool'],['GINGER','playful'],['LUNA','dreamy'],['MOCHI','sweet']];
+
 var FOODS=[
-  {e:'🥤',n:'PLAIN',ms:['competitive','balanced','driven'],b:10,u:1},
-  {e:'🍓',n:'STRAWBERRY',ms:['cozy','emotional','balanced'],b:18,u:1},
-  {e:'🫐',n:'DBL BERRY',ms:['social','secretive','balanced'],b:18,u:1},
-  {e:'🥛',n:'MOON MILK',ms:['emotional','dreamy','cozy'],b:20,u:1},
-  {e:'🍊',n:'GOLD RUSH',ms:['extra','competitive'],b:20,u:0},
-  {e:'🌶️',n:'SPICY MANGO',ms:['competitive','restless'],b:22,u:0},
-  {e:'🥦',n:'GRN GODDESS',ms:['perfectionist','driven'],b:22,u:0},
-  {e:'🍑',n:'PEACH',ms:['balanced','cozy'],b:18,u:0},
-  {e:'🫙',n:'DARK ELIXIR',ms:['secretive','eccentric'],b:24,u:0},
-  {e:'🥭',n:'TROPICAL',ms:['restless','social'],b:22,u:0},
-  {e:'☕',n:'MATCHA',ms:['driven','perfectionist'],b:24,u:0},
-  {e:'💜',n:'LAVENDER',ms:['eccentric','dreamy'],b:26,u:0},
-  {e:'🌊',n:'BUTTERFLY',ms:['dreamy','emotional'],b:28,u:0}
+  {e:'🧃',n:'Fruit Juice',ms:['competitive','balanced','driven','restless'],b:8,mb:3,tier:0,slots:[0,1,2],u:1},
+  {e:'🥛',n:'Plain Milk',ms:['cozy','emotional','dreamy'],b:10,mb:4,tier:0,slots:[0,1,2],u:1},
+  {e:'🍵',n:'Herbal Tea',ms:['perfectionist','balanced','secretive'],b:8,mb:3,tier:0,slots:[0,1,2],u:1},
+  {e:'🍪',n:'Shortbread',ms:['cozy','extra','social'],b:9,mb:3,tier:0,slots:[0,1,2],u:1},
+  {e:'🥐',n:'Croissant',ms:['cozy','balanced','extra'],b:15,mb:7,tier:1,slots:[0],u:1},
+  {e:'🍓',n:'Berry Smoothie',ms:['social','emotional','dreamy'],b:16,mb:8,tier:1,slots:[0],u:1},
+  {e:'☕',n:'Matcha Latte',ms:['driven','perfectionist','balanced'],b:15,mb:7,tier:1,slots:[0],u:1},
+  {e:'🧋',n:'Bubble Tea',ms:['social','eccentric','restless'],b:17,mb:8,tier:1,slots:[1],u:1},
+  {e:'🍰',n:'Strawberry Cake',ms:['cozy','extra','emotional'],b:18,mb:9,tier:1,slots:[1],u:1},
+  {e:'🥤',n:'Protein Shake',ms:['competitive','driven','restless'],b:18,mb:8,tier:1,slots:[1],u:1},
+  {e:'🍜',n:'Cozy Ramen',ms:['emotional','cozy','secretive'],b:20,mb:10,tier:1,slots:[2],u:1},
+  {e:'🫖',n:'Moon Tea',ms:['dreamy','balanced','secretive'],b:17,mb:9,tier:1,slots:[2],u:1},
+  {e:'🍡',n:'Mochi Snack',ms:['cozy','extra','social'],b:17,mb:8,tier:1,slots:[2],u:1},
+  {e:'🌶️',n:'Spicy Mango Blast',ms:['competitive'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🍓',n:'Strawberry Velvet',ms:['cozy'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🫐',n:'Double Berry Fizz',ms:['social'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🥛',n:'Moon Milk Latte',ms:['emotional'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🍊',n:'Gold Rush Sparkle',ms:['extra'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🥦',n:'Green Goddess',ms:['perfectionist'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🫙',n:'Midnight Elixir',ms:['secretive'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🥭',n:'Tropical Storm',ms:['restless'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'💜',n:'Lavender Cosmic',ms:['eccentric'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
+  {e:'🌊',n:'Butterfly Pea Dream',ms:['dreamy'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
 ];
 var SKC=[
   {e:'🧴',n:'CLEANSER',ef:'clean',pw:20},{e:'💧',n:'TONER',ef:'clean',pw:15},
@@ -179,238 +332,68 @@ var SKC=[
   {e:'🌙',n:'NIGHT MASK',ef:'all',pw:25},{e:'☀️',n:'SPF MIST',ef:'mood',pw:12}
 ];
 var EPS=[
-  {id:0,req:0,t:'CH.1: A NEW BEGINNING',e:'🏠',d:'Your kitty arrives at the café. One sip and she declares herself a connoisseur.'},
-  {id:1,req:3,t:'CH.2: THE RIVAL CAT',e:'😤',d:'A suspicious new cat shows up. Your kitty must prove her skincare is superior.'},
-  {id:2,req:7,t:'CH.3: SMOOTHIE CRISIS',e:'😱',d:'The café blender breaks! Improvise with hand-blended smoothies.'},
-  {id:3,req:12,t:'CH.4: THE GLOW-UP',e:'✨',d:'After weeks of perfect skincare, something magical happens.'},
-  {id:4,req:20,t:'CH.5: ZODIAC DESTINY',e:'⭐',d:'Her true zodiac destiny awakens. A celestial event ties to her birth sign.'},
-  {id:5,req:30,t:'CH.6: THE GRAND GALA',e:'🏆',d:'The Kitty Café Grand Smoothie Gala. Can your kitty win best in show?'}
+  {id:0,req:0,t:'CH.1: A NEW BEGINNING',e:'🏠',d:'Your kitty arrives at the café. One sip of smoothie and they declare themselves a connoisseur.'},
+  {id:1,req:3,t:'CH.2: THE RIVAL',e:'😤',d:'A rival shows up claiming better skincare. Time to prove them wrong.'},
+  {id:2,req:7,t:'CH.3: SMOOTHIE CRISIS',e:'😱',d:'The café blender breaks mid-rush! Improvise with hand-blended creations.'},
+  {id:3,req:12,t:'CH.4: THE GLOW-UP',e:'✨',d:'After weeks of devotion, their skin is literally glowing. Strangers stop and stare.'},
+  {id:4,req:20,t:'CH.5: ZODIAC DESTINY',e:'⭐',d:'A celestial event awakens their zodiac power. Something extraordinary is coming.'},
+  {id:5,req:30,t:'CH.6: THE GRAND GALA',e:'🏆',d:'The Kitty Café Grand Smoothie Gala. Only one kitty wins best in show.'}
 ];
 var MGS=[
-  {t:'🥤 SMOOTHIE CATCH',d:'tap the smoothies!',e:'🥤',tg:['🥤','🍓','🫐','🥭','💜']},
-  {t:'✨ GROOM SESSION',d:'tap the dirt spots!',e:'🧴',tg:['💩','🌑','⬛','💧','✨']},
-  {t:'🎵 RHYTHM DANCE',d:'tap to the beat!',e:'🎵',tg:['♪','♫','🎵','⭐','💖']}
+  {t:'🥤 SMOOTHIE QUIZ',d:'pick what they want based on their mood!',e:'🥤',type:'quiz'},
+  {t:'💅 SKINCARE SORT',d:'tap skincare steps in the correct order!',e:'✨',type:'sequence'},
+  {t:'💖 HEART CATCHER',d:'tap hearts before they vanish!',e:'💖',type:'rhythm'}
 ];
-var G={name:'KITTY',ci:0,zi:0,mood:80,hunger:70,clean:90,energy:60,lv:1,day:1,gd:0,fd:0,td:0,ueps:[0],mgA:false,mgS:0};
-var SP=['mrrp~ ♡','purrr 🌸','*flops over*','what should we do~?','vibes are okay~','feeling good! ♡','that smoothie was *chef kiss*','my skincare is WORKING ✨','...i could eat. 🥤','my pores are stressed 😩','feeling neglected 💔','*sighs in cat*'];
-
-function show(id){
-  ['pg0','pg1','pg2','pg3','pg4'].forEach(function(p){
-    var el=document.getElementById(p);
-    if(el)el.style.display='none';
-  });
-  var t=document.getElementById(id);
-  if(t)t.style.display='flex';
-}
-
+var G={name:'KITTY',ci:0,zi:0,mood:80,hunger:70,clean:90,energy:60,lv:1,day:1,gd:0,fd:0,td:0,ueps:[0]};
+function getSlot(){var h=new Date().getHours();return h>=5&&h<12?0:h>=12&&h<18?1:2;}
+var SN=['🌅 MORNING MENU','☀️ AFTERNOON MENU','🌙 EVENING MENU'];
+function show(id){['pg0','pg1','pg2','pg3','pg4'].forEach(function(p){var e=document.getElementById(p);if(e)e.style.display='none';});var t=document.getElementById(id);if(t)t.style.display='flex';}
 function stab(t){
-  var all=['th','tc','tg','tp','ts'];
-  var navs=['nh','nc','ng','np','ns'];
-  all.forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
-  navs.forEach(function(id){var el=document.getElementById(id);if(el)el.style.color='#6b5b73';});
-  var map={h:'th',c:'tc',g:'tg',p:'tp',s:'ts'};
-  var nmap={h:'nh',c:'nc',g:'ng',p:'np',s:'ns'};
-  var el=document.getElementById(map[t]);if(el)el.style.display='block';
-  var nb=document.getElementById(nmap[t]);if(nb)nb.style.color='#ff8fab';
-  if(t==='c')bCafe();
-  if(t==='g')bGlow();
-  if(t==='p')bPlay();
-  if(t==='s')bStories();
+  var all={h:'th',c:'tc',g:'tg',p:'tp',s:'ts'};
+  var navs={h:'nh',c:'nc',g:'ng',p:'np',s:'ns'};
+  Object.keys(all).forEach(function(k){var e=document.getElementById(all[k]);if(e)e.style.display=(k===t)?'block':'none';var n=document.getElementById(navs[k]);if(n)n.classList.toggle('on',k===t);});
+  if(t==='c')bCafe();if(t==='g')bGlow();if(t==='p')bPlay();if(t==='s')bStories();
 }
-
 function upd(){
-  var bars=[['bm','vm',G.mood],['bh','vh',G.hunger],['bg','vg',G.clean],['be','ve',G.energy]];
-  bars.forEach(function(b){
+  [['bm','vm',G.mood],['bh','vh',G.hunger],['bg2','vg',G.clean],['be','ve',G.energy]].forEach(function(b){
     var bar=document.getElementById(b[0]),val=document.getElementById(b[1]);
-    if(bar)bar.style.width=Math.max(0,Math.min(100,b[2]))+'%';
-    if(val)val.textContent=~~b[2];
+    if(bar)bar.style.width=Math.max(0,Math.min(100,b[2]))+'%';if(val)val.textContent=~~b[2];
   });
-  var a=document.getElementById('ggd'),b=document.getElementById('gfd');
-  if(a)a.textContent=G.gd;if(b)b.textContent=G.fd;
-  document.getElementById('glv').textContent=G.lv;
-  var ov=document.getElementById('dov');if(ov)ov.style.opacity=(1-G.clean/100)*0.85;
+  document.getElementById('ggd').textContent=G.gd;document.getElementById('gfd').textContent=G.fd;document.getElementById('glv').textContent=G.lv;
+  var ov=document.getElementById('dov');if(ov)ov.style.opacity=(1-G.clean/100)*0.82;
 }
+var SP={happy:['mrrp~ feeling amazing! ♡','glow is unmatched ✨','that smoothie was DIVINE','purrr~ life is good 🌸'],hungry:['...tummy is calling 🥤','smoothie?? please??','the café smells so good...'],dirty:['pores need HELP 😩','skincare. now.','can feel the dirt building up'],sad:['...','feeling a lil neglected 💔','*stares into distance*'],ok:['*does a lil stretch*','vibes are okay~','what are we doing today~?','*flops dramatically*','thinking about smoothies...']};
+function upsp(){var pool=SP.ok;if(G.mood>78)pool=SP.happy;else if(G.hunger<30)pool=SP.hungry;else if(G.clean<30)pool=SP.dirty;else if(G.mood<35)pool=SP.sad;var el=document.getElementById('speech');if(el)el.textContent=pool[~~(Math.random()*pool.length)];dc('cm',G.ci,G.mood);dc('cglow',G.ci,G.mood);}
+function decay(){G.hunger=Math.max(0,G.hunger-4);G.clean=Math.max(0,G.clean-3);G.energy=Math.max(0,G.energy-2);if(G.clean<40)G.mood=Math.max(0,G.mood-2);if(G.hunger<30)G.mood=Math.max(0,G.mood-3);if(G.gd<3)G.mood=Math.max(0,G.mood-1);upd();upsp();var nl=~~(G.td/5)+1;if(nl>G.lv){G.lv=nl;var cnt=0;FOODS.forEach(function(f){if(!f.u&&f.tier===2&&cnt<G.lv){f.u=1;cnt++;}});toast('★ LEVEL UP! Level '+G.lv+'!\nNew fancy smoothies unlocked!');}EPS.forEach(function(ep){if(G.ueps.indexOf(ep.id)<0&&G.td>=ep.req){G.ueps.push(ep.id);toast('📖 New episode!\n'+ep.e+' '+ep.t);}});}
+function bCafe(){var z=ZS[G.zi];var slot=getSlot();document.getElementById('chint').textContent=G.name+' is feeling '+z.m+' ♡';document.getElementById('timeslot').textContent=SN[slot]+' · fave: '+z.fav;var g=document.getElementById('fg');g.innerHTML='';var shown=FOODS.filter(function(f){if(!f.u)return false;if(f.tier===0)return true;if(f.tier===1&&f.slots.indexOf(slot)>=0)return true;if(f.tier===2)return true;return false;});shown.forEach(function(f){var w=f.ms.indexOf(z.m)>=0;var d=document.createElement('div');d.className='fbtn'+(w?' wants':'');var tl=f.tier===2?'<span class="star-badge">★ FANCY</span>':f.tier===1?'<span class="slot-tag tier1" style="background:rgba(196,180,255,0.3);color:#7060c0">SPECIAL</span>':'<span class="slot-tag tier0">basic</span>';d.innerHTML='<div style="font-size:18px;margin-bottom:2px">'+f.e+'</div><div style="font-size:5px;color:#c0547a;line-height:1.4">'+f.n+'</div>'+tl+'<div style="font-size:5px;color:'+(w?'#e8609a':'#c8a0b8')+';margin-top:2px">'+(w?'♡ wants':'~ok')+'</div>';d.onclick=function(){if(w){G.hunger=Math.min(100,G.hunger+f.b);G.mood=Math.min(100,G.mood+f.mb);G.fd++;G.td=Math.max(G.td,1);upd();upsp();toast(f.e+' they LOVED it!\nhunger +'+f.b+' mood +'+f.mb);}else{G.hunger=Math.min(100,G.hunger+~~(f.b*0.3));G.mood=Math.max(0,G.mood-5);upd();upsp();toast('😾 sniffed it...\nand walked away. mood -5');}};g.appendChild(d);});}
+function bGlow(){var dp=~~((1-G.clean/100)*100);document.getElementById('ghint').textContent=dp>50?'😩 URGENT: face needs serious help!':dp>20?'🧴 time for a lil refresh~':'✨ their glow is absolutely IMMACULATE!';dc('cglow',G.ci,G.mood);var ov=document.getElementById('dov');if(ov)ov.style.opacity=(1-G.clean/100)*0.82;var g=document.getElementById('sg');g.innerHTML='';SKC.forEach(function(s,i){var d=document.createElement('div');d.className='scbtn';d.innerHTML='<div style="font-size:18px;margin-bottom:2px">'+s.e+'</div><div style="font-size:5px;color:#9070c0">'+s.n+'</div>';d.onclick=function(){if(s.ef==='clean'||s.ef==='all')G.clean=Math.min(100,G.clean+s.pw);if(s.ef==='glow'||s.ef==='all'){G.clean=Math.min(100,G.clean+s.pw*0.5);G.mood=Math.min(100,G.mood+5);}if(s.ef==='mood')G.mood=Math.min(100,G.mood+s.pw);upd();upsp();bGlow();toast(s.e+' '+s.n+'\napplied~ they feel fresher!');};g.appendChild(d);});}
+function bPlay(){var l=document.getElementById('gl');l.innerHTML='';MGS.forEach(function(mg,i){var done=i<G.gd;var d=document.createElement('div');d.className='gbtn'+(done?' done':'');d.innerHTML='<div style="font-size:22px">'+mg.e+'</div><div style="flex:1"><div style="font-size:7px;color:#e8609a;margin-bottom:3px">'+mg.t+'</div><div style="font-size:5px;color:#c8a0b8;line-height:1.8">'+mg.d+'<br>'+(done?'✅ completed today':'▶ tap to play')+'</div></div><div style="font-size:14px">'+(done?'✅':'')+'</div>';if(!done)d.onclick=function(){startMG(i);};l.appendChild(d);});}
+var mgHP=3;
+function setHP(n){mgHP=n;var h='';for(var i=0;i<3;i++)h+=i<n?'💖':'🤍';document.getElementById('mghp').textContent=h;}
+function setP(pct){document.getElementById('mgprog').style.width=pct+'%';}
+function startMG(i){mgHP=3;setHP(3);setP(0);document.getElementById('mgt').textContent=MGS[i].t;document.getElementById('mginner').innerHTML='';document.getElementById('mgo').classList.add('show');if(MGS[i].type==='quiz')mgQuiz(i);else if(MGS[i].type==='sequence')mgSeq(i);else mgRhythm(i);}
+function mgWin(i){document.getElementById('mgo').classList.remove('show');if(G.gd<3){G.gd++;G.mood=Math.min(100,G.mood+12);G.energy=Math.max(0,G.energy-4);G.td=Math.max(G.td,G.day);upd();upsp();toast('🎮 great job! mood +12\n('+G.gd+'/3 today)');if(G.gd>=3){G.mood=Math.min(100,G.mood+15);G.day++;G.td++;document.getElementById('gday').textContent=G.day;G.gd=0;G.fd=0;toast('🌟 ALL 3 done!\nday '+G.day+' begins! ✨');}}bPlay();}
+function mgFail(i){mgHP--;setHP(mgHP);if(mgHP<=0){document.getElementById('mgo').classList.remove('show');toast('💔 out of hearts!\ntry again tomorrow~');bPlay();}}
+function mgQuiz(gi){var z=ZS[G.zi];var correct=FOODS.filter(function(f){return f.ms.indexOf(z.m)>=0&&f.tier>=1&&f.u;});var wrong=FOODS.filter(function(f){return f.ms.indexOf(z.m)<0&&f.tier>=1&&f.u;});if(!correct.length)correct=FOODS.slice(0,2);if(wrong.length<2)wrong=FOODS.slice(4,7);var round=0,total=3,score=0;function nextQ(){if(round>=total){var inn=document.getElementById('mginner');inn.innerHTML='';setP(100);var r=document.createElement('div');r.className='mg-prompt';r.innerHTML=(score>=2?'🌟 SMOOTHIE EXPERT!':'💪 KEEP GOING!')+'\n'+score+'/'+total+' correct!';inn.appendChild(r);var btn=document.createElement('button');btn.className='bigbtn';btn.style.cssText='width:200px;margin-top:8px';btn.textContent=score>=2?'CLAIM REWARD ✓':'TRY AGAIN?';btn.onclick=function(){if(score>=2)mgWin(gi);else{round=0;score=0;setHP(3);setP(0);nextQ();}};inn.appendChild(btn);return;}setP(~~(round/total*100));var inn=document.getElementById('mginner');inn.innerHTML='';var c=correct[~~(Math.random()*correct.length)];var w=wrong.sort(function(){return Math.random()-0.5;}).slice(0,2);var opts=[c].concat(w).sort(function(){return Math.random()-0.5;});var q=document.createElement('div');q.className='mg-prompt';q.innerHTML=z.s+' '+z.n+' is feeling <b style="color:#e8609a">'+z.m+'</b>...<br>what do they want? 🤔';inn.appendChild(q);var pr=document.createElement('div');pr.style.cssText='font-size:6px;color:#c8a0b8;text-align:center;margin-bottom:4px';pr.textContent='question '+(round+1)+' of '+total;inn.appendChild(pr);opts.forEach(function(opt){var btn=document.createElement('button');btn.className='mg-choice';btn.textContent=opt.e+' '+opt.n;btn.onclick=function(){var ok=opt===c;btn.className='mg-choice '+(ok?'correct':'wrong');if(ok)score++;else mgFail(gi);document.querySelectorAll('.mg-choice').forEach(function(b){b.onclick=null;});setTimeout(function(){round++;nextQ();},800);};inn.appendChild(btn);});}nextQ();}
+function mgSeq(gi){var steps=[{e:'🧴',n:'cleanse'},{e:'💧',n:'tone'},{e:'🌸',n:'serum'},{e:'✨',n:'moisturise'}];var round=0,total=2,score=0;function nextR(){if(round>=total){var inn=document.getElementById('mginner');inn.innerHTML='';setP(100);var r=document.createElement('div');r.className='mg-prompt';r.innerHTML=(score>=1?'💅 SKINCARE QUEEN!':'🧴 KEEP PRACTICING!')+'\n'+score+'/'+total+' perfect!';inn.appendChild(r);var btn=document.createElement('button');btn.className='bigbtn';btn.style.cssText='width:200px;margin-top:8px';btn.textContent=score>=1?'CLAIM REWARD ✓':'TRY AGAIN?';btn.onclick=function(){if(score>=1)mgWin(gi);else{round=0;score=0;setHP(3);setP(0);nextR();}};inn.appendChild(btn);return;}setP(~~(round/total*100));var inn=document.getElementById('mginner');inn.innerHTML='';var p2=document.createElement('div');p2.className='mg-prompt';p2.innerHTML='tap skincare steps<br>in correct order! 💅';inn.appendChild(p2);var sub=document.createElement('div');sub.style.cssText='font-size:6px;color:#c8a0b8;text-align:center;margin-bottom:6px';sub.textContent='round '+(round+1)+' of '+total+' · memorise then tap!';inn.appendChild(sub);var seq=document.createElement('div');seq.style.cssText='display:flex;gap:6px;justify-content:center;margin-bottom:6px';steps.forEach(function(s){var sp=document.createElement('span');sp.style.cssText='font-size:20px;padding:5px;background:rgba(255,179,200,0.2);border-radius:10px;border:1.5px solid rgba(255,143,171,0.3)';sp.textContent=s.e;seq.appendChild(sp);});inn.appendChild(seq);var cd=document.createElement('div');cd.style.cssText='font-size:7px;color:#9070c0;text-align:center;margin-bottom:6px';cd.textContent='memorising... 3';inn.appendChild(cd);var t=3;var iv=setInterval(function(){t--;if(t>0){cd.textContent='memorising... '+t;}else{clearInterval(iv);seq.innerHTML='';steps.forEach(function(s){var sp=document.createElement('span');sp.style.cssText='font-size:20px;padding:5px;background:rgba(200,200,220,0.2);border-radius:10px;border:1.5px solid rgba(200,180,220,0.3)';sp.textContent='❓';seq.appendChild(sp);});cd.textContent='now tap in order! ↓';var shuffled=steps.slice().sort(function(){return Math.random()-0.5;});var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px';var taps=[],used=[];shuffled.forEach(function(s,si){var b=document.createElement('div');b.className='mg-tapitem';b.style.cssText='width:52px;height:52px;font-size:22px';b.textContent=s.e;b.onclick=function(){if(used.indexOf(si)>=0)return;used.push(si);b.style.opacity='0.3';b.onclick=null;taps.push(s);var ok=true;for(var ti=0;ti<taps.length;ti++){if(taps[ti]!==steps[ti]){ok=false;break;}}if(!ok){mgFail(gi);cd.textContent='wrong order! 💔';taps=[];used=[];br.querySelectorAll('.mg-tapitem').forEach(function(x){x.style.opacity='1';});}else if(taps.length===steps.length){score++;round++;setTimeout(nextR,500);}};br.appendChild(b);});inn.appendChild(br);}},1000);}nextR();}
+function mgRhythm(gi){var inn=document.getElementById('mginner');inn.innerHTML='';var score=0,total=12,spawned=0,active=true;var p3=document.createElement('div');p3.className='mg-prompt';p3.textContent='tap the hearts before they vanish! 💖';inn.appendChild(p3);var sc=document.createElement('div');sc.style.cssText='font-size:9px;color:#e8609a;text-align:center;margin-bottom:4px;font-weight:bold';sc.textContent='0';inn.appendChild(sc);var arena=document.createElement('div');arena.style.cssText='width:220px;height:180px;background:linear-gradient(135deg,rgba(255,230,240,0.6),rgba(220,255,220,0.6),rgba(240,230,255,0.6));border:2.5px solid rgba(255,143,171,0.4);position:relative;overflow:hidden;border-radius:16px;flex-shrink:0';inn.appendChild(arena);var hint=document.createElement('div');hint.style.cssText='font-size:6px;color:#c8a0b8;text-align:center;margin-top:4px';hint.textContent='tap fast! they fade quickly~';inn.appendChild(hint);var items=['💖','💗','💕','🌸','⭐','✨','🌟'];var sizes=[38,44,50,34];function spawn(){if(!active||spawned>=total+6)return;var sz=sizes[~~(Math.random()*sizes.length)];var t=document.createElement('div');t.className='mg-tapitem';t.style.cssText='width:'+sz+'px;height:'+sz+'px;font-size:'+(sz-14)+'px;position:absolute;left:'+~~(Math.random()*(220-sz))+'px;top:'+~~(Math.random()*(180-sz))+'px;transition:opacity 0.3s;z-index:2';t.textContent=items[~~(Math.random()*items.length)];var dur=1100+~~(Math.random()*700);t.onclick=function(){score++;spawned++;sc.textContent=score;setP(~~(score/total*100));t.style.transform='scale(1.5)';t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.remove();},200);if(score>=total)finish(true);};arena.appendChild(t);setTimeout(function(){if(t.parentNode){t.style.opacity='0.08';setTimeout(function(){if(t.parentNode)t.remove();},300);}},dur);setTimeout(spawn,460);}spawn();function finish(won){active=false;setTimeout(function(){arena.style.display='none';hint.style.display='none';var r=document.createElement('div');r.className='mg-prompt';r.innerHTML=(score>=total?'💖 PERFECT!':score>=7?'🌸 NICE JOB!':'💪 KEEP GOING!')+'\n'+score+'/'+total+' hearts!';inn.appendChild(r);var btn=document.createElement('button');btn.className='bigbtn';btn.style.cssText='width:200px;margin-top:8px';btn.textContent=score>=7?'CLAIM REWARD ✓':'TRY AGAIN?';btn.onclick=function(){if(score>=7)mgWin(gi);else{score=0;spawned=0;active=true;inn.innerHTML='';p3.style.display='';arena.style.display='';hint.style.display='';arena.innerHTML='';sc.textContent='0';setP(0);inn.appendChild(p3);inn.appendChild(sc);inn.appendChild(arena);inn.appendChild(hint);spawn();}};inn.appendChild(btn);},400);};}
+function bStories(){var z=ZS[G.zi];document.getElementById('shint').textContent=z.s+' '+z.n+' · '+z.st;var l=document.getElementById('el');l.innerHTML='';EPS.forEach(function(ep){var u=G.ueps.indexOf(ep.id)>=0;var d=document.createElement('div');d.className='epc'+(u?'':' lk');d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:16px">'+ep.e+'</span><div><div style="font-size:5px;color:#a07090">EP '+(ep.id+1)+' · '+(u?'UNLOCKED':'🔒 day '+ep.req)+'</div><div style="font-size:7px;color:#c0547a">'+ep.t+'</div></div></div><div style="font-size:6px;color:#b090a0;line-height:1.8">'+(u?ep.d:'???')+'</div>';if(u)d.onclick=function(){G.mood=Math.min(100,G.mood+5);upd();upsp();toast('📖 reading...\nmood +5 ✨');};l.appendChild(d);});}
+var tT=null;function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';clearTimeout(tT);tT=setTimeout(function(){t.style.opacity='0';},3200);}
 
-function upsp(){
-  var pool=SP.slice(0,4);
-  if(G.mood>75)pool=SP.slice(4,8);
-  if(G.hunger<30)pool=[SP[8]];
-  if(G.clean<30)pool=[SP[9]];
-  if(G.mood<35)pool=SP.slice(10,12);
-  var el=document.getElementById('speech');
-  if(el)el.textContent=pool[~~(Math.random()*pool.length)];
-  dc('cm',G.ci,G.mood);dc('cglow',G.ci,G.mood);
-}
-
-function decay(){
-  G.hunger=Math.max(0,G.hunger-4);G.clean=Math.max(0,G.clean-3);G.energy=Math.max(0,G.energy-2);
-  if(G.clean<40)G.mood=Math.max(0,G.mood-2);
-  if(G.hunger<30)G.mood=Math.max(0,G.mood-3);
-  if(G.gd<3)G.mood=Math.max(0,G.mood-1);
-  upd();upsp();
-  var nl=~~(G.td/5)+1;
-  if(nl>G.lv){G.lv=nl;toast('⭐ LEVEL UP! Level '+G.lv+'!\nNew smoothies unlocked!');var cnt=0;FOODS.forEach(function(f){if(!f.u&&cnt<G.lv-1){f.u=1;cnt++;}});}
-  EPS.forEach(function(ep){if(G.ueps.indexOf(ep.id)<0&&G.td>=ep.req){G.ueps.push(ep.id);toast('📖 New episode!\n'+ep.e+' '+ep.t);}});
-}
-
-function bCafe(){
-  var z=ZS[G.zi];
-  document.getElementById('chint').textContent=G.name+' is '+z.m+'~ fave: '+z.fav;
-  var g=document.getElementById('fg');g.innerHTML='';
-  FOODS.forEach(function(f,i){
-    var w=f.ms.indexOf(z.m)>=0;
-    var d=document.createElement('div');
-    d.style.cssText='background:rgba(255,255,255,0.06);border:2px solid rgba(255,143,171,0.2);padding:8px 3px;text-align:center;cursor:pointer;font-family:monospace;'+(f.u?'':'opacity:0.35;pointer-events:none');
-    d.innerHTML='<div style="font-size:18px;margin-bottom:3px">'+f.e+'</div><div style="font-size:5px;color:#ffc2d4">'+f.n+'</div><div style="font-size:5px;color:#c9b8f7;margin-top:2px">'+(f.u?(w?'♡ WANTS':'~ok'):'🔒')+'</div>';
-    if(f.u)(function(fi,fw){d.onclick=function(){
-      if(fw){G.hunger=Math.min(100,G.hunger+FOODS[fi].b);G.mood=Math.min(100,G.mood+8);G.fd++;G.td=Math.max(G.td,1);upd();upsp();toast(FOODS[fi].e+' she LOVED it!\nmood +8');}
-      else{G.hunger=Math.min(100,G.hunger+~~(FOODS[fi].b*0.4));G.mood=Math.max(0,G.mood-5);upd();upsp();toast('😾 walked away...\nmood -5');}
-    };})(i,w);
-    g.appendChild(d);
-  });
-}
-
-function bGlow(){
-  var dp=~~((1-G.clean/100)*100);
-  document.getElementById('ghint').textContent=dp>50?'😩 URGENT: needs help!':dp>20?'🧴 time for a refresh~':'✨ glow is IMMACULATE!';
-  dc('cglow',G.ci,G.mood);
-  var ov=document.getElementById('dov');if(ov)ov.style.opacity=(1-G.clean/100)*0.85;
-  var g=document.getElementById('sg');g.innerHTML='';
-  SKC.forEach(function(s,i){
-    var d=document.createElement('div');
-    d.style.cssText='background:rgba(255,255,255,0.06);border:2px solid rgba(201,184,247,0.3);padding:8px 3px;text-align:center;cursor:pointer';
-    d.innerHTML='<div style="font-size:18px;margin-bottom:3px">'+s.e+'</div><div style="font-size:5px;color:#c9b8f7">'+s.n+'</div>';
-    (function(si){d.onclick=function(){
-      var sk=SKC[si];
-      if(sk.ef==='clean'||sk.ef==='all')G.clean=Math.min(100,G.clean+sk.pw);
-      if(sk.ef==='glow'||sk.ef==='all'){G.clean=Math.min(100,G.clean+sk.pw*0.5);G.mood=Math.min(100,G.mood+5);}
-      if(sk.ef==='mood')G.mood=Math.min(100,G.mood+sk.pw);
-      upd();upsp();bGlow();toast(sk.e+' '+sk.n+' applied!\nshe feels fresher~');
-    };})(i);
-    g.appendChild(d);
-  });
-}
-
-function bPlay(){
-  var l=document.getElementById('gl');l.innerHTML='';
-  MGS.forEach(function(mg,i){
-    var done=i<G.gd;
-    var d=document.createElement('div');
-    d.style.cssText='background:rgba(255,255,255,0.05);border:2px solid rgba(255,143,171,0.2);padding:12px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:10px;font-family:monospace;'+(done?'opacity:0.5;pointer-events:none':'');
-    d.innerHTML='<div style="font-size:22px">'+mg.e+'</div><div style="flex:1"><div style="font-size:7px;color:#ffc2d4;margin-bottom:3px">'+mg.t+'</div><div style="font-size:6px;color:#6b5b73;line-height:1.8">'+mg.d+'<br>'+(done?'✅ done today':'tap to play')+'</div></div><div style="font-size:14px">'+(done?'✅':'')+'</div>';
-    if(!done)(function(gi){d.onclick=function(){sMG(gi);};})(i);
-    l.appendChild(d);
-  });
-}
-
-function sMG(i){
-  G.mgA=true;G.mgS=0;
-  document.getElementById('mgt').textContent=MGS[i].t;
-  document.getElementById('mgs').textContent='SCORE: 0';
-  document.getElementById('mgi').textContent=MGS[i].d+' get 5 to win!';
-  var mgo=document.getElementById('mgo');mgo.style.display='flex';
-  var ta=document.getElementById('ta');ta.innerHTML='';
-  var tg=MGS[i].tg,sp=0;
-  function one(){
-    if(!G.mgA||sp>=25)return;
-    var t=document.createElement('div');
-    t.style.cssText='position:absolute;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;left:'+~~(Math.random()*185)+'px;top:'+~~(Math.random()*185)+'px';
-    t.textContent=tg[~~(Math.random()*tg.length)];
-    t.onclick=function(){G.mgS++;document.getElementById('mgs').textContent='SCORE: '+G.mgS;t.remove();if(G.mgS>=5)cMG(true);};
-    ta.appendChild(t);sp++;
-    setTimeout(function(){if(t.parentNode)t.remove();},1800);
-    setTimeout(one,650);
-  }
-  one();
-}
-
-function cMG(ok){
-  G.mgA=false;
-  document.getElementById('mgo').style.display='none';
-  document.getElementById('ta').innerHTML='';
-  if(ok&&G.gd<3){
-    G.gd++;G.mood=Math.min(100,G.mood+10);G.energy=Math.max(0,G.energy-5);
-    G.td=Math.max(G.td,G.day);upd();upsp();
-    toast('🎮 great game! mood +10\n('+G.gd+'/3 today)');
-    if(G.gd>=3){G.mood=Math.min(100,G.mood+15);G.day++;G.td++;document.getElementById('gday').textContent=G.day;G.gd=0;G.fd=0;toast('🌟 ALL games done!\nday '+G.day+' begins!');}
-  }
-  bPlay();
-}
-
-function bStories(){
-  var z=ZS[G.zi];
-  document.getElementById('shint').textContent=z.s+' '+z.n+' · '+z.st;
-  var l=document.getElementById('el');l.innerHTML='';
-  EPS.forEach(function(ep){
-    var u=G.ueps.indexOf(ep.id)>=0;
-    var d=document.createElement('div');
-    d.style.cssText='background:rgba(255,255,255,0.05);border:2px solid rgba(201,184,247,0.25);padding:12px;margin-bottom:8px;cursor:pointer;font-family:monospace;'+(u?'':'opacity:0.4;pointer-events:none');
-    d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:16px">'+ep.e+'</span><div><div style="font-size:5px;color:#c9b8f7">EP '+(ep.id+1)+' · '+(u?'UNLOCKED':'🔒 day '+ep.req)+'</div><div style="font-size:7px;color:#ffc2d4">'+ep.t+'</div></div></div><div style="font-size:6px;color:#6b5b73;line-height:1.8">'+(u?ep.d:'???')+'</div>';
-    if(u)d.onclick=function(){G.mood=Math.min(100,G.mood+5);upd();upsp();toast('📖 reading...\nmood +5 ✨');};
-    l.appendChild(d);
-  });
-}
-
-var tT=null;
-function toast(msg){
-  var t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';
-  clearTimeout(tT);tT=setTimeout(function(){t.style.opacity='0';},3000);
-}
-
-/* BUILD GRIDS */
 var cg=document.getElementById('catgrid');
-CATS.forEach(function(cat,i){
-  var b=document.createElement('button');
-  b.style.cssText='background:rgba(255,255,255,0.06);border:3px solid rgba(255,143,171,'+(i===0?'0.8':'0.25')+');padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:monospace;font-size:6px;color:#ffc2d4;width:100%';
-  var cv=document.createElement('canvas');cv.width=44;cv.height=44;cv.id='cp'+i;cv.style.cssText='image-rendering:pixelated;width:44px;height:44px;display:block;pointer-events:none';
-  b.appendChild(cv);
-  var nm=document.createElement('span');nm.textContent=cat[0];b.appendChild(nm);
-  var vb=document.createElement('span');vb.style.cssText='font-size:5px;color:#6b5b73';vb.textContent=cat[1];b.appendChild(vb);
-  b.onclick=function(){
-    document.querySelectorAll('#catgrid button').forEach(function(x){x.style.borderColor='rgba(255,143,171,0.25)';x.style.background='rgba(255,255,255,0.06)';});
-    b.style.borderColor='#ff8fab';b.style.background='rgba(255,143,171,0.2)';
-    G.ci=i;dc('c1',i,80);
-  };
-  cg.appendChild(b);
-});
+CATS.forEach(function(cat,i){var b=document.createElement('button');b.className='catbtn'+(i===0?' sel':'');var cv=document.createElement('canvas');cv.width=44;cv.height=44;cv.id='cp'+i;cv.style.cssText='image-rendering:pixelated;width:44px;height:44px;display:block;pointer-events:none';b.appendChild(cv);var nm=document.createElement('span');nm.textContent=cat[0];b.appendChild(nm);var vb=document.createElement('span');vb.style.cssText='font-size:4px;color:#c8a0b8';vb.textContent=cat[1];b.appendChild(vb);b.onclick=function(){document.querySelectorAll('.catbtn').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');G.ci=i;dc('c1',i,80);};cg.appendChild(b);});
 
 var zg=document.getElementById('zodgrid');
-ZS.forEach(function(z,i){
-  var b=document.createElement('button');
-  b.style.cssText='background:rgba(255,255,255,0.07);border:2px solid rgba(255,143,171,0.3);padding:5px 2px;cursor:pointer;text-align:center;font-family:monospace;font-size:5px;color:#ffc2d4;width:100%';
-  b.innerHTML='<span style="font-size:13px;display:block">'+z.s+'</span>'+z.n.substring(0,6)+'<br><span style="font-size:4px;color:#6b5b73">'+ZMON[i]+'</span>';
-  b.onclick=function(){
-    document.querySelectorAll('#zodgrid button').forEach(function(x){x.style.borderColor='rgba(255,143,171,0.3)';x.style.background='rgba(255,255,255,0.07)';});
-    b.style.borderColor='#ff8fab';b.style.background='rgba(255,143,171,0.2)';
-    G.zi=i;document.getElementById('zdesc').textContent=z.s+' '+z.n+': '+z.d;
-  };
-  zg.appendChild(b);
-});
+ZS.forEach(function(z,i){var b=document.createElement('button');b.className='zodbtn';b.innerHTML='<span style="font-size:12px;display:block">'+z.s+'</span>'+z.n.substring(0,6)+'<br><span style="font-size:4px;color:#c8a0b8">'+ZMON[i]+'</span>';b.onclick=function(){document.querySelectorAll('.zodbtn').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');G.zi=i;document.getElementById('zdesc').textContent=z.s+' '+z.n+' — '+z.d;};zg.appendChild(b);});
 
-/* WIRE ALL BUTTONS */
 document.getElementById('b0').onclick=function(){show('pg1');};
 document.getElementById('b1').onclick=function(){var v=document.getElementById('namein').value.trim();if(v)G.name=v.toUpperCase();dc('c1',G.ci,80);show('pg2');};
 document.getElementById('b2').onclick=function(){show('pg3');};
-document.getElementById('b3').onclick=function(){
-  show('pg4');
-  document.getElementById('gname').textContent=G.name;
-  document.getElementById('gzod').textContent=ZS[G.zi].s+' '+ZS[G.zi].n;
-  dc('cm',G.ci,G.mood);dc('cglow',G.ci,G.mood);
-  upd();upsp();stab('h');
-  setInterval(decay,30000);
-};
-document.getElementById('cm').onclick=function(){G.mood=Math.min(100,G.mood+3);G.energy=Math.min(100,G.energy+2);upd();upsp();toast('💖 purr~ she likes that!');};
-document.getElementById('cglow').onclick=function(){var s=SKC[0];G.clean=Math.min(100,G.clean+s.pw);upd();upsp();bGlow();toast(s.e+' applied!\nshe feels fresher~');};
-document.getElementById('nh').onclick=function(){stab('h');};
-document.getElementById('nc').onclick=function(){stab('c');};
-document.getElementById('ng').onclick=function(){stab('g');};
-document.getElementById('np').onclick=function(){stab('p');};
-document.getElementById('ns').onclick=function(){stab('s');};
-document.getElementById('mgd').onclick=function(){cMG(true);};
-document.getElementById('mgq').onclick=function(){cMG(false);};
+document.getElementById('b3').onclick=function(){show('pg4');document.getElementById('gname').textContent=G.name;document.getElementById('gzod').textContent=ZS[G.zi].s+' '+ZS[G.zi].n;dc('cm',G.ci,G.mood);dc('cglow',G.ci,G.mood);upd();upsp();stab('h');setInterval(decay,30000);};
+document.getElementById('cm').onclick=function(){G.mood=Math.min(100,G.mood+3);G.energy=Math.min(100,G.energy+2);upd();upsp();toast('💖 purr~ they like that!');};
+document.getElementById('cglow').onclick=function(){var s=SKC[0];G.clean=Math.min(100,G.clean+s.pw);upd();upsp();bGlow();toast(s.e+' cleanser applied!\nfeeling fresher~');};
+document.getElementById('nh').onclick=function(){stab('h');};document.getElementById('nc').onclick=function(){stab('c');};document.getElementById('ng').onclick=function(){stab('g');};document.getElementById('np').onclick=function(){stab('p');};document.getElementById('ns').onclick=function(){stab('s');};
+document.getElementById('mgq').onclick=function(){document.getElementById('mgo').classList.remove('show');bPlay();};
 
-/* INIT */
-dc('c0',4,80);
-dc('c1',0,80);
-for(var i=0;i<6;i++)dc('cp'+i,i,80);
+dc('c0',4,80);dc('c1',0,80);for(var i=0;i<6;i++)dc('cp'+i,i,80);
 </script>
