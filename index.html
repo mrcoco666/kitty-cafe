@@ -2,693 +2,998 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#e8d8f0}
-#app{background:linear-gradient(145deg,#fff5f8 0%,#f0fce8 25%,#fef9e0 50%,#f5eeff 75%,#fde8f0 100%);width:100%;max-width:400px;margin:0 auto;min-height:680px;position:relative;overflow:hidden;border-radius:20px;font-family:'Press Start 2P',monospace}
-.blob{position:absolute;border-radius:50%;pointer-events:none;z-index:0;animation:blobF 7s ease-in-out infinite}
-@keyframes blobF{0%,100%{transform:scale(1)}50%{transform:scale(1.1) translate(5px,-8px)}}
-.fstar{position:absolute;pointer-events:none;z-index:0;animation:fstarF ease-in-out infinite;opacity:0}
-@keyframes fstarF{0%{opacity:0;transform:translateY(0) scale(0.4)}25%{opacity:1}80%{opacity:0.6}100%{opacity:0;transform:translateY(-70px) scale(1.3) rotate(40deg)}}
-.page{display:none;flex-direction:column;align-items:center;padding:18px 14px;min-height:680px;justify-content:space-between;position:relative;z-index:1}
-.page.show{display:flex}
-.bigbtn{font-family:'Press Start 2P',monospace;font-size:8px;padding:13px;border:2.5px solid #e8609a;background:rgba(255,143,171,0.88);color:white;cursor:pointer;width:100%;margin-top:8px;letter-spacing:1px;border-radius:20px;box-shadow:0 4px 14px rgba(255,143,171,0.3)}
-.bigbtn:active{opacity:0.75;transform:scale(0.97)}
-.glitter-title{font-size:11px;text-align:center;line-height:2;background:linear-gradient(90deg,#e8609a,#a78bfa,#f59e0b,#34d399,#e8609a);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite}
-@keyframes shimmer{to{background-position:300%}}
-.hdg{font-size:9px;color:#c0547a;text-align:center;line-height:1.8;margin-bottom:6px}
-.sub{font-size:7px;color:#a07090;text-align:center;line-height:2}
-.divider{width:100%;height:3px;background:repeating-linear-gradient(90deg,#ffb3c8 0,#ffb3c8 8px,#c8f0b0 8px,#c8f0b0 16px,#ffe08a 16px,#ffe08a 24px,#d0b8ff 24px,#d0b8ff 32px,transparent 32px,transparent 36px);margin:8px 0;border-radius:4px}
-.bubble{background:rgba(255,255,255,0.9);border:2.5px solid #ffb3c8;padding:9px 10px;font-size:7px;color:#c0547a;line-height:1.8;text-align:center;width:100%;margin-bottom:10px;border-radius:16px;position:relative}
-.bubble::after{content:'';position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#ffb3c8}
-input[type=text]{font-family:'Press Start 2P',monospace;font-size:9px;padding:11px;background:rgba(255,255,255,0.82);border:2.5px solid #ffb3c8;color:#c0547a;width:100%;text-align:center;outline:none;margin:8px 0;border-radius:12px}
-input::placeholder{color:#e0a0b8}
-.catgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;margin:10px 0}
-.catbtn{background:rgba(255,255,255,0.72);border:2.5px solid rgba(255,179,200,0.45);padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:6px;color:#c0547a;width:100%;border-radius:14px;font-family:'Press Start 2P',monospace}
-.catbtn.sel{border-color:#ff8fab;background:rgba(255,179,200,0.3);box-shadow:0 0 14px rgba(255,143,171,0.4)}
-.zodgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;width:100%;margin:10px 0}
-.zodbtn{background:rgba(255,255,255,0.72);border:2px solid rgba(255,179,200,0.4);padding:5px 2px;cursor:pointer;text-align:center;font-size:5px;color:#c0547a;width:100%;border-radius:10px;font-family:'Press Start 2P',monospace}
-.zodbtn.sel{border-color:#ff8fab;background:rgba(255,179,200,0.35)}
-#pg4{padding:6px 12px 0;justify-content:flex-start}
-#age-badge{display:block;background:linear-gradient(135deg,rgba(255,179,200,0.6),rgba(208,184,255,0.6));color:#c0547a;font-size:7px;padding:4px 10px;border-radius:20px;margin-bottom:5px;text-align:center;border:1.5px solid rgba(255,143,171,0.3)}
-#dayclock{width:100%;background:rgba(255,255,255,0.82);border:2px solid rgba(255,179,200,0.5);border-radius:14px;padding:7px 10px;margin-bottom:5px;display:flex;align-items:center;gap:8px}
-#clockbar{flex:1;height:11px;background:rgba(200,160,180,0.2);border:1.5px solid rgba(255,143,171,0.3);border-radius:8px;overflow:hidden}
-#clockfill{height:100%;border-radius:7px;transition:width 0.8s linear;background:linear-gradient(90deg,#ffd166,#ff8fab,#c9b8f7)}
-.srow{display:flex;align-items:center;gap:6px;margin-bottom:7px}
-.srow:last-child{margin-bottom:0}
-.sbar{flex:1;height:10px;background:rgba(200,160,180,0.15);border:1.5px solid rgba(255,143,171,0.3);overflow:hidden;border-radius:8px}
-.sfill{height:100%;transition:width 0.4s;border-radius:7px}
-.stat-panel{background:rgba(255,255,255,0.68);border:2px solid rgba(255,179,200,0.4);padding:10px;margin-bottom:8px;border-radius:14px}
-.task-panel{background:rgba(255,255,255,0.68);border:2px solid rgba(255,209,100,0.4);padding:8px;display:flex;align-items:center;gap:8px;border-radius:14px;margin-bottom:8px}
-.nav{display:flex;background:rgba(255,255,255,0.82);border-top:2.5px solid #ffccd8;width:100%;flex-shrink:0}
-.navbtn{flex:1;padding:8px 2px;background:none;border:none;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:6px;color:#c8a0b0;display:flex;flex-direction:column;align-items:center;gap:3px}
-.navbtn.on{color:#e8609a}
-.foodgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;margin:6px 0}
-.fbtn{background:rgba(255,255,255,0.78);border:2px solid rgba(255,179,200,0.4);padding:8px 3px;text-align:center;cursor:pointer;border-radius:12px}
-.fbtn:active{transform:scale(0.93)}
-.fbtn.wants{border-color:#ff8fab;background:rgba(255,179,200,0.25);box-shadow:0 0 8px rgba(255,143,171,0.3)}
-/* SKINCARE */
-.cat-layer{position:absolute;inset:0;width:160px;height:160px;image-rendering:pixelated;transition:filter 0.5s ease,opacity 0.4s ease;pointer-events:none}
-#layer-base{z-index:1}#layer-coat{z-index:2}#layer-blush{z-index:3}#layer-eyes{z-index:4}#layer-dirt{z-index:5;filter:saturate(60%) brightness(80%)}#layer-glow{z-index:6;opacity:0}
-#glow-stage{position:relative;width:160px;height:160px;margin:0 auto 8px;cursor:pointer}
-#glow-aura{position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,rgba(181,234,215,0) 0%,transparent 70%);transition:background 0.8s ease;z-index:0;pointer-events:none}
-.scbtn{background:rgba(255,255,255,0.78);border:2px solid rgba(196,180,255,0.5);padding:8px 3px;text-align:center;cursor:pointer;border-radius:12px}
-.scbtn:active{transform:scale(0.9)}
-.scbtn.used{border-color:#b5ead7;background:rgba(181,234,215,0.25)}
-.skin-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.skin-row:last-child{margin-bottom:0}
-.skin-track{flex:1;height:9px;background:rgba(200,160,180,0.15);border:1.5px solid rgba(196,180,255,0.3);border-radius:8px;overflow:hidden}
-.skin-fill{height:100%;border-radius:7px;transition:width 0.5s}
-#fill-hydration{background:linear-gradient(90deg,#a0d8ff,#60b8ff)}
-#fill-clarity{background:linear-gradient(90deg,#c8f0a0,#80d040)}
-#fill-sglow{background:linear-gradient(90deg,#ffd0f0,#ff90d0)}
-#fill-radiance{background:linear-gradient(90deg,#ffe08a,#ffb040)}
-/* MINI GAME */
-.gbtn{width:100%;background:rgba(255,255,255,0.72);border:2px solid rgba(255,179,200,0.4);padding:11px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:10px;border-radius:14px}
-.gbtn:active{opacity:0.7}
-.gbtn.done{opacity:0.5;pointer-events:none}
-#mgo{display:none;position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,240,248,0.97),rgba(240,255,232,0.97),rgba(255,240,255,0.97));z-index:99;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:8px;min-height:680px}
-#mgo::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(255,182,193,0.4) 0%,transparent 50%),radial-gradient(ellipse at 70% 70%,rgba(180,240,180,0.35) 0%,transparent 50%);pointer-events:none}
-#mgo.show{display:flex}
-.mg-prompt{font-size:9px;color:#c0547a;text-align:center;line-height:1.8;margin-bottom:8px;position:relative;z-index:1}
-.mg-choice{background:rgba(255,255,255,0.88);border:2.5px solid rgba(255,143,171,0.5);padding:11px 8px;cursor:pointer;font-size:8px;color:#c0547a;text-align:center;width:100%;margin-bottom:7px;border-radius:14px;font-family:'Press Start 2P',monospace;position:relative;z-index:1}
-.mg-choice:active{opacity:0.7}
-.mg-choice.correct{border-color:#7acc8a;background:rgba(180,240,180,0.3);color:#2d8a40}
-.mg-choice.wrong{border-color:#ff8080;background:rgba(255,180,180,0.25);color:#c04040}
-.mg-tapitem{display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.75);border:2.5px solid rgba(255,143,171,0.4);box-shadow:0 2px 8px rgba(255,143,171,0.2)}
-.mg-tapitem:active{transform:scale(0.82)}
-.progress-bar{width:100%;height:12px;background:rgba(200,160,180,0.2);border:2px solid rgba(255,143,171,0.3);border-radius:8px;overflow:hidden;margin:4px 0;position:relative;z-index:1}
-.progress-fill{height:100%;background:linear-gradient(90deg,#ffb3c8,#c8f0a0,#ffe08a);transition:width 0.3s;border-radius:6px}
-.hearts{font-size:15px;letter-spacing:2px;text-align:center;display:block;margin:4px 0;position:relative;z-index:1}
-/* STORIES */
-.epc{width:100%;background:rgba(255,255,255,0.72);border:2px solid rgba(196,180,255,0.4);padding:11px;margin-bottom:8px;cursor:pointer;border-radius:14px}
-.epc.lk{opacity:0.45;pointer-events:none}
+html,body{width:100%;overflow-x:hidden;background:#d8c0f0}
+:root{
+  --lav:#ede0f8;--lavd:#c4a8d8;--lavdd:#9b7ab8;
+  --blush:#ffe0ee;--blushd:#f0a8c8;
+  --mint:#d4f5e8;--mintd:#8ad4b4;
+  --cream:#fff8f0;--or:#cf5527;--wine:#7d2027;--olive:#998731;
+  --pink:#ffcce0;--pinkd:#e880a8;--green:#c8f4dc;--greend:#60c890;
+  --txt:#2a1a3a;--txts:#5a3a6a;
+  --rise1:#FAE3B1;--rise2:#998731;--rise3:#5FA8C2;--rise4:#CF5527;--rise5:#7D2027;--rise6:#673C34;
+}
+#app{
+  width:100%;max-width:min(440px,100vw);margin:0 auto;
+  min-height:100svh;font-family:'Press Start 2P',monospace;
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  background:linear-gradient(145deg,#f0d8ff 0%,#ffd8f0 30%,#e8c8ff 60%,#ffc8e8 100%);
+  background-size:400% 400%;animation:bgAnim 10s ease-in-out infinite;
+}
+@keyframes bgAnim{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* ── BROWSER CHROME ─────── */
+#chrome{background:rgba(220,200,245,.9);border-bottom:2px solid var(--lavdd);padding:4px 7px;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.ch-arr{width:20px;height:20px;background:rgba(255,255,255,.9);border:2px solid var(--lavdd);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--lavdd);cursor:pointer;flex-shrink:0}
+.ch-bar{flex:1;background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;height:20px;display:flex;align-items:center;padding:0 7px;font-size:clamp(5px,1.3vw,6px);color:var(--lavdd)}
+
+/* ── TITLE ─────── */
+#title-area{text-align:center;padding:5px 8px 4px;background:rgba(255,255,255,.45);border-bottom:2px dashed var(--lavd);flex-shrink:0}
+.g-title{font-size:clamp(10px,3.2vw,14px);line-height:2;letter-spacing:1px}
+.t-or{color:var(--or)}.t-ol{color:var(--olive)}.t-lv{color:var(--lavdd)}
+.g-sub{font-size:clamp(6px,1.6vw,7px);color:var(--txts);line-height:2;margin-top:1px}
+
+/* ── DAY STRIP ─────── */
+#daystrip{background:rgba(255,255,255,.55);border-bottom:2px solid var(--lavd);padding:3px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.dbadge{background:rgba(230,210,255,.9);border:2px solid var(--lavdd);border-radius:5px;padding:2px 7px;font-size:clamp(5px,1.4vw,7px);color:var(--wine)}
+.dname{font-size:clamp(6px,1.7vw,8px);color:var(--wine)}
+.abadge{background:rgba(255,224,238,.9);border:2px solid var(--blushd);border-radius:5px;padding:2px 7px;font-size:clamp(5px,1.4vw,7px);color:var(--wine)}
+
+/* ── ROOM ─────── */
+#room-wrap{position:relative;flex-shrink:0;height:clamp(230px,60vw,295px);background:linear-gradient(160deg,rgba(248,242,255,.95),rgba(234,255,246,.95));border-bottom:3px solid var(--lavd);overflow:hidden;cursor:pointer}
+#room-canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+#sparkles{position:absolute;inset:0;pointer-events:none;z-index:5}
+.sp{position:absolute;animation:spA ease-in-out infinite;pointer-events:none}
+@keyframes spA{0%,100%{opacity:.3;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
+#speech-bubble{position:absolute;top:7px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.96);border:2px solid var(--pinkd);border-radius:9px;padding:3px 11px;font-size:clamp(5px,1.5vw,7px);color:var(--txt);white-space:nowrap;z-index:15;opacity:0;transition:opacity .4s;box-shadow:2px 2px 0 rgba(240,130,180,.2)}
+#speech-bubble.show{opacity:1}
+#speech-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--pinkd)}
+
+/* ── ACTION BUTTONS ─────── */
+#actions{display:flex;gap:7px;padding:7px;flex-shrink:0;background:rgba(255,255,255,.35)}
+.abtn{flex:1;border:3px solid;border-radius:11px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:clamp(7px,2.2vw,10px);padding:clamp(10px,2.8vw,14px) 3px;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;transition:transform .1s;box-shadow:0 4px 0 rgba(0,0,0,.13)}
+.abtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.13)}
+.abtn-i{font-size:clamp(16px,4.5vw,22px)}
+.abtn-bow{position:absolute;top:-8px;right:4px;font-size:12px}
+.btn-feed{background:linear-gradient(180deg,#c8f4e0,#90d8b0);color:#1a4a30;border-color:#50a880}
+.btn-play{background:linear-gradient(180deg,#fff4b0,#f0d860);color:#3a2800;border-color:#c8a820}
+.btn-love{background:linear-gradient(180deg,#ffc8dc,#f088b0);color:#4a0020;border-color:#e060a0}
+
+/* ── STAT BARS ─────── */
+#stats{background:rgba(255,255,255,.68);border-bottom:2px solid var(--lavd);padding:6px 9px;flex-shrink:0}
+.sr{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.sr:last-child{margin-bottom:0}
+.sr-i{font-size:12px;width:16px;text-align:center;flex-shrink:0}
+.sr-l{font-size:clamp(5px,1.5vw,7px);color:var(--txt);width:46px;flex-shrink:0;opacity:.8}
+.sr-t{flex:1;height:7px;background:rgba(180,150,220,.2);border:1.5px solid var(--lavd);border-radius:3px;overflow:hidden}
+.sr-f{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+.sr-v{font-size:clamp(5px,1.5vw,7px);color:var(--txt);width:20px;text-align:right;flex-shrink:0;opacity:.8}
+.f-mood{background:linear-gradient(90deg,#f080b0,#f8b0d0)}
+.f-hungry{background:linear-gradient(90deg,#cf5527,#f0c060)}
+.f-glow{background:linear-gradient(90deg,#70b840,#b0e870)}
+.f-energy{background:linear-gradient(90deg,#60b0f0,#a0d8f8)}
+
+/* ── BOTTOM SECTION ─────── */
+#bottom{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+#tab-bar{display:flex;border-bottom:2px solid var(--lavd);flex-shrink:0}
+.tab-btn{flex:1;background:rgba(255,255,255,.45);border:none;border-right:1px solid var(--lavd);font-family:'Press Start 2P',monospace;font-size:clamp(5px,1.5vw,7px);color:var(--txt);opacity:.6;padding:6px 2px;cursor:pointer;transition:all .15s}
+.tab-btn:last-child{border-right:none}
+.tab-btn.on{background:rgba(255,255,255,.88);color:var(--wine);opacity:1}
+
+/* ── PILL ROW ─────── */
+.pill-row{display:flex;gap:5px;padding:5px 8px;border-bottom:2px solid var(--lavd);flex-shrink:0;background:linear-gradient(90deg,rgba(230,200,255,.75),rgba(255,200,230,.75),rgba(220,190,255,.75));background-size:200%;animation:pillShift 6s ease-in-out infinite}
+@keyframes pillShift{0%,100%{background-position:0%}50%{background-position:100%}}
+.pill{flex:1;border-radius:18px;font-family:'Press Start 2P',monospace;font-size:clamp(4px,1.3vw,6px);padding:5px 2px;cursor:pointer;transition:transform .1s;text-align:center;border-style:solid;border-width:2px;display:block}
+.pill:active{transform:scale(.93)}
+.p-a{background:#ffc0d8;border-color:#e880a8;color:#4a0820}
+.p-g{background:#b8f0d0;border-color:#50c880;color:#1a4030}
+.p-gw{background:#c8d8ff;border-color:#9b7ab8;color:#1a2060}
+
+/* ── INNER TABS CONTENT ─────── */
+#tab-content{flex:1;overflow-y:auto;display:flex;flex-direction:column;min-height:0}
+.tc-panel{display:none;flex-direction:column;gap:0}
+.tc-panel.on{display:flex}
+
+/* DIARY + ELG side by side */
+#diary-elg{display:flex;flex:1;overflow:hidden;min-height:120px}
+#growth-diary{flex:1;overflow-y:auto;padding:6px 7px;background:rgba(255,255,255,.62);border-right:2px solid var(--lavd);position:relative}
+#growth-diary::before{content:'';position:absolute;inset:3px;border:2px dashed rgba(200,160,220,.4);border-radius:10px;pointer-events:none}
+.dt{font-size:clamp(6px,1.6vw,7px);color:var(--wine);text-align:center;margin-bottom:6px;letter-spacing:1px}
+.s-row{display:flex;align-items:center;gap:7px;padding:4px 5px;border-radius:7px;margin-bottom:3px}
+.s-row.cur{background:rgba(240,160,200,.2);border:1.5px solid var(--blushd)}
+.s-row.lk{opacity:.35}
+.sc{width:28px;height:24px;flex-shrink:0;image-rendering:pixelated}
+.si .sn{font-size:clamp(5px,1.4vw,7px);color:var(--txt);opacity:.85;line-height:1.4}
+.si .sd{font-size:clamp(4px,1.1vw,5px);color:var(--pinkd);margin-top:1px}
+#elg-panel{width:clamp(90px,24vw,108px);flex-shrink:0;padding:6px;background:rgba(255,235,248,.78);border-left:2px solid var(--blushd);overflow-y:auto}
+.elg-t{font-size:clamp(5px,1.3vw,6px);color:var(--wine);text-align:center;margin-bottom:6px;line-height:1.7}
+.elg-r{margin-bottom:5px}
+.elg-l{font-size:clamp(4px,1.2vw,5px);color:var(--txt);margin-bottom:2px;opacity:.8;line-height:1.4}
+.elg-tr{width:100%;height:6px;background:rgba(200,170,220,.25);border:1.5px solid var(--lavd);border-radius:3px;overflow:hidden}
+.elg-f{height:100%;border-radius:2px;transition:width .5s}
+.ef-fat{background:linear-gradient(90deg,#f08040,#f0c040)}
+.ef-bond{background:linear-gradient(90deg,#d070f0,#a040e0)}
+.elg-note{font-size:clamp(4px,1vw,5px);color:var(--txt);line-height:1.8;margin-top:5px;opacity:.72}
+
+/* ── FULL-SCREEN PANELS ─────── */
+#panel-overlay{display:none;position:absolute;inset:0;z-index:60;background:rgba(235,215,255,.97);flex-direction:column;overflow-y:auto}
+#panel-overlay.show{display:flex}
+#po-head{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(220,190,255,.8);border-bottom:2px solid var(--lavdd);flex-shrink:0}
+#po-title{font-size:clamp(7px,2vw,10px);color:var(--wine)}
+#po-close{background:var(--wine);color:#fff;border:none;border-radius:5px;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.5vw,7px);padding:4px 9px;cursor:pointer}
+#po-body{flex:1;overflow-y:auto;padding:10px}
+
+/* food grid */
+.food-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.fi{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;transition:transform .1s;box-shadow:0 3px 0 var(--lavd)}
+.fi:active{transform:scale(.92)}
+.fi.fav{border-color:var(--pinkd);background:rgba(255,200,230,.2);box-shadow:0 3px 0 var(--blushd)}
+.fi-e{font-size:clamp(18px,5vw,22px);display:block;margin-bottom:3px}
+.fi-n{font-size:clamp(5px,1.3vw,6px);color:var(--txt);line-height:1.5}
+.fi-d{font-size:clamp(4px,1vw,5px);color:var(--txts);line-height:1.4;margin-top:1px;opacity:.8}
+
+/* skincare grid */
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.sci{background:#fff;border:2px solid #b8d8f0;border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;transition:transform .1s;box-shadow:0 3px 0 #a0c8e0}
+.sci:active{transform:scale(.92)}
+.sci.used{border-color:var(--mintd);background:rgba(180,240,210,.25);opacity:.6;pointer-events:none}
+.sci-e{font-size:clamp(18px,5vw,22px);display:block;margin-bottom:3px}
+.sci-n{font-size:clamp(5px,1.3vw,6px);color:var(--txt);line-height:1.5}
+.sci-d{font-size:clamp(4px,1vw,5px);color:var(--txts);line-height:1.4;margin-top:1px;opacity:.8}
+
+/* skin stats */
+.skin-panel{background:rgba(255,255,255,.8);border:2px solid #b8d8f0;border-radius:9px;padding:8px;margin-bottom:8px}
+.sk-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.sk-row:last-child{margin-bottom:0}
+.sk-l{font-size:clamp(5px,1.4vw,6px);color:var(--txts);width:70px;flex-shrink:0}
+.sk-t{flex:1;height:6px;background:rgba(180,210,240,.3);border:1.5px solid #b8d8f0;border-radius:3px;overflow:hidden}
+.sk-f{height:100%;border-radius:2px;transition:width .5s}
+.sk-v{font-size:clamp(5px,1.3vw,6px);color:var(--txts);width:18px;text-align:right}
+.f-hyd{background:linear-gradient(90deg,#60b0f0,#a0d8f8)}
+.f-cla{background:linear-gradient(90deg,#70b040,#b0d870)}
+.f-sg{background:linear-gradient(90deg,#e880a8,#f8b0d0)}
+.f-rad{background:linear-gradient(90deg,#f0c040,#f8e090)}
+
+/* cat tips */
+.tip-card{background:rgba(255,255,255,.85);border:2px solid var(--blushd);border-radius:9px;padding:8px 9px;margin-bottom:7px;display:flex;gap:8px;align-items:flex-start}
+.tip-e{font-size:18px;flex-shrink:0;margin-top:1px}
+.tip-t{font-size:clamp(5px,1.4vw,6px);color:var(--txt);line-height:1.9;opacity:.88}
+
+/* zodiac card */
+.zod-card{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:8px;margin-bottom:8px}
+.zod-title{font-size:clamp(7px,2vw,9px);color:var(--wine);margin-bottom:4px}
+.zod-desc{font-size:clamp(5px,1.4vw,6px);color:var(--txts);line-height:1.9}
+.zod-fav{font-size:clamp(5px,1.3vw,6px);color:var(--pinkd);margin-top:4px}
+
+/* story episodes */
+.ep-card{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:8px 9px;margin-bottom:7px;cursor:pointer;transition:transform .1s}
+.ep-card:active{transform:scale(.98)}
+.ep-card.locked{opacity:.38;pointer-events:none}
+.ep-head{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.ep-e{font-size:20px;flex-shrink:0}
+.ep-title{font-size:clamp(6px,1.7vw,8px);color:var(--wine)}
+.ep-day{font-size:clamp(4px,1.2vw,5px);color:var(--txts);margin-top:1px}
+.ep-body{font-size:clamp(5px,1.4vw,6px);color:var(--txts);line-height:1.9}
+.ep-tip{font-size:clamp(5px,1.3vw,6px);color:var(--lavdd);background:rgba(220,200,255,.3);border-radius:6px;padding:5px 7px;margin-top:5px;line-height:1.8}
+
+/* adopt panel */
+.adopt-sect{margin-bottom:10px}
+.a-sect-title{font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:7px;border-bottom:2px dashed var(--lavd);padding-bottom:4px}
+.adopt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.adopt-card{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.adopt-card:active{transform:scale(.92)}
+.adopt-card.active-cat{border-color:var(--pinkd);background:rgba(255,200,230,.2);box-shadow:0 3px 0 var(--blushd)}
+.ac-n{font-size:clamp(5px,1.3vw,6px);color:var(--txt);margin-top:3px;line-height:1.5}
+.ac-zod{font-size:clamp(4px,1.1vw,5px);color:var(--lavdd);margin-top:1px}
+.name-input-wrap{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:8px;margin-bottom:8px}
+.ni-label{font-size:clamp(6px,1.6vw,7px);color:var(--wine);margin-bottom:5px;display:block}
+.ni-row{display:flex;gap:6px;align-items:center}
+.ni-in{flex:1;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.6vw,8px);padding:7px 8px;background:var(--lav);border:2px solid var(--lavdd);border-radius:6px;color:var(--txt);outline:none}
+.ni-zsel{font-family:'Press Start 2P',monospace;font-size:clamp(5px,1.3vw,6px);padding:7px 5px;background:var(--lav);border:2px solid var(--lavdd);border-radius:6px;color:var(--txt);outline:none;width:90px;flex-shrink:0}
+.adopt-do-btn{display:block;width:100%;background:linear-gradient(90deg,var(--blushd),var(--pinkd));border:2px solid var(--wine);border-radius:9px;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.8vw,9px);color:var(--txt);padding:10px;cursor:pointer;text-align:center;box-shadow:0 3px 0 var(--wine);margin-top:4px}
+.adopt-do-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--wine)}
+.my-cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+
+/* minigames */
+.mg-card{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:9px;align-items:center;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.mg-card:active{transform:scale(.98)}
+.mg-e{font-size:24px;flex-shrink:0}
+.mg-info .mg-t{font-size:clamp(6px,1.7vw,9px);color:var(--wine);margin-bottom:3px}
+.mg-info .mg-d{font-size:clamp(5px,1.4vw,6px);color:var(--txts);line-height:1.8}
+.mg-done{font-size:clamp(4px,1.2vw,5px);color:var(--mintd);margin-top:3px}
+
+/* MINIGAME SCREENS */
+#mg-screen{display:none;position:absolute;inset:0;z-index:80;background:rgba(235,215,255,.98);flex-direction:column;align-items:center;padding:12px;gap:7px;overflow-y:auto}
+#mg-screen.show{display:flex}
+#mg-title{font-size:clamp(9px,2.5vw,12px);color:var(--wine);text-align:center}
+.hp-row{display:flex;gap:4px;justify-content:center}
+.hp{font-size:16px}
+.mg-prompt{font-size:clamp(7px,2vw,9px);color:var(--txt);text-align:center;line-height:1.8;max-width:280px}
+.mg-progress{width:100%;max-width:280px;height:10px;background:rgba(180,150,220,.25);border:2px solid var(--lavd);border-radius:5px;overflow:hidden}
+.mg-prog-fill{height:100%;background:linear-gradient(90deg,var(--pinkd),var(--lavdd));transition:width .3s}
+.mg-opts{display:flex;flex-direction:column;gap:7px;width:100%;max-width:280px}
+.mg-opt{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:10px 8px;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.7vw,8px);color:var(--txt);cursor:pointer;text-align:left;line-height:1.6;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.mg-opt:active{transform:scale(.97)}
+.mg-opt.correct{border-color:var(--greend);background:rgba(180,240,210,.3)}
+.mg-opt.wrong{opacity:.35;text-decoration:line-through;pointer-events:none}
+.mg-seq-grid{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:280px}
+.seq-item{width:62px;height:62px;background:#fff;border:2px solid var(--lavdd);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.seq-item:active{transform:scale(.9)}
+.seq-item.used{opacity:.4;pointer-events:none;border-color:var(--mintd)}
+.star-canvas{border:2px solid var(--lavdd);border-radius:9px;cursor:pointer;background:rgba(255,248,255,.9)}
+.mg-result{font-size:clamp(8px,2.2vw,11px);color:var(--wine);text-align:center;line-height:1.8}
+.mg-close-btn{background:linear-gradient(180deg,var(--blushd),var(--pinkd));color:var(--txt);border:2px solid var(--wine);border-radius:8px;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.9vw,9px);padding:10px 20px;cursor:pointer;box-shadow:0 3px 0 var(--wine)}
+.mg-close-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--wine)}
+
+/* ── BOTTOM STUFF ─────── */
+#adopt-cta{position:sticky;bottom:0;width:100%;background:linear-gradient(90deg,#e8a0c8,#c880d8,#e8a0c8);background-size:200%;animation:ctaS 3s linear infinite;border:none;border-top:3px solid var(--wine);padding:clamp(10px,2.8vw,14px);text-align:center;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:clamp(7px,2.2vw,10px);color:var(--txt);letter-spacing:1px;display:block;flex-shrink:0}
+@keyframes ctaS{0%{background-position:0%}100%{background-position:200%}}
+#adopt-cta:active{filter:brightness(.9)}
+
+/* BOTTOM NAV BAR */
+#bot-bar{background:rgba(220,200,245,.9);border-top:2px solid var(--lavdd);padding:4px 8px;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.bot-arr{width:20px;height:20px;background:rgba(255,255,255,.9);border:2px solid var(--lavdd);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--lavdd);cursor:pointer;flex-shrink:0}
+.bot-search{flex:1;background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;height:20px;display:flex;align-items:center;padding:0 7px;font-size:clamp(5px,1.3vw,6px);color:var(--lavdd)}
+.bot-dots{display:flex;gap:4px}
+.bot-dot{width:6px;height:6px;border-radius:50%;background:var(--lavdd);opacity:.4}
+.bot-dot.on{opacity:1;background:var(--pinkd)}
+
 /* POPUP */
-#popup{display:none;position:absolute;inset:0;background:rgba(255,240,250,0.96);z-index:150;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:10px}
+#popup{display:none;position:absolute;inset:0;background:rgba(232,210,255,.96);z-index:200;flex-direction:column;align-items:center;justify-content:center;padding:18px;gap:9px}
 #popup.show{display:flex}
-#popup-icon{font-size:40px;animation:popBounce 0.6s ease}
-@keyframes popBounce{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
-#popup-title{font-size:10px;color:#e8609a;text-align:center;line-height:1.8}
-#popup-body{font-size:7px;color:#a07090;text-align:center;line-height:2;max-width:300px}
-#popup-tip{font-size:7px;color:#7c5cbf;background:rgba(196,180,255,0.2);border:1.5px solid rgba(196,180,255,0.4);padding:8px 12px;border-radius:12px;text-align:center;line-height:1.8;max-width:300px;display:none}
-#popup-close{background:rgba(255,143,171,0.88);color:white;border:2.5px solid #e8609a;font-family:'Press Start 2P',monospace;font-size:8px;padding:12px 24px;border-radius:20px;cursor:pointer;margin-top:4px}
-/* FX */
-.splash{position:absolute;pointer-events:none;z-index:50;animation:splashA 0.7s ease-out forwards}
-@keyframes splashA{0%{transform:scale(0);opacity:1}100%{transform:scale(2.5) rotate(45deg);opacity:0}}
-.floatup{position:absolute;pointer-events:none;z-index:60;animation:floatU 1s ease-out forwards;font-family:'Press Start 2P',monospace;white-space:nowrap;font-size:7px}
-@keyframes floatU{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-46px)}}
-.tapfx{position:fixed;pointer-events:none;z-index:9999;animation:tapP 0.7s ease-out forwards}
-@keyframes tapP{0%{transform:scale(0) rotate(0deg);opacity:1}100%{transform:scale(2.2) rotate(60deg);opacity:0}}
-#toast{position:absolute;bottom:68px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);border:2.5px solid #ffb3c8;color:#c0547a;font-size:7px;padding:8px 12px;opacity:0;transition:opacity 0.3s;z-index:200;text-align:center;max-width:270px;line-height:1.8;pointer-events:none;white-space:pre-line;border-radius:14px;box-shadow:0 4px 14px rgba(255,143,171,0.25)}
-.bnc{animation:bn 2.2s ease-in-out infinite}
-@keyframes bn{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-.star-badge{display:inline-block;background:linear-gradient(135deg,#ffe08a,#ffb347);color:#7a4800;font-size:6px;padding:2px 5px;border-radius:8px;margin-top:2px}
-.slot-tag{display:inline-block;font-size:5px;padding:2px 4px;border-radius:7px;margin-top:2px}
-.tip-box{background:rgba(196,180,255,0.18);border:1.5px solid rgba(196,180,255,0.45);border-radius:12px;padding:7px 10px;font-size:7px;color:#7060c0;line-height:1.8;text-align:center;margin-bottom:8px}
-.sc-tabs{display:flex;gap:4px;margin-bottom:8px;width:100%}
-.sc-tab{flex:1;padding:6px 3px;background:rgba(255,255,255,0.7);border:2px solid rgba(255,179,200,0.35);border-radius:10px;cursor:pointer;font-size:6px;color:#c8a0b8;text-align:center;font-family:'Press Start 2P',monospace}
-.sc-tab.on{border-color:#ff8fab;background:rgba(255,179,200,0.25);color:#e8609a}
-.routine-track{display:flex;gap:4px;align-items:center;width:100%;margin-bottom:8px;padding:6px;background:rgba(255,255,255,0.6);border-radius:12px;border:1.5px dashed rgba(255,143,171,0.4);min-height:38px;flex-wrap:wrap}
-.routine-step{font-size:15px;animation:stepPop 0.3s ease}
-@keyframes stepPop{0%{transform:scale(0)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+#pu-ico{font-size:38px}
+#pu-title{font-size:clamp(8px,2.5vw,12px);color:var(--wine);text-align:center;line-height:1.8}
+#pu-body{font-size:clamp(6px,1.8vw,8px);color:var(--txt);text-align:center;line-height:2.1;max-width:280px}
+#pu-tip{font-size:clamp(6px,1.6vw,7px);color:var(--txt);background:rgba(230,210,255,.85);border:2px solid var(--lavdd);border-radius:8px;padding:7px 10px;text-align:center;line-height:1.9;max-width:280px;display:none}
+#pu-close{background:linear-gradient(180deg,var(--blushd),var(--pinkd));color:var(--txt);border:3px solid var(--wine);font-family:'Press Start 2P',monospace;font-size:clamp(7px,2vw,9px);padding:10px 22px;border-radius:9px;cursor:pointer;box-shadow:0 4px 0 var(--wine)}
+#pu-close:active{transform:translateY(3px);box-shadow:0 1px 0 var(--wine)}
+
+#toast{position:fixed;bottom:clamp(60px,16vw,80px);left:50%;transform:translateX(-50%);background:var(--wine);border:2px solid #ffd0e8;color:#fff;font-family:'Press Start 2P',monospace;font-size:clamp(5px,1.4vw,7px);padding:6px 12px;opacity:0;transition:opacity .3s;z-index:300;text-align:center;max-width:250px;line-height:1.9;pointer-events:none;border-radius:7px;white-space:pre-line}
+
+/* HELP BADGE */
+.help-badge{display:inline-block;background:var(--lavdd);color:#fff;border-radius:50%;width:16px;height:16px;font-size:8px;text-align:center;line-height:16px;cursor:pointer;flex-shrink:0;vertical-align:middle;margin-left:4px}
 </style>
 
 <div id="app">
-<div class="blob" style="top:-70px;left:-70px;width:260px;height:260px;background:radial-gradient(circle,rgba(255,182,193,0.5) 0%,transparent 70%);animation-delay:0s"></div>
-<div class="blob" style="bottom:-50px;right:-50px;width:230px;height:230px;background:radial-gradient(circle,rgba(180,240,180,0.45) 0%,transparent 70%);animation-delay:2s"></div>
-<div class="blob" style="top:35%;left:20%;width:200px;height:200px;background:radial-gradient(circle,rgba(255,230,120,0.32) 0%,transparent 70%);animation-delay:1s"></div>
-<div class="blob" style="top:10%;right:5%;width:170px;height:170px;background:radial-gradient(circle,rgba(196,180,255,0.38) 0%,transparent 70%);animation-delay:3s"></div>
-<div id="starlayer"></div>
 
-<!-- INTRO -->
-<div class="page show" id="pg0">
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;padding-top:8px">
-    <div style="font-size:7px;color:#c8a0b8;text-align:center;letter-spacing:2px">✦ FREAQUE DEPARTMENT PRESENTS ✦</div>
-    <div class="glitter-title">KITTY CAFÉ<br>✨ TAMAGOTCHI ✨</div>
-    <div class="sub">adopt a kitten · watch them grow<br>feed · glow · play · love ♡</div>
-    <div class="divider"></div>
-    <div style="position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center">
-      <div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(255,182,193,0.5) 0%,rgba(180,240,180,0.3) 50%,transparent 75%);border-radius:50%"></div>
-      <canvas id="c0" width="96" height="96" class="bnc" style="image-rendering:pixelated;width:96px;height:96px;display:block;position:relative;z-index:1"></canvas>
-    </div>
-    <div class="bubble">your kitten starts tiny and grows<br>with every day you care for them ♡</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-      <span style="font-size:7px;color:#e8609a;background:rgba(255,179,200,0.3);padding:3px 8px;border-radius:10px">★ ADOPT</span>
-      <span style="font-size:7px;color:#7c5cbf;background:rgba(196,180,255,0.3);padding:3px 8px;border-radius:10px">♡ GROW</span>
-      <span style="font-size:7px;color:#3daa60;background:rgba(180,240,180,0.3);padding:3px 8px;border-radius:10px">🌸 GLOW</span>
-    </div>
-  </div>
-  <button class="bigbtn" id="b0">▶ ADOPT YOUR KITTY</button>
+<!-- BROWSER CHROME -->
+<div id="chrome">
+  <div class="ch-arr">&#9664;</div><div class="ch-arr">&#9664;</div>
+  <div class="ch-bar">&#128269; kitty-cafe-tamagotchi.freaque</div>
+  <div class="ch-arr">&#9664;</div><div class="ch-arr">&#9654;</div>
 </div>
 
-<!-- NAME -->
-<div class="page" id="pg1">
-  <div style="display:flex;flex-direction:column;align-items:center;width:100%;gap:8px">
-    <div class="hdg">NAME YOUR KITTEN ♡</div>
-    <div style="position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center">
-      <div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(255,182,193,0.45) 0%,transparent 70%);border-radius:50%"></div>
-      <canvas id="c1" width="80" height="80" class="bnc" style="image-rendering:pixelated;width:80px;height:80px;display:block;position:relative;z-index:1"></canvas>
-    </div>
-    <input id="namein" type="text" maxlength="10" placeholder="enter name...">
-    <div class="sub">they grow a little every day ♡</div>
-  </div>
-  <button class="bigbtn" id="b1">NEXT ▶</button>
+<!-- TITLE -->
+<div id="title-area">
+  <div class="g-title"><span class="t-or">KITTY</span> <span class="t-ol">CAF&#201;</span><br><span class="t-lv">&#10022; TAMAGOTCHI &#10022;</span></div>
+  <div class="g-sub">adopt a kitten &middot; watch them grow<br>feed &#128155; glow &middot; play &middot; love &#9825;</div>
 </div>
 
-<!-- CAT PICK -->
-<div class="page" id="pg2">
-  <div style="width:100%">
-    <div class="hdg">CHOOSE YOUR KITTEN</div>
-    <div class="sub" style="margin-bottom:8px">all genders welcome ♡</div>
-    <div class="catgrid" id="catgrid"></div>
-  </div>
-  <button class="bigbtn" id="b2">NEXT ▶</button>
+<!-- DAY STRIP -->
+<div id="daystrip">
+  <span class="dbadge">DAY <span id="d-day">1</span></span>
+  <span class="dname" id="d-name">KITTY</span>
+  <span class="abadge" id="d-age">TINY KITTEN</span>
 </div>
 
-<!-- ZODIAC -->
-<div class="page" id="pg3">
-  <div style="width:100%">
-    <div class="hdg">PICK THEIR BIRTH MONTH</div>
-    <div class="sub" style="margin-bottom:8px">shapes their whole personality ✨</div>
-    <div class="zodgrid" id="zodgrid"></div>
-    <div id="zdesc" style="font-size:6px;color:#a07090;text-align:center;line-height:1.8;margin-top:8px;min-height:20px;background:rgba(255,255,255,0.55);padding:6px 8px;border-radius:10px"></div>
-  </div>
-  <button class="bigbtn" id="b3">ADOPT ▶▶</button>
+<!-- ROOM -->
+<div id="room-wrap">
+  <canvas id="room-canvas"></canvas>
+  <div id="sparkles"></div>
+  <div id="speech-bubble">mrrp~ &#128149;</div>
 </div>
 
-<!-- MAIN GAME -->
-<div class="page" id="pg4">
-  <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:4px">
-    <div><div id="gname" style="font-size:8px;color:#e8609a">KITTY</div><div id="gzod" style="font-size:6px;color:#a07090">♈ ARIES</div></div>
-    <div style="text-align:right"><div style="font-size:6px;color:#d4940a">★ LVL <span id="glv">1</span></div><div style="font-size:6px;color:#9070b0">DAY <span id="gday">1</span></div></div>
+<!-- ACTIONS -->
+<div id="actions">
+  <button class="abtn btn-feed" id="btn-feed">
+    <span class="abtn-bow">&#127890;</span><span class="abtn-i">&#127858;</span>FEED
+  </button>
+  <button class="abtn btn-play" id="btn-play">
+    <span class="abtn-bow">&#127890;</span><span class="abtn-i">&#127905;</span>PLAY
+  </button>
+  <button class="abtn btn-love" id="btn-love">
+    <span class="abtn-bow">&#128144;</span><span class="abtn-i">&#128149;</span>LOVE/GLOW
+  </button>
+</div>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="sr"><span class="sr-i">&#128149;</span><span class="sr-l">MOOD</span><div class="sr-t"><div class="sr-f f-mood" id="sf-mood" style="width:80%"></div></div><span class="sr-v" id="sv-mood">80</span></div>
+  <div class="sr"><span class="sr-i">&#127858;</span><span class="sr-l">HUNGRY</span><div class="sr-t"><div class="sr-f f-hungry" id="sf-hungry" style="width:70%"></div></div><span class="sr-v" id="sv-hungry">70</span></div>
+  <div class="sr"><span class="sr-i">&#10024;</span><span class="sr-l">GLOW</span><div class="sr-t"><div class="sr-f f-glow" id="sf-glow" style="width:60%"></div></div><span class="sr-v" id="sv-glow">60</span></div>
+  <div class="sr"><span class="sr-i">&#9889;</span><span class="sr-l">ENERGY</span><div class="sr-t"><div class="sr-f f-energy" id="sf-energy" style="width:75%"></div></div><span class="sr-v" id="sv-energy">75</span></div>
+</div>
+
+<!-- BOTTOM SECTION -->
+<div id="bottom">
+  <div id="tab-bar">
+    <button class="tab-btn on" id="tb-kitties" onclick="setTab('kitties')">KITTIES</button>
+    <button class="tab-btn" id="tb-cafe" onclick="setTab('cafe')">CAF&#201; DECOR</button>
   </div>
-  <div id="age-badge">🐱 TINY KITTEN · day 1</div>
-  <div id="dayclock">
-    <span style="font-size:8px">🌅</span>
-    <div id="clockbar"><div id="clockfill" style="width:0%"></div></div>
-    <span style="font-size:8px">🌙</span>
-    <span style="font-size:7px;color:#c0547a;min-width:32px;text-align:right" id="clocktime">6:00</span>
+  <div class="pill-row">
+    <button class="pill p-a" id="pl-a" style="color:#4a0820">&#10022; ADOPT</button>
+    <button class="pill p-g" id="pl-g" style="color:#1a4030">&#9825; GROW</button>
+    <button class="pill p-gw" id="pl-gw" style="color:#1a2060">&#10024; GLOW</button>
   </div>
-  <div style="width:100%;text-align:center;font-size:6px;color:#c8a0b8;margin-bottom:4px" id="slotlabel">🌅 MORNING</div>
-  <div style="flex:1;overflow-y:auto;width:100%;padding-bottom:4px" id="tabs">
-
-    <!-- HOME -->
-    <div id="th">
-      <div class="bubble" id="speech">mrrp~ ♡</div>
-      <div style="display:flex;justify-content:center;margin-bottom:4px;position:relative">
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:130px;height:130px;background:radial-gradient(circle,rgba(255,182,193,0.38) 0%,rgba(180,240,180,0.18) 50%,transparent 75%);border-radius:50%;pointer-events:none"></div>
-        <canvas id="cm" width="100" height="100" class="bnc" style="image-rendering:pixelated;width:100px;height:100px;cursor:pointer;display:block;position:relative;z-index:1"></canvas>
-      </div>
-      <div style="font-size:6px;color:#c8a0b8;text-align:center;margin-bottom:8px">tap to pet! ♡</div>
-      <div class="stat-panel">
-        <div class="srow"><span style="font-size:11px">💖</span><span style="font-size:6px;color:#e8609a;width:52px;flex-shrink:0">MOOD</span><div class="sbar"><div class="sfill" id="bm" style="width:80%;background:linear-gradient(90deg,#ffb3c8,#ff8fab)"></div></div><span id="vm" style="font-size:6px;color:#e8609a;margin-left:4px;width:16px;text-align:right">80</span></div>
-        <div class="srow"><span style="font-size:11px">🥤</span><span style="font-size:6px;color:#d4820a;width:52px;flex-shrink:0">HUNGRY</span><div class="sbar"><div class="sfill" id="bh" style="width:70%;background:linear-gradient(90deg,#ffe08a,#e8973a)"></div></div><span id="vh" style="font-size:6px;color:#d4820a;margin-left:4px;width:16px;text-align:right">70</span></div>
-        <div class="srow"><span style="font-size:11px">✨</span><span style="font-size:6px;color:#3daa60;width:52px;flex-shrink:0">GLOW</span><div class="sbar"><div class="sfill" id="bg2" style="width:90%;background:linear-gradient(90deg,#c8f0a0,#5ab870)"></div></div><span id="vg" style="font-size:6px;color:#3daa60;margin-left:4px;width:16px;text-align:right">90</span></div>
-        <div class="srow"><span style="font-size:11px">⚡</span><span style="font-size:6px;color:#7c5cbf;width:52px;flex-shrink:0">ENERGY</span><div class="sbar"><div class="sfill" id="be" style="width:60%;background:linear-gradient(90deg,#d0b8ff,#9070d0)"></div></div><span id="ve" style="font-size:6px;color:#7c5cbf;margin-left:4px;width:16px;text-align:right">60</span></div>
-      </div>
-      <div class="task-panel">
-        <span style="font-size:14px">⏳</span>
-        <div><div style="font-size:7px;color:#d4940a">DAILY TASKS</div><div style="font-size:6px;color:#c8a0b8;margin-top:2px"><span id="ggd">0</span>/3 games · <span id="gfd">0</span> meals</div></div>
-      </div>
-    </div>
-
-    <!-- CAFÉ -->
-    <div id="tc" style="display:none">
-      <div class="hdg">KITTY CAFÉ 🥤</div>
-      <div id="chint" style="font-size:6px;color:#a07090;text-align:center;margin-bottom:4px;line-height:1.8"></div>
-      <div id="timeslot" style="font-size:6px;color:#d4940a;text-align:center;margin-bottom:8px;padding:5px;background:rgba(255,230,120,0.2);border-radius:10px;border:1.5px solid rgba(255,209,100,0.4)"></div>
-      <div class="foodgrid" id="fg"></div>
-      <div style="font-size:5px;color:#c8a0b8;text-align:center;margin-top:4px;line-height:2">🌅 morning · ☀️ afternoon · 🌙 evening rotates!</div>
-    </div>
-
-    <!-- GLOW / SKINCARE -->
-    <div id="tg" style="display:none">
-      <div class="hdg">SKINCARE RITUAL ✨</div>
-      <div id="ghint" style="font-size:6px;color:#a07090;text-align:center;margin-bottom:4px;line-height:1.8"></div>
-      <div class="tip-box" id="sc-pref">💆 gentle products only!</div>
-      <div id="glow-stage">
-        <div id="glow-aura"></div>
-        <canvas id="layer-base"  class="cat-layer" width="160" height="160"></canvas>
-        <canvas id="layer-coat"  class="cat-layer" width="160" height="160"></canvas>
-        <canvas id="layer-blush" class="cat-layer" width="160" height="160"></canvas>
-        <canvas id="layer-eyes"  class="cat-layer" width="160" height="160"></canvas>
-        <canvas id="layer-dirt"  class="cat-layer" width="160" height="160"></canvas>
-        <canvas id="layer-glow"  class="cat-layer" width="160" height="160"></canvas>
-        <div style="position:absolute;bottom:4px;right:4px;font-size:9px;background:rgba(255,143,171,0.85);padding:2px 5px;color:white;pointer-events:none;border-radius:8px;z-index:10">tap 👆</div>
-      </div>
-      <div style="width:100%;background:rgba(255,255,255,0.65);border:1.5px solid rgba(196,180,255,0.4);border-radius:10px;padding:5px 10px;margin-bottom:8px">
-        <div style="display:flex;flex-direction:column;gap:5px">
-          <div class="skin-row"><span style="font-size:6px;color:#60b8ff;width:72px;flex-shrink:0">💧 HYDRATION</span><div class="skin-track"><div class="skin-fill" id="fill-hydration" style="width:70%"></div></div><span style="font-size:6px;color:#60b8ff;width:20px;text-align:right" id="val-hydration">70</span></div>
-          <div class="skin-row"><span style="font-size:6px;color:#80d040;width:72px;flex-shrink:0">🌿 CLARITY</span><div class="skin-track"><div class="skin-fill" id="fill-clarity" style="width:55%"></div></div><span style="font-size:6px;color:#80d040;width:20px;text-align:right" id="val-clarity">55</span></div>
-          <div class="skin-row"><span style="font-size:6px;color:#ff90d0;width:72px;flex-shrink:0">🌸 GLOW</span><div class="skin-track"><div class="skin-fill" id="fill-sglow" style="width:40%"></div></div><span style="font-size:6px;color:#ff90d0;width:20px;text-align:right" id="val-sglow">40</span></div>
-          <div class="skin-row"><span style="font-size:6px;color:#ffb040;width:72px;flex-shrink:0">⭐ RADIANCE</span><div class="skin-track"><div class="skin-fill" id="fill-radiance" style="width:30%"></div></div><span style="font-size:6px;color:#ffb040;width:20px;text-align:right" id="val-radiance">30</span></div>
+  <div id="tab-content">
+    <!-- KITTIES -->
+    <div class="tc-panel on" id="tc-kitties">
+      <div id="diary-elg">
+        <div id="growth-diary">
+          <div class="dt">&#10022; GROWTH DIARY &#10022;</div>
+          <div id="growth-stages"></div>
+        </div>
+        <div id="elg-panel">
+          <div class="elg-t">EMOTIONAL<br>LABOR<br>GAUGES</div>
+          <div class="elg-r">
+            <div class="elg-l">&#128543; Caregiver Fatigue</div>
+            <div class="elg-tr"><div class="elg-f ef-fat" id="ef-fat" style="width:20%"></div></div>
+          </div>
+          <div class="elg-r">
+            <div class="elg-l">&#128149; Bond Strength</div>
+            <div class="elg-tr"><div class="elg-f ef-bond" id="ef-bond" style="width:35%"></div></div>
+          </div>
+          <div class="elg-note">The real emotional labor of nurturing is real. Use Care Actions carefully.</div>
         </div>
       </div>
-      <div class="sc-tabs">
-        <button class="sc-tab on" id="sct-apply" onclick="scTab('apply')">💆 APPLY</button>
-        <button class="sc-tab" id="sct-routine" onclick="scTab('routine')">📋 ROUTINE</button>
-        <button class="sc-tab" id="sct-tips" onclick="scTab('tips')">📖 TIPS</button>
-      </div>
-      <div id="scp-apply"><div class="foodgrid" id="sg"></div></div>
-      <div id="scp-routine" style="display:none">
-        <div style="font-size:7px;color:#a07090;text-align:center;margin-bottom:6px;line-height:1.8">apply in correct order for bonus glow! 🌸<br>cleanse→tone→serum→moisturise</div>
-        <div class="routine-track" id="routine-track"><span style="font-size:6px;color:#c8a0b8">steps appear here...</span></div>
-        <div style="display:flex;gap:8px;justify-content:center">
-          <button onclick="checkRoutine()" style="background:rgba(255,143,171,0.88);color:white;border:2.5px solid #e8609a;font-family:'Press Start 2P',monospace;font-size:7px;padding:10px 14px;border-radius:14px;cursor:pointer">CHECK ✓</button>
-          <button onclick="clearRoutine()" style="background:rgba(255,255,255,0.75);color:#c8a0b8;border:1.5px solid rgba(200,160,180,0.4);font-family:'Press Start 2P',monospace;font-size:7px;padding:10px 14px;border-radius:14px;cursor:pointer">RESET ✗</button>
-        </div>
-      </div>
-      <div id="scp-tips" style="display:none"><div id="sc-tips-list"></div></div>
     </div>
-
-    <!-- PLAY -->
-    <div id="tp" style="display:none">
-      <div class="hdg">MINI GAMES 🎮</div>
-      <div style="font-size:6px;color:#a07090;text-align:center;margin-bottom:10px;line-height:2">play 3 daily to keep them happy ♡</div>
-      <div id="gl"></div>
-    </div>
-
-    <!-- STORIES -->
-    <div id="ts" style="display:none">
-      <div class="hdg">📖 STORY & TIPS</div>
-      <div id="shint" style="font-size:6px;color:#a07090;text-align:center;margin-bottom:8px;line-height:1.8"></div>
-      <div id="el"></div>
+    <!-- CAFE DECOR (placeholder) -->
+    <div class="tc-panel" id="tc-cafe">
+      <div style="padding:12px;font-size:clamp(6px,1.6vw,7px);color:var(--txts);text-align:center;line-height:2">Coming soon!<br>Unlock café furniture<br>as your bond grows &#128149;</div>
     </div>
   </div>
-  <div class="nav">
-    <button class="navbtn on" id="nh"><span style="font-size:14px">🏠</span>HOME</button>
-    <button class="navbtn" id="nc"><span style="font-size:14px">🥤</span>CAFÉ</button>
-    <button class="navbtn" id="ng"><span style="font-size:14px">✨</span>GLOW</button>
-    <button class="navbtn" id="np"><span style="font-size:14px">🎮</span>PLAY</button>
-    <button class="navbtn" id="ns"><span style="font-size:14px">📖</span>STORY</button>
+</div>
+
+<!-- ADOPT CTA -->
+<button id="adopt-cta">&#9658; ADOPT YOUR KITTY</button>
+
+<!-- BOTTOM NAV BAR -->
+<div id="bot-bar">
+  <div class="bot-arr">&#9664;</div><div class="bot-arr">&#9664;</div>
+  <div class="bot-search">&#128269;</div>
+  <div class="bot-dots"><div class="bot-dot on"></div><div class="bot-dot"></div><div class="bot-dot"></div></div>
+  <div class="bot-arr">&#9654;</div><div class="bot-arr">&#9654;</div>
+</div>
+
+<!-- FULL-SCREEN PANEL OVERLAY -->
+<div id="panel-overlay">
+  <div id="po-head">
+    <div id="po-title">PANEL</div>
+    <button id="po-close">&#10005; CLOSE</button>
   </div>
+  <div id="po-body"></div>
+</div>
+
+<!-- MINIGAME SCREEN -->
+<div id="mg-screen">
+  <div id="mg-title">GAME</div>
+  <div class="hp-row" id="mg-hp"></div>
+  <div class="mg-progress"><div class="mg-prog-fill" id="mg-prog" style="width:0%"></div></div>
+  <div class="mg-prompt" id="mg-prompt"></div>
+  <div id="mg-content" style="width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;gap:7px"></div>
+  <button class="mg-close-btn" id="mg-close-btn">&#10005; QUIT</button>
 </div>
 
 <!-- POPUP -->
 <div id="popup">
-  <div id="popup-icon">🌟</div>
-  <div id="popup-title">MILESTONE!</div>
-  <div id="popup-body">something happened!</div>
-  <div id="popup-tip"></div>
-  <button id="popup-close">✓ GOT IT!</button>
-</div>
-
-<!-- MINI GAME -->
-<div id="mgo">
-  <div id="mgt" style="font-size:10px;color:#e8609a;text-align:center;margin-bottom:4px;position:relative;z-index:1"></div>
-  <span class="hearts" id="mghp">💖💖💖</span>
-  <div class="progress-bar"><div class="progress-fill" id="mgprog" style="width:0%"></div></div>
-  <div id="mginner" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:6px;position:relative;z-index:1"></div>
-  <button id="mgq" style="background:rgba(255,255,255,0.75);color:#c8a0b8;border:1.5px solid rgba(200,160,180,0.4);padding:9px 14px;font-size:7px;cursor:pointer;border-radius:10px;font-family:'Press Start 2P',monospace;margin-top:4px;position:relative;z-index:1">quit ✗</button>
+  <div id="pu-ico">&#127775;</div>
+  <div id="pu-title">MILESTONE!</div>
+  <div id="pu-body">something happened!</div>
+  <div id="pu-tip"></div>
+  <button id="pu-close">GOT IT &#128149;</button>
 </div>
 
 <div id="toast"></div>
 </div>
 
 <script>
-// ── AUDIO ─────────────────────────────────────────────────────────
-var AC=null;
-function iA(){if(AC)return;try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}
-function pT(f,t,d,v,dl){if(!AC)return;try{var o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type=t||'sine';o.frequency.setValueAtTime(f,AC.currentTime+(dl||0));g.gain.setValueAtTime(0,AC.currentTime+(dl||0));g.gain.linearRampToValueAtTime(v||0.1,AC.currentTime+(dl||0)+0.02);g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+(dl||0)+d);o.start(AC.currentTime+(dl||0));o.stop(AC.currentTime+(dl||0)+d+0.05);}catch(e){}}
-function sPet(){iA();[600,800,1000].forEach(function(f,i){pT(f,'sine',0.15,0.1,i*0.1);});}
-function sEat(){iA();[400,500,700].forEach(function(f,i){pT(f,'sine',0.12,0.1,i*0.08);});}
-function sSC(){iA();[800,1000,1200,1600].forEach(function(f,i){pT(f,'sine',0.18,0.1,i*0.09);});}
-function sWin(){iA();[500,650,800,1000,1200].forEach(function(f,i){pT(f,'sine',0.15,0.1,i*0.08);});}
-function sLvl(){iA();[400,500,600,800,1000,1300].forEach(function(f,i){pT(f,'sine',0.2,0.12,i*0.1);});}
-function sPopup(){iA();pT(700,'sine',0.25,0.12);pT(900,'sine',0.25,0.1,0.15);pT(1100,'sine',0.3,0.09,0.3);}
-function sTap(){iA();pT(1400,'sine',0.07,0.06);pT(1800,'sine',0.05,0.05,0.04);}
-function sFail(){iA();pT(350,'sine',0.2,0.1);pT(280,'sine',0.18,0.08,0.12);}
+// ── PIXEL CAT RENDERER ───────────────────────────────────────────────────────
+function drawCat(canvas, opts) {
+  if (!canvas) return;
+  opts = opts || {};
+  var stage = opts.stage || 0, mood = opts.mood || 'happy', color = opts.color || 0;
+  var ctx = canvas.getContext('2d'); var W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H); ctx.imageSmoothingEnabled = false;
+  var pals = [
+    {b:'#8878c0',bel:'#d0cce8',ear:'#d8b0cc',n:'#e880a8',eye:'#2a1a5a'},
+    {b:'#d08040',bel:'#f8d0a0',ear:'#e89060',n:'#c84820',eye:'#2a1000'},
+    {b:'#3a3a3a',bel:'#808080',ear:'#555555',n:'#e080a0',eye:'#50a030'},
+    {b:'#e8d0b8',bel:'#fffaf4',ear:'#f0b8a8',n:'#d08070',eye:'#5a7090'},
+    {b:'#c07848',bel:'#f0d8a8',ear:'#d09060',n:'#b85838',eye:'#406028'},
+    {b:'#90b8d0',bel:'#d8eef8',ear:'#c0d4e8',n:'#d09098',eye:'#3a5a80'}
+  ];
+  var p = pals[color % pals.length];
+  var scl = [.42,.58,.72,.88,.94][stage] || .72;
+  var s = (Math.min(W,H)/32) * scl;
+  var cx = W/2, cy = H*.60;
+  function px(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(~~(cx+x*s),~~(cy+y*s),Math.max(1,~~(w*s)),Math.max(1,~~(h*s)));}
+  ctx.fillStyle='rgba(140,90,180,.14)';ctx.beginPath();ctx.ellipse(~~cx,~~(cy+10*s),~~(8*s),~~(3*s),0,0,Math.PI*2);ctx.fill();
+  px(-6,0,12,9,p.b);px(-4,2,8,6,p.bel);
+  px(-7,-12,14,13,p.b);px(-6,-13,12,2,p.b);px(-5,-14,10,2,p.b);px(-4,-15,8,1,p.b);
+  px(-8,-11,2,8,p.b);px(6,-11,2,8,p.b);
+  px(-7,-15,3,4,p.b);px(-6,-17,2,3,p.b);px(-5,-18,1,2,p.b);px(-6,-14,2,2,p.ear);
+  px(4,-15,3,4,p.b);px(4,-17,2,3,p.b);px(5,-18,1,2,p.b);px(4,-14,2,2,p.ear);
+  px(-4,-3,8,5,p.bel);px(-5,-2,10,4,p.bel);
+  ctx.fillStyle='#fff';ctx.fillRect(~~(cx-6*s),~~(cy-10*s),~~(5*s),~~(5*s));ctx.fillRect(~~(cx+1*s),~~(cy-10*s),~~(5*s),~~(5*s));
+  ctx.fillStyle=p.eye;ctx.fillRect(~~(cx-5*s),~~(cy-9*s),~~(3*s),~~(3*s));ctx.fillRect(~~(cx+2*s),~~(cy-9*s),~~(3*s),~~(3*s));
+  ctx.fillStyle='#fff';ctx.fillRect(~~(cx-4*s),~~(cy-10*s),~~s,~~s);ctx.fillRect(~~(cx+3*s),~~(cy-10*s),~~s,~~s);
+  if(mood==='sad'){ctx.fillStyle=p.b;ctx.fillRect(~~(cx-7*s),~~(cy-12*s),~~(2*s),~~s);ctx.fillRect(~~(cx-5*s),~~(cy-13*s),~~(3*s),~~s);ctx.fillRect(~~(cx+2*s),~~(cy-13*s),~~(3*s),~~s);ctx.fillRect(~~(cx+5*s),~~(cy-12*s),~~(2*s),~~s);}
+  else{ctx.fillStyle=p.b;ctx.fillRect(~~(cx-6*s),~~(cy-12*s),~~(5*s),~~s);ctx.fillRect(~~(cx+1*s),~~(cy-12*s),~~(5*s),~~s);}
+  px(-1,-2,2,2,p.n);
+  if(mood==='happy'){px(-2,-1,5,1,p.n);px(-3,0,2,1,p.n);px(1,0,2,1,p.n);}
+  else if(mood==='sad'){px(-2,0,5,1,p.n);px(-3,-1,2,1,p.n);px(1,-1,2,1,p.n);}
+  else{px(-2,-1,4,1,p.n);}
+  ctx.fillStyle='rgba(80,50,110,.32)';
+  [[-8*s,-3*s,4*s],[-8*s,-2*s,3*s],[-8*s,-1*s,3.5*s],[-8*s,0,2.8*s]].forEach(function(w){ctx.fillRect(~~(cx+w[0]),~~(cy+w[1]),~~w[2],1);});
+  [[4*s,-3*s,4*s],[4*s,-2*s,3*s],[4*s,-1*s,3.5*s],[4*s,0,2.8*s]].forEach(function(w){ctx.fillRect(~~(cx+w[0]),~~(cy+w[1]),~~w[2],1);});
+  px(6,2,3,4,p.b);px(7,-1,3,4,p.b);px(8,-3,2,3,p.b);px(8,-4,2,2,p.bel);
+  px(-5,8,4,4,p.b);px(-4,11,4,2,p.bel);px(1,8,4,4,p.b);px(1,11,4,2,p.bel);px(-6,5,3,5,p.b);px(3,5,3,5,p.b);
+}
 
-// ── TAP FX ─────────────────────────────────────────────────────────
-var fxE=['✨','💖','🌸','⭐','💕','🌟','🫧','💗','✦'];
-document.addEventListener('click',function(e){
-  if(!e.target.closest('#app'))return;sTap();
-  for(var i=0;i<3;i++){(function(ii){setTimeout(function(){
-    var el=document.createElement('div');el.className='tapfx';
-    el.style.cssText='left:'+(e.clientX+(Math.random()-0.5)*50)+'px;top:'+(e.clientY+(Math.random()-0.5)*50)+'px;font-size:'+(10+~~(Math.random()*10))+'px';
-    el.textContent=fxE[~~(Math.random()*fxE.length)];document.body.appendChild(el);
-    setTimeout(function(){if(el.parentNode)el.remove();},750);},ii*70);})(i);}
-});
+// ── ROOM RENDERER ────────────────────────────────────────────────────────────
+var roomF = 0;
+function drawRoom() {
+  var cv = document.getElementById('room-canvas'); if (!cv) return;
+  var W = cv.parentElement.offsetWidth, H = cv.parentElement.offsetHeight;
+  if (cv.width !== W) { cv.width = W; cv.height = H; }
+  var ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.clearRect(0,0,W,H);
+  var bg = ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#f4eeff');bg.addColorStop(1,'#e4fff6');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // wallpaper dots
+  ctx.fillStyle='rgba(200,168,228,.1)';for(var wx=10;wx<W;wx+=22)for(var wy=10;wy<H*.6;wy+=20){ctx.fillRect(wx,wy,3,3);ctx.fillRect(wx+3,wy-3,2,3);ctx.fillRect(wx+6,wy,3,3);}
+  var flY = H*.62;
+  // floor
+  ctx.fillStyle='#eee4ff';ctx.fillRect(0,flY,W,H-flY);
+  ctx.strokeStyle='rgba(190,160,220,.28)';ctx.lineWidth=1;for(var fx=0;fx<W;fx+=18){ctx.beginPath();ctx.moveTo(fx,flY);ctx.lineTo(fx,H);ctx.stroke();}
+  ctx.strokeStyle='rgba(180,148,218,.4)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,flY);ctx.lineTo(W,flY);ctx.stroke();
+  // wall
+  ctx.fillStyle='rgba(250,248,255,.6)';ctx.fillRect(0,0,W,flY);
+  // window
+  var wX=W*.54,wY=H*.07,wW=W*.3,wH=H*.3;
+  ctx.fillStyle='#d4eef8';ctx.fillRect(wX,wY,wW,wH);ctx.strokeStyle='#b0a0c8';ctx.lineWidth=3;ctx.strokeRect(wX,wY,wW,wH);
+  ctx.strokeStyle='#b0a0c8';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(wX+wW/2,wY);ctx.lineTo(wX+wW/2,wY+wH);ctx.stroke();ctx.beginPath();ctx.moveTo(wX,wY+wH/2);ctx.lineTo(wX+wW,wY+wH/2);ctx.stroke();
+  ctx.fillStyle='rgba(248,190,220,.5)';ctx.fillRect(wX-9,wY-4,13,wH+8);ctx.fillRect(wX+wW-4,wY-4,13,wH+8);
+  // wall frames
+  dFrame(ctx,W*.07,H*.1,28,26,'#fff8f0','#c4a8d8');dFrame(ctx,W*.07,H*.28,24,30,'#ffe8f0','#f0a8c8');
+  // hanging lights
+  ctx.strokeStyle='rgba(160,130,200,.4)';ctx.lineWidth=1;
+  [[.15,.28],[.3,.17],[.46,.24],[.62,.19],[.77,.28],[.88,.15]].forEach(function(bl){
+    var bh=bl[1]*H;ctx.beginPath();ctx.moveTo(bl[0]*W,0);ctx.lineTo(bl[0]*W,bh);ctx.stroke();
+    var gr=ctx.createRadialGradient(bl[0]*W,bh,0,bl[0]*W,bh,9);gr.addColorStop(0,'rgba(255,238,170,.85)');gr.addColorStop(1,'rgba(255,220,120,0)');ctx.fillStyle=gr;ctx.fillRect(bl[0]*W-9,bh-9,18,18);
+    ctx.fillStyle='#fffae0';ctx.beginPath();ctx.ellipse(bl[0]*W,bh+3,4,5,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#c8a040';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#c8a040';ctx.fillRect(bl[0]*W-2,bh-2,4,3);
+  });
+  // cushion platforms
+  var bob=Math.sin(roomF*.045)*4;
+  dCushion(ctx,W*.07,flY-52+bob,54,'#d4c0f0');
+  dCushion(ctx,W*.73,flY-66+Math.sin(roomF*.045+1.2)*4,54,'#b8d8f4');
+  // cats on cushions
+  if(G.cats.length>1){var mc1=document.createElement('canvas');mc1.width=34;mc1.height=30;drawCat(mc1,{stage:1,mood:'happy',color:G.cats[1]?G.cats[1].color:2});ctx.drawImage(mc1,~~(W*.07+27-17),~~(flY-52+bob-26),34,30);}
+  else{ctx.fillStyle='rgba(180,150,218,.35)';ctx.font='12px serif';ctx.textAlign='center';ctx.fillText('?',~~(W*.07+27),~~(flY-48+bob));}
+  if(G.cats.length>2){var mc2=document.createElement('canvas');mc2.width=34;mc2.height=30;drawCat(mc2,{stage:1,mood:'happy',color:G.cats[2]?G.cats[2].color:0});ctx.drawImage(mc2,~~(W*.73+27-17),~~(flY-66+Math.sin(roomF*.045+1.2)*4-26),34,30);}
+  else{ctx.fillStyle='rgba(180,150,218,.35)';ctx.font='12px serif';ctx.textAlign='center';ctx.fillText('?',~~(W*.73+27),~~(flY-60));}
+  // furniture
+  dIsoTable(ctx,W*.38,flY-22,54,22,'#ffcce0','#f0a8c8');
+  ctx.font=~~(W*.04)+'px serif';ctx.textAlign='center';ctx.fillText('🍵',W*.42,flY-26);ctx.fillText('🧋',W*.57,flY-26);
+  dSofa(ctx,W*.04,flY+2,W*.52,H-flY-10);
+  dScratch(ctx,W*.87,flY-10);
+  // floor items
+  ctx.font=~~(W*.038)+'px serif';ctx.fillText('🍚',W*.22,flY+15);ctx.fillText('💧',W*.33,flY+15);ctx.fillText('🧶',W*.67,flY+14);
+  // main cat
+  var catBob=Math.sin(roomF*.05)*5;
+  var stN=G.activeCat?G.activeCat.stage:0;
+  var catSz=~~(Math.min(W,H)*.23);var mc3=document.createElement('canvas');mc3.width=catSz;mc3.height=catSz;
+  drawCat(mc3,{stage:stN,mood:G.activeCat&&G.activeCat.mood>45?'happy':'sad',color:G.activeCat?G.activeCat.color:0});
+  ctx.drawImage(mc3,~~(W*.38-catSz/2),~~(flY-10+catBob-catSz*.72),catSz,catSz);
+  // tamagotchi
+  dTama(ctx,W*.5,H*.13,Math.min(W*.14,52));
+  // hearts & sparkles
+  dHearts(ctx,W,H);dSparkles(ctx,W,H);
+  roomF++;
+}
+function dFrame(ctx,x,y,w,h,fill,stroke){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h);ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;ctx.strokeRect(x+3,y+3,w-6,h-6);ctx.fillStyle=stroke;ctx.fillRect(x+w/2-4,y+h/2,8,6);ctx.fillRect(x+w/2-3,y+h/2-4,6,5);ctx.fillRect(x+w/2-4,y+h/2-5,2,3);ctx.fillRect(x+w/2+2,y+h/2-5,2,3);}
+function dCushion(ctx,x,y,w,col){var h=w*.32;ctx.fillStyle='rgba(140,90,180,.13)';ctx.beginPath();ctx.ellipse(x+w/2,y+h+5,w/2,5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=col;ctx.beginPath();ctx.roundRect(x,y,w,h,6);ctx.fill();ctx.fillStyle='rgba(255,255,255,.26)';ctx.beginPath();ctx.roundRect(x+3,y+3,w-6,h*.5,4);ctx.fill();ctx.strokeStyle='rgba(140,90,200,.32)';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x,y,w,h,6);ctx.stroke();ctx.fillStyle='rgba(140,90,200,.22)';[[4,4],[w-8,4],[4,h-8],[w-8,h-8]].forEach(function(d){ctx.fillRect(x+d[0],y+d[1],4,4);});}
+function dIsoTable(ctx,x,y,w,h,top,side){ctx.fillStyle=side;ctx.fillRect(x,y,w,h);ctx.fillStyle=top;ctx.fillRect(x,y-9,w,11);ctx.strokeStyle='rgba(0,0,0,.07)';ctx.lineWidth=1;ctx.strokeRect(x,y-9,w,h+9);ctx.fillStyle=side;ctx.fillRect(x+5,y+h,4,12);ctx.fillRect(x+w-9,y+h,4,12);}
+function dSofa(ctx,x,y,w,h){ctx.fillStyle='#ffb8d0';ctx.fillRect(x,y,w,h);ctx.fillStyle='rgba(255,255,255,.16)';ctx.fillRect(x+4,y+4,w-8,h*.4);ctx.fillStyle='#ffd0e0';[0,1,2].forEach(function(i){ctx.fillRect(x+5+i*(w/3-3),y+4,w/3-7,h*.55);});ctx.fillStyle='#f0a0c0';ctx.fillRect(x,y,8,h);ctx.fillRect(x+w-8,y,8,h);ctx.strokeStyle='rgba(210,130,160,.4)';ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.fillStyle='rgba(240,160,190,.22)';for(var si=0;si<2;si++){var sx2=x+28+si*78;ctx.fillRect(sx2,y+h*.62,8,6);ctx.fillRect(sx2+2,y+h*.56,4,7);ctx.fillRect(sx2,y+h*.56,3,4);ctx.fillRect(sx2+7,y+h*.56,3,4);}}
+function dScratch(ctx,x,y){ctx.fillStyle='#c8a870';ctx.fillRect(x-4,y,8,30);ctx.strokeStyle='#a07840';ctx.lineWidth=2;for(var sy=0;sy<30;sy+=4){ctx.beginPath();ctx.moveTo(x-4,y+sy);ctx.lineTo(x+4,y+sy);ctx.stroke();}ctx.fillStyle='#fffaf0';ctx.fillRect(x-10,y+30,20,6);ctx.fillRect(x-6,y-12,12,14);}
+function dTama(ctx,x,y,r){var gr=ctx.createRadialGradient(x,y,0,x,y,r*2.2);gr.addColorStop(0,'rgba(255,210,255,.55)');gr.addColorStop(1,'rgba(255,210,255,0)');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,r*2.2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f4dff8';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#9b7ab8';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#c4e8d4';ctx.fillRect(x-r*.5,y-r*.42,r,r*.72);ctx.strokeStyle='#9b7ab8';ctx.lineWidth=2;ctx.strokeRect(x-r*.5,y-r*.42,r,r*.72);ctx.fillStyle='#8878c0';ctx.fillRect(x-4,y-8,8,6);ctx.fillRect(x-3,y-11,6,4);ctx.fillRect(x-5,y-12,2,3);ctx.fillRect(x+3,y-12,2,3);ctx.fillStyle='#f0a8c8';[x-r*.35,x,x+r*.35].forEach(function(bx){ctx.beginPath();ctx.arc(bx,y+r*.52,r*.13,0,Math.PI*2);ctx.fill();});ctx.fillStyle='#9b7ab8';ctx.fillRect(x-2,y-r-9,4,11);ctx.strokeStyle='#9b7ab8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y-r-9,4,0,Math.PI*2);ctx.stroke();}
+function dHearts(ctx,W,H){var hts=[{x:.06,y:.16,c:'#d0d0f8',s:11},{x:.9,y:.22,c:'#c8f8e0',s:9},{x:.94,y:.5,c:'#fcc0d8',s:12},{x:.04,y:.46,c:'#f8f0b0',s:10},{x:.82,y:.8,c:'#d0c8f8',s:8}];hts.forEach(function(h,i){var al=.4+.5*Math.abs(Math.sin(roomF*.045+i*1.8));var b2=Math.sin(roomF*.05+i*2)*4;ctx.globalAlpha=al;var ps=Math.max(1,~~(h.s/5));ctx.fillStyle=h.c;var hx=h.x*W,hy=h.y*H+b2;ctx.fillRect(hx-2*ps,hy-ps,ps*2,ps);ctx.fillRect(hx,hy-ps,ps*2,ps);ctx.fillRect(hx-3*ps,hy,ps*6,ps);ctx.fillRect(hx-2*ps,hy+ps,ps*4,ps);ctx.fillRect(hx-ps,hy+2*ps,ps*2,ps);ctx.globalAlpha=1;});}
+function dSparkles(ctx,W,H){var sp=[[.09,.32],[.91,.2],[.04,.56],[.93,.62],[.44,.05],[.79,.44]];sp.forEach(function(s,i){var al=.3+.55*Math.abs(Math.sin(roomF*.06+i*1.4));ctx.globalAlpha=al;ctx.fillStyle=i%2===0?'#f0c840':'#c0a0e8';var sx=s[0]*W,sy=s[1]*H,ss=1.5+Math.abs(Math.sin(i))*.8;ctx.fillRect(sx-ss,sy,ss*2,1);ctx.fillRect(sx,sy-ss,1,ss*2);ctx.fillRect(sx-ss*.6,sy-ss*.6,2,2);ctx.fillRect(sx+ss*.6-2,sy-ss*.6,2,2);ctx.globalAlpha=1;});}
 
-// ── STARS ──────────────────────────────────────────────────────────
+// ── DATA ─────────────────────────────────────────────────────────────────────
+var ZODIAC = [
+  {s:'♈',n:'ARIES',m:'competitive',fav:'Spicy Mango Matcha',d:'Feisty and fierce. Craves bold flavors. Hates losing at anything, even napping.',ep:'Your Aries kitten has declared themself the main character. Boldly.'},
+  {s:'♉',n:'TAURUS',m:'cozy',fav:'Strawberry Cream Latte',d:'Comfort-obsessed. Will only nap on the softest pillow. Judges all food harshly.',ep:'Your Taurus kitten has located the warmest spot in the café and claimed it forever.'},
+  {s:'♊',n:'GEMINI',m:'social',fav:'Double Berry Fizz',d:'Chatty, curious, contradictory. Cravings shift every session. Two moods simultaneously.',ep:'Your Gemini kitten has opinions about everything and will share them all.'},
+  {s:'♋',n:'CANCER',m:'emotional',fav:'Moon Milk Chamomile',d:'Soft and sensitive. Needs comfort food and gentle care. Remembers every kindness.',ep:'Your Cancer kitten has memorized your schedule and is waiting by the door.'},
+  {s:'♌',n:'LEO',m:'extra',fav:'Gold Rush Sparkle',d:'Glamorous. Only the fanciest items will do. Genuinely believes the sun rises for them.',ep:'Your Leo kitten has arranged themselves for maximum photo opportunity.'},
+  {s:'♍',n:'VIRGO',m:'perfectionist',fav:'Matcha Clarity Shot',d:'Picky and precise. Right item at the right time only. Silent judgment is their love language.',ep:'Your Virgo kitten has reorganized the food bowls for optimal efficiency.'},
+  {s:'♎',n:'LIBRA',m:'balanced',fav:'Peach Harmony Blend',d:'Needs ALL stats perfectly balanced. Gets anxious when things are uneven.',ep:'Your Libra kitten cannot choose between two identical cushions. Both are perfect. Neither is selected.'},
+  {s:'♏',n:'SCORPIO',m:'secretive',fav:'Midnight Elderflower',d:'Intense. Earn their trust slowly. They know where you keep the treats.',ep:'Your Scorpio kitten has learned to open the treat cabinet. They are keeping this information private.'},
+  {s:'♐',n:'SAGITTARIUS',m:'restless',fav:'Tropical Storm Tea',d:'Free spirit. Hates routine. Incredibly fun, impossible to schedule.',ep:'Your Sagittarius kitten has discovered the concept of the open window.'},
+  {s:'♑',n:'CAPRICORN',m:'driven',fav:'Cold Brew Focus Shot',d:'Ambitious. Streak days matter to them personally. Very serious about nap goals.',ep:'Your Capricorn kitten has set a 30-day growth plan. Progress tracking begins immediately.'},
+  {s:'♒',n:'AQUARIUS',m:'eccentric',fav:'Lavender Cosmic Mist',d:'Quirky. Only rare items catch their attention. Lowkey judging all mainstream things.',ep:'Your Aquarius kitten refuses to use the expensive cat bed and sleeps in the box it came in.'},
+  {s:'♓',n:'PISCES',m:'dreamy',fav:'Butterfly Pea Dream',d:'Dreamy and intuitive. Anchor them with consistent care or they will simply float away.',ep:'Your Pisces kitten has been staring at something only they can see for 20 minutes.'}
+];
+
+var FOODS = [
+  {e:'🥛',n:'Oat Milk',d:'creamy & gentle',b:8,mb:4,g:2,ms:['cozy','emotional','dreamy']},
+  {e:'🍵',n:'Matcha Latte',d:'earthy & grounding',b:10,mb:5,g:6,ms:['perfectionist','driven','balanced']},
+  {e:'🧃',n:'Berry Juice',d:'fresh & bright',b:7,mb:6,g:3,ms:['competitive','social','restless']},
+  {e:'🥐',n:'Croissant',d:'buttery & flaky',b:14,mb:7,g:1,ms:['cozy','extra','balanced']},
+  {e:'🍓',n:'Strawberry Cake',d:'sweet & celebratory',b:16,mb:9,g:4,ms:['cozy','extra','emotional']},
+  {e:'☕',n:'Cozy Latte',d:'warm & comforting',b:12,mb:8,g:2,ms:['cozy','emotional','secretive']},
+  {e:'🧋',n:'Bubble Tea',d:'fun & surprising',b:15,mb:10,g:3,ms:['social','eccentric','restless']},
+  {e:'🍡',n:'Mochi Trio',d:'soft & dreamy',b:11,mb:8,g:5,ms:['dreamy','cozy','extra']},
+  {e:'🌸',n:'Sakura Drink',d:'rare & delicate',b:13,mb:12,g:8,ms:['dreamy','perfectionist','secretive']}
+];
+
+var SKINCARE = [
+  {e:'🧴',n:'Cleanser',ef:{hyd:18,cla:22,glo:5,rad:3},order:1,tip:'Always cleanse first! Removes the day. Cats need daily grooming too -- their tongue has tiny papillae like a brush!'},
+  {e:'💧',n:'Toner',ef:{hyd:20,cla:10,glo:8,rad:5},order:2,tip:'Pat toner in gently -- never rub! Hydrates and preps skin. Like giving your cat fresh water daily.'},
+  {e:'🌸',n:'Rose Serum',ef:{hyd:12,cla:8,glo:28,rad:18},order:3,tip:'2-3 drops only! High concentration actives. Serums are the powerhouse step -- do not skip!'},
+  {e:'✨',n:'Moisturizer',ef:{hyd:24,cla:8,glo:16,rad:12},order:4,tip:'Apply while skin is still damp! Locks in all the previous steps. Like brushing your cat weekly to distribute oils.'},
+  {e:'🌙',n:'Night Mask',ef:{hyd:30,cla:18,glo:22,rad:25},order:5,tip:'Last step! Overnight repair. Sleep on a silk pillow -- your cat knows this instinctively.'},
+  {e:'☀️',n:'SPF Mist',ef:{hyd:8,cla:5,glo:14,rad:20},order:6,tip:'SPF every day -- even cloudy days! UV is the #1 cause of visible ageing. Your cat avoids the midday sun for a reason.'}
+];
+
+var CAT_TIPS = [
+  {e:'🐱',t:'Cats groom themselves 3-5 hours a day. Their tongues have hollow spines that act like a comb AND distribute saliva for cooling. Absolute engineering.'},
+  {e:'💧',t:'Cats have a low thirst drive because their wild ancestors got most water from prey. Wet food or a fountain helps keep them hydrated. Fresh water daily is non-negotiable.'},
+  {e:'😴',t:'Kittens sleep 18-20 hours a day. This is not laziness -- it is when growth hormone is released. Sleep is literally how they grow.'},
+  {e:'🪮',t:'Brush your cat weekly. It reduces hairballs by 70%, strengthens your bond, and lets you spot skin changes early. Long-hair cats need daily brushing.'},
+  {e:'💖',t:'Slow blinking at your cat means "I love you" in cat language. Wait for them to slow blink back. It builds trust measurably over time.'},
+  {e:'🎮',t:'Adult cats need 15-20 minutes of active play daily. This prevents boredom, obesity, and destructive behaviour. Wand toys engage their prey drive best.'},
+  {e:'🍽️',t:'Cats are obligate carnivores. They cannot synthesize taurine, which is found only in animal tissue. A plant-based diet will make a cat very unwell.'},
+  {e:'📅',t:'Senior cats (7+) need vet visits every 6 months. Many conditions -- kidney disease, hyperthyroidism -- are completely manageable when caught early.'},
+  {e:'🌡️',t:'A cat\'s normal body temperature is 101-102.5°F (38.3-39.2°C). Ears that feel hot plus lethargy can indicate fever. Know your cat\'s baseline.'}
+];
+
+var EPISODES = [
+  {id:0,req:1,t:'Day 1: The Arrival',e:'🏠',tip:'Cats need 1-2 weeks to adjust to a new home. Give them a small safe room first.',d:'You open the carrier and there they are -- a tiny kitten blinking up at you with enormous eyes. You are already completely in love. They are terrified. This is fine. This is the beginning.'},
+  {id:1,req:2,t:'Day 2: First Smoothie',e:'🥤',tip:'Never give real cats cow milk -- most are lactose intolerant after kittenhood!',d:'Tiny paws drag them toward the café counter. They sniff every single item with intense suspicion. Eventually: one tentative, deliberate sip. They sit back. They have opinions.'},
+  {id:2,req:3,t:'Day 3: Skincare Begins',e:'✨',tip:'Cats benefit from regular grooming checks -- skin, ears, paws, and teeth.',d:'You introduce the gentle cleanser. They immediately try to eat it. After significant negotiation, one full skincare routine is completed. They look three times as cute. You take seventeen photos.'},
+  {id:3,req:5,t:'Day 5: Growing Fast',e:'📏',tip:'Kittens need 3-4 small meals a day. Adults do well with 2 measured meals.',d:'They have visibly grown. Their paws are still slightly too large for their body. They look you directly in the eyes and meow with surprising authority. You give them a treat immediately.'},
+  {id:4,req:7,t:'One Week Together',e:'🎉',tip:'Cats are 60% water by body weight -- hydration is critical for kidney health!',d:'One whole week. They have a favourite cushion. They have preferences. They have a whole personality. You would not change a single thing about them.'},
+  {id:5,req:10,t:'The Rival Appears',e:'😤',tip:'Slow blink at your cat to say I love you. Wait for them to blink back.',d:'A suspiciously well-groomed rival cat has appeared near the café. Your kitten clocks them immediately. They proceed to begin a spontaneous and very thorough skincare routine. Unprompted. Motivated.'},
+  {id:6,req:14,t:'Two Weeks of Glow',e:'🌟',tip:'Regular brushing distributes natural oils and makes their coat visibly shinier.',d:'Two weeks of consistent skincare has had a measurable impact. Their coat shimmers. Strangers comment. The rival cat has not been seen since.'},
+  {id:7,req:20,t:'The Zodiac Awakens',e:'⭐',tip:'Cats are crepuscular -- most active at dawn and dusk, not nocturnal.',d:'Something has shifted. On day 20, your kitten orders their signature zodiac drink with complete and absolute confidence. A new era has begun.'},
+  {id:8,req:25,t:'Senior Wisdom',e:'👑',tip:'Senior cats need vet visits every 6 months. Early detection changes everything.',d:'They have grown into something wise and regal. The café is their domain. They survey it with quiet satisfaction. You are deeply honoured to share their space.'},
+  {id:9,req:30,t:'The Grand Smoothie Gala',e:'🏆',tip:'The happiest cats have routine, play, affection, and good nutrition. That is the whole secret.',d:'The Grand Smoothie Gala. Day 30. Your kitten walks in with 30 days of consistent skincare, a full zodiac storyline, and the bearing of a creature who has absolutely figured it out. They win. Obviously.'}
+];
+
+var MINIGAMES = [
+  {id:'quiz',t:'Zodiac Quiz',d:'Match your cat\'s mood to the right item!',e:'🔮',type:'quiz'},
+  {id:'seq',t:'Skincare Sequence',d:'Tap steps in the correct order for a bonus glow!',e:'✨',type:'seq'},
+  {id:'stars',t:'Star Catcher',d:'Tap the falling stars before they disappear!',e:'⭐',type:'stars'}
+];
+
+// ── GAME STATE ────────────────────────────────────────────────────────────────
+var SKIN = {hyd:70, cla:55, glo:40, rad:30};
+var skinRoutine = [];
+var G = {
+  cats: [],
+  activeCat: null,
+  day: 1,
+  gamesPlayed: 0,
+  mealsToday: 0,
+  completedEps: [],
+  lv: 1
+};
+
+// helper: make a cat object
+function makeCat(name, color, zodIdx) {
+  return {
+    name: name || 'KITTY',
+    color: color || 0,
+    zodIdx: zodIdx || 0,
+    mood: 80, hungry: 70, glow: 60, energy: 75,
+    stage: 0,
+    age: 1
+  };
+}
+
+// default first cat
+G.cats.push(makeCat('KITTY', 0, 0));
+G.activeCat = G.cats[0];
+
+function getZod() { return ZODIAC[G.activeCat ? G.activeCat.zodIdx : 0]; }
+function getStageObj() {
+  var d = G.activeCat ? G.activeCat.age : 1;
+  if(d<=3)return{name:'TINY KITTEN',stage:0};if(d<=8)return{name:'YOUNG CAT',stage:1};if(d<=15)return{name:'TEEN CAT',stage:2};if(d<=25)return{name:'ADULT CAT',stage:3};return{name:'SENIOR CAT',stage:4};
+}
+
+// ── UI UPDATE ─────────────────────────────────────────────────────────────────
+function updUI() {
+  var ac = G.activeCat;
+  document.getElementById('d-day').textContent = G.day;
+  document.getElementById('d-name').textContent = ac ? ac.name : 'KITTY';
+  document.getElementById('d-age').textContent = getStageObj().name;
+  setBar('sf-mood','sv-mood', ac?ac.mood:0);
+  setBar('sf-hungry','sv-hungry', ac?ac.hungry:0);
+  setBar('sf-glow','sv-glow', ac?ac.glow:0);
+  setBar('sf-energy','sv-energy', ac?ac.energy:0);
+  setBar('ef-fat',null, Math.min(100, G.cats.length*12 + G.day*2));
+  setBar('ef-bond',null, Math.min(100, G.completedEps.length*8 + G.mealsToday*5));
+  buildDiary();
+  if(ac) { ac.stage = getStageObj().stage; }
+}
+function setBar(fi,vi,v){var f=document.getElementById(fi);if(f)f.style.width=Math.min(100,Math.max(0,~~v))+'%';if(vi){var el=document.getElementById(vi);if(el)el.textContent=~~v;}}
+
+function buildDiary() {
+  var el = document.getElementById('growth-stages'); if (!el) return; el.innerHTML='';
+  var stages=[{name:'TINY KITTEN',day:1,stage:0},{name:'YOUNG CAT',day:4,stage:1},{name:'TEEN CAT',day:9,stage:2},{name:'ADULT CAT',day:16,stage:3},{name:'SENIOR CAT',day:26,stage:4}];
+  var d = G.activeCat ? G.activeCat.age : 1;
+  stages.forEach(function(st){
+    var row=document.createElement('div');var cur=getStageObj().name===st.name,lk=d<st.day;
+    row.className='s-row'+(cur?' cur':'')+(lk?' lk':'');
+    var c=document.createElement('canvas');c.className='sc';c.width=28;c.height=24;drawCat(c,{stage:st.stage,mood:'happy',color:G.activeCat?G.activeCat.color:0});
+    var info=document.createElement('div');info.className='si';info.innerHTML='<div class="sn">'+st.name+'</div><div class="sd">day '+st.day+'+'+(lk?' 🔒':'')+'</div>';
+    row.appendChild(c);row.appendChild(info);el.appendChild(row);
+  });
+}
+
+// ── SPEECH ────────────────────────────────────────────────────────────────────
+var SPEECHES = ['mrrp~ ♡','*slow blinks at you*','snack time??','skincare hour ✨','purring so loud rn','main character energy','*kneads your heart*','so cozy rn','lowkey obsessed with you','do you hear that? me neither. purring.'];
+function showSpeech() {
+  var el=document.getElementById('speech-bubble');if(!el)return;
+  var ac=G.activeCat;
+  var s=SPEECHES[~~(Math.random()*SPEECHES.length)];
+  if(ac){if(ac.hungry<30)s='so hungry rn... 🥺';else if(ac.glow<25)s='my pores!! skincare NOW';else if(ac.mood<30)s='feeling a lil sad...';}
+  el.textContent=s;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},3200);
+}
+setInterval(showSpeech, 7000); setTimeout(showSpeech, 3000);
+
+// ── PANEL SYSTEM ──────────────────────────────────────────────────────────────
+function openPanel(title, buildFn) {
+  document.getElementById('po-title').textContent = title;
+  var body = document.getElementById('po-body'); body.innerHTML = '';
+  buildFn(body);
+  document.getElementById('panel-overlay').classList.add('show');
+}
+function closePanel() { document.getElementById('panel-overlay').classList.remove('show'); }
+document.getElementById('po-close').onclick = closePanel;
+
+// ── CAFÉ PANEL ────────────────────────────────────────────────────────────────
+function buildCafePanel(body) {
+  var zod = getZod();
+  var zcard = document.createElement('div'); zcard.className='zod-card';
+  zcard.innerHTML='<div class="zod-title">'+zod.s+' '+zod.n+' &bull; '+G.activeCat.name+'</div>'
+    +'<div class="zod-desc">'+zod.d+'</div>'
+    +'<div class="zod-fav">&#128155; Fave: '+zod.fav+'</div>';
+  body.appendChild(zcard);
+  var hint=document.createElement('div');hint.style.cssText='font-size:clamp(5px,1.4vw,7px);color:var(--txts);margin-bottom:8px;text-align:center;line-height:1.8';hint.textContent='Items with ♡ match their zodiac mood. They get bonus stats!';body.appendChild(hint);
+  var grid=document.createElement('div');grid.className='food-grid';
+  FOODS.forEach(function(f){
+    var fav=f.ms.indexOf(zod.m)>=0;
+    var d=document.createElement('div');d.className='fi'+(fav?' fav':'');
+    d.innerHTML='<span class="fi-e">'+f.e+'</span><span class="fi-n">'+f.n+(fav?' ♡':'')+'</span><span class="fi-d">'+f.d+'</span>';
+    d.onclick=function(){
+      var ac=G.activeCat;if(!ac)return;
+      var mult=fav?1.8:1;
+      ac.hungry=Math.min(100,ac.hungry+~~(f.b*mult));ac.mood=Math.min(100,ac.mood+~~(f.mb*mult));ac.glow=Math.min(100,ac.glow+~~(f.g*mult));
+      G.mealsToday++;updUI();
+      toast((fav?'✨ '+ac.name+' LOVED it! Zodiac bonus! +':'🥤 yum! +')+~~(f.b*mult)+' hungry +'+~~(f.mb*mult)+' mood');
+      closePanel();
+    };
+    grid.appendChild(d);
+  });
+  body.appendChild(grid);
+}
+
+// ── GROW/SKINCARE PANEL ───────────────────────────────────────────────────────
+function buildGrowPanel(body) {
+  // skin stats
+  var sp=document.createElement('div');sp.className='skin-panel';
+  sp.innerHTML='<div style="font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:7px;text-align:center">SKIN STATUS</div>'
+    +'<div class="sk-row"><span class="sk-l">&#128167; Hydration</span><div class="sk-t"><div class="sk-f f-hyd" id="sk-hyd" style="width:'+SKIN.hyd+'%"></div></div><span class="sk-v" id="sv-hyd">'+~~SKIN.hyd+'</span></div>'
+    +'<div class="sk-row"><span class="sk-l">&#127807; Clarity</span><div class="sk-t"><div class="sk-f f-cla" id="sk-cla" style="width:'+SKIN.cla+'%"></div></div><span class="sk-v" id="sv-cla">'+~~SKIN.cla+'</span></div>'
+    +'<div class="sk-row"><span class="sk-l">&#127800; Glow</span><div class="sk-t"><div class="sk-f f-sg" id="sk-glo" style="width:'+SKIN.glo+'%"></div></div><span class="sk-v" id="sv-glo">'+~~SKIN.glo+'</span></div>'
+    +'<div class="sk-row"><span class="sk-l">&#11088; Radiance</span><div class="sk-t"><div class="sk-f f-rad" id="sk-rad" style="width:'+SKIN.rad+'%"></div></div><span class="sk-v" id="sv-rad">'+~~SKIN.rad+'</span></div>';
+  body.appendChild(sp);
+  // routine tracker
+  var rt=document.createElement('div');rt.style.cssText='background:rgba(255,255,255,.8);border:2px solid var(--mintd);border-radius:9px;padding:8px;margin-bottom:8px';
+  var rtLabel=document.createElement('div');rtLabel.style.cssText='font-size:clamp(5px,1.4vw,7px);color:var(--txts);margin-bottom:5px;line-height:1.8';rtLabel.textContent='✦ Do steps in order (Cleanser→Toner→Serum→Moisturizer→Mask→SPF) for a GLOW BONUS!';rt.appendChild(rtLabel);
+  var rtTrack=document.createElement('div');rtTrack.style.cssText='display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:28px;padding:3px';rtTrack.id='routine-track';rtTrack.innerHTML='<span style="font-size:clamp(5px,1.3vw,6px);color:var(--txts);opacity:.7">steps appear here...</span>';rt.appendChild(rtTrack);
+  var rtBtns=document.createElement('div');rtBtns.style.cssText='display:flex;gap:6px;margin-top:6px';
+  var checkBtn=document.createElement('button');checkBtn.style.cssText='flex:1;background:linear-gradient(180deg,var(--mintd),var(--greend));color:#1a4030;border:2px solid var(--greend);border-radius:7px;font-family:"Press Start 2P",monospace;font-size:clamp(6px,1.6vw,8px);padding:8px;cursor:pointer';checkBtn.textContent='CHECK ✓';
+  checkBtn.onclick=function(){checkRoutine();};
+  var clrBtn=document.createElement('button');clrBtn.style.cssText='flex:1;background:rgba(255,255,255,.8);color:var(--txts);border:2px solid var(--lavd);border-radius:7px;font-family:"Press Start 2P",monospace;font-size:clamp(6px,1.6vw,8px);padding:8px;cursor:pointer';clrBtn.textContent='RESET ↺';
+  clrBtn.onclick=function(){skinRoutine=[];var rt2=document.getElementById('routine-track');if(rt2){rt2.innerHTML='<span style="font-size:clamp(5px,1.3vw,6px);color:var(--txts);opacity:.7">steps appear here...</span>';}document.querySelectorAll('.sci').forEach(function(el){el.classList.remove('used');});};
+  rtBtns.appendChild(checkBtn);rtBtns.appendChild(clrBtn);rt.appendChild(rtBtns);
+  body.appendChild(rt);
+  // skincare items
+  var sLabel=document.createElement('div');sLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:7px;text-align:center';sLabel.textContent='GLOW RITUAL ✨';body.appendChild(sLabel);
+  var grid=document.createElement('div');grid.className='sc-grid';
+  SKINCARE.forEach(function(sk){
+    var d=document.createElement('div');d.className='sci';
+    d.innerHTML='<span class="sci-e">'+sk.e+'</span><span class="sci-n">'+sk.n+'</span><span class="sci-d">step '+sk.order+'</span>';
+    d.onclick=function(){
+      if(d.classList.contains('used'))return;
+      d.classList.add('used');skinRoutine.push(sk.order);
+      Object.keys(sk.ef).forEach(function(k){SKIN[k]=Math.min(100,SKIN[k]+sk.ef[k]);});
+      var ac=G.activeCat;if(ac){ac.glow=Math.min(100,ac.glow+sk.ef.glo*.4);ac.mood=Math.min(100,ac.mood+3);}
+      updSkinBars();updUI();
+      var rt2=document.getElementById('routine-track');if(rt2){if(skinRoutine.length===1)rt2.innerHTML='';var step=document.createElement('span');step.style.fontSize='18px';step.textContent=sk.e;rt2.appendChild(step);}
+      toast(sk.e+' '+sk.tip.substring(0,40)+'...');
+    };
+    grid.appendChild(d);
+  });
+  body.appendChild(grid);
+  // cat tips
+  var tLabel=document.createElement('div');tLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin:8px 0 7px;text-align:center';tLabel.textContent='CAT CARE TIPS 🐱';body.appendChild(tLabel);
+  CAT_TIPS.forEach(function(tip){
+    var tc=document.createElement('div');tc.className='tip-card';tc.innerHTML='<span class="tip-e">'+tip.e+'</span><span class="tip-t">'+tip.t+'</span>';body.appendChild(tc);
+  });
+}
+function updSkinBars(){
+  ['hyd','cla','glo','rad'].forEach(function(k){var key=k==='glo'?'glo':k;var f=document.getElementById('sk-'+k);var v=document.getElementById('sv-'+k);if(f)f.style.width=Math.min(100,SKIN[key])+'%';if(v)v.textContent=~~SKIN[key];});
+}
+function checkRoutine(){
+  if(skinRoutine.length<3){toast('Apply at least 3 steps first!');return;}
+  var ok=true;for(var i=1;i<skinRoutine.length;i++){if(skinRoutine[i]<skinRoutine[i-1]){ok=false;break;}}
+  if(ok){SKIN.glo=Math.min(100,SKIN.glo+18);SKIN.rad=Math.min(100,SKIN.rad+14);updSkinBars();var ac=G.activeCat;if(ac){ac.glow=Math.min(100,ac.glow+15);updUI();}toast('✨ PERFECT ROUTINE!\nGlow +18 Radiance +14\nSkincare bonus unlocked!');}
+  else{toast('Wrong order! Try: Cleanse→Tone→Serum→Moisturize');}
+}
+
+// ── ADOPT PANEL ───────────────────────────────────────────────────────────────
+function buildAdoptPanel(body) {
+  // Your cats section
+  if (G.cats.length > 0) {
+    var sect=document.createElement('div');sect.className='adopt-sect';
+    var st=document.createElement('div');st.className='a-sect-title';st.textContent='YOUR CATS ('+G.cats.length+')';sect.appendChild(st);
+    var grid=document.createElement('div');grid.className='my-cats-grid';
+    G.cats.forEach(function(cat, ci){
+      var card=document.createElement('div');card.className='adopt-card'+(G.activeCat===cat?' active-cat':'');
+      var cv=document.createElement('canvas');cv.width=52;cv.height=46;cv.style.cssText='width:52px;height:46px;image-rendering:pixelated';drawCat(cv,{stage:cat.stage||0,mood:'happy',color:cat.color});
+      var nm=document.createElement('div');nm.className='ac-n';nm.textContent=cat.name;
+      var zd=document.createElement('div');zd.className='ac-zod';zd.textContent=ZODIAC[cat.zodIdx].s+' '+ZODIAC[cat.zodIdx].n;
+      var setBtn=document.createElement('button');setBtn.style.cssText='display:block;width:100%;background:var(--lav);border:1.5px solid var(--lavdd);border-radius:5px;font-family:"Press Start 2P",monospace;font-size:clamp(4px,1.1vw,5px);color:var(--wine);padding:3px;cursor:pointer;margin-top:3px';setBtn.textContent=G.activeCat===cat?'ACTIVE ♡':'SET ACTIVE';
+      setBtn.onclick=function(){G.activeCat=cat;updUI();toast('Now playing with '+cat.name+'! '+ZODIAC[cat.zodIdx].s);closePanel();};
+      card.appendChild(cv);card.appendChild(nm);card.appendChild(zd);card.appendChild(setBtn);
+      grid.appendChild(card);
+    });
+    sect.appendChild(grid);body.appendChild(sect);
+  }
+  // Adopt new cat
+  var sect2=document.createElement('div');sect2.className='adopt-sect';
+  var st2=document.createElement('div');st2.className='a-sect-title';st2.textContent='ADOPT A NEW KITTEN &#128149;';sect2.innerHTML='';sect2.appendChild(st2);
+  // Name input
+  var niw=document.createElement('div');niw.className='name-input-wrap';
+  var lbl=document.createElement('span');lbl.className='ni-label';lbl.textContent='STEP 1: Name your kitten';niw.appendChild(lbl);
+  var niRow=document.createElement('div');niRow.className='ni-row';
+  var nameIn=document.createElement('input');nameIn.className='ni-in';nameIn.type='text';nameIn.maxLength=12;nameIn.placeholder='enter name...';nameIn.id='adopt-name-in';
+  niRow.appendChild(nameIn);niw.appendChild(niRow);
+  // Zodiac select
+  var lbl2=document.createElement('span');lbl2.className='ni-label';lbl2.style.marginTop='8px';lbl2.textContent='STEP 2: Pick their birth sign';niw.appendChild(lbl2);
+  var zodSel=document.createElement('select');zodSel.className='ni-zsel';zodSel.style.cssText='width:100%;font-family:"Press Start 2P",monospace;font-size:clamp(5px,1.3vw,6px);padding:7px;background:var(--lav);border:2px solid var(--lavdd);border-radius:6px;color:var(--txt);outline:none;margin-top:4px';
+  ZODIAC.forEach(function(z,i){var opt=document.createElement('option');opt.value=i;opt.textContent=z.s+' '+z.n+' -- '+z.d.substring(0,30)+'...';zodSel.appendChild(opt);});
+  niw.appendChild(zodSel);
+  sect2.appendChild(niw);
+  // Color chooser
+  var lbl3=document.createElement('div');lbl3.style.cssText='font-size:clamp(6px,1.6vw,7px);color:var(--wine);margin-bottom:7px';lbl3.textContent='STEP 3: Choose their look';sect2.appendChild(lbl3);
+  var colorNames=['Gray-Lilac','Orange Tabby','Midnight','Cream','Calico','Blue-Grey'];var selectedColor=[0];
+  var cgrid=document.createElement('div');cgrid.className='adopt-grid';
+  colorNames.forEach(function(cn,ci){
+    var card=document.createElement('div');card.className='adopt-card';card.id='cc-'+ci;
+    var cv=document.createElement('canvas');cv.width=52;cv.height=46;cv.style.cssText='width:52px;height:46px;image-rendering:pixelated';drawCat(cv,{stage:0,mood:'happy',color:ci});
+    var nm=document.createElement('div');nm.className='ac-n';nm.textContent=cn;
+    card.appendChild(cv);card.appendChild(nm);
+    card.onclick=function(){
+      selectedColor[0]=ci;
+      document.querySelectorAll('[id^=cc-]').forEach(function(c){c.classList.remove('active-cat');});
+      card.classList.add('active-cat');
+    };
+    cgrid.appendChild(card);
+  });
+  sect2.appendChild(cgrid);
+  // Adopt button
+  var aBtn=document.createElement('button');aBtn.className='adopt-do-btn';aBtn.innerHTML='&#128149; ADOPT THIS KITTEN';
+  aBtn.onclick=function(){
+    var name=(document.getElementById('adopt-name-in')||{}).value||'';name=name.trim().toUpperCase()||'KITTY';
+    var zi=parseInt(zodSel.value)||0;
+    if(G.cats.length>=6){toast('Max 6 cats! Say goodbye to someone first 😢');return;}
+    var newCat=makeCat(name,selectedColor[0],zi);G.cats.push(newCat);G.activeCat=newCat;updUI();
+    showPop('🐱','WELCOME '+name+'!',ZODIAC[zi].s+' '+ZODIAC[zi].n+' has arrived.\n'+ZODIAC[zi].ep,'Their fave drink is: '+ZODIAC[zi].fav+'\nTip: '+EPISODES[0].tip);
+    closePanel();
+  };
+  sect2.appendChild(aBtn);
+  body.appendChild(sect2);
+  // Zodiac preview
+  var zLabel=document.createElement('div');zLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin:10px 0 7px;text-align:center';zLabel.textContent='ZODIAC PERSONALITIES ✦';body.appendChild(zLabel);
+  ZODIAC.forEach(function(z){
+    var zc=document.createElement('div');zc.className='zod-card';
+    zc.innerHTML='<div class="zod-title">'+z.s+' '+z.n+'</div><div class="zod-desc">'+z.d+'</div><div class="zod-fav">&#128155; Fave drink: '+z.fav+'</div>';
+    body.appendChild(zc);
+  });
+}
+
+// ── STORY PANEL ───────────────────────────────────────────────────────────────
+function buildStoryPanel(body) {
+  var ac=G.activeCat;
+  if(ac){
+    var zcard=document.createElement('div');zcard.className='zod-card';zcard.style.marginBottom='10px';
+    zcard.innerHTML='<div class="zod-title">'+ZODIAC[ac.zodIdx].s+' '+ZODIAC[ac.zodIdx].n+' &bull; '+ac.name+'</div><div class="zod-desc">'+ZODIAC[ac.zodIdx].ep+'</div>';
+    body.appendChild(zcard);
+  }
+  var sLabel=document.createElement('div');sLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:8px;text-align:center';sLabel.textContent='STORY EPISODES &#128218;';body.appendChild(sLabel);
+  EPISODES.forEach(function(ep){
+    var unlocked=G.day>=ep.req;
+    var card=document.createElement('div');card.className='ep-card'+(unlocked?'':' locked');
+    card.innerHTML='<div class="ep-head"><span class="ep-e">'+ep.e+'</span><div><div class="ep-title">'+ep.t+'</div><div class="ep-day">'+(unlocked?'day '+ep.req:'[unlock on day '+ep.req+']')+'</div></div></div>'
+      +(unlocked?'<div class="ep-body">'+ep.d+'</div><div class="ep-tip">&#128149; Real tip: '+ep.tip+'</div>':'');
+    if(unlocked){card.onclick=function(){showPop(ep.e,ep.t,ep.d,ep.tip);};}
+    body.appendChild(card);
+  });
+}
+
+// ── GAMES PANEL ───────────────────────────────────────────────────────────────
+function buildGamesPanel(body) {
+  var hint=document.createElement('div');hint.style.cssText='font-size:clamp(5px,1.4vw,7px);color:var(--txts);text-align:center;margin-bottom:10px;line-height:1.9;background:rgba(255,255,255,.7);border-radius:8px;padding:7px';hint.textContent='Play 3 games daily to keep your cat happy!\n('+G.gamesPlayed+'/3 played today)';body.appendChild(hint);
+  MINIGAMES.forEach(function(mg){
+    var card=document.createElement('div');card.className='mg-card';
+    card.innerHTML='<span class="mg-e">'+mg.e+'</span><div class="mg-info"><div class="mg-t">'+mg.t+'</div><div class="mg-d">'+mg.d+'</div></div>';
+    card.onclick=function(){if(G.gamesPlayed>=3){toast('3 games played today!\nCome back tomorrow~ 💤');return;}closePanel();startGame(mg.type);};
+    body.appendChild(card);
+  });
+  // instructions
+  var iLabel=document.createElement('div');iLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin:10px 0 7px;text-align:center';iLabel.textContent='HOW TO PLAY &#127911;';body.appendChild(iLabel);
+  var inst=[
+    {e:'🥤',t:'FEED: Tap FEED or the CAFÉ menu, then pick a drink. Zodiac-matching items give bonus stats!'},
+    {e:'🎮',t:'PLAY: Tap PLAY for instant fun, or visit GAMES for 3 minigame types with score bonuses.'},
+    {e:'✨',t:'GLOW: Tap LOVE/GLOW to open the skincare ritual. Apply all 6 steps in order for bonus glow!'},
+    {e:'🌟',t:'ADOPT: Adopt up to 6 cats with different zodiac signs! Tap any cat in ADOPT to set them active.'},
+    {e:'📖',t:'STORY: Read story episodes that unlock each day. Real cat care tips inside every episode!'},
+    {e:'⏰',t:'DAYS: Real time -- each in-game day is 5 minutes. Stats decay slowly, so check in regularly!'}
+  ];
+  inst.forEach(function(i){var tc=document.createElement('div');tc.className='tip-card';tc.innerHTML='<span class="tip-e">'+i.e+'</span><span class="tip-t">'+i.t+'</span>';body.appendChild(tc);});
+}
+
+// ── MINIGAMES ─────────────────────────────────────────────────────────────────
+var mgState={hp:3,score:0,qi:0,active:false,starIv:null,stars:[]};
+
+function startGame(type) {
+  var screen=document.getElementById('mg-screen');screen.classList.add('show');
+  mgState={hp:3,score:0,qi:0,active:true,starIv:null,stars:[]};
+  updMgHp();
+  document.getElementById('mg-prog').style.width='0%';
+  if(type==='quiz') startQuiz();
+  else if(type==='seq') startSeq();
+  else startStars();
+}
+function updMgHp(){var el=document.getElementById('mg-hp');if(el){el.innerHTML='';for(var i=0;i<3;i++){var h=document.createElement('span');h.className='hp';h.textContent=i<mgState.hp?'♦':'◇';el.appendChild(h);}}}
+function endGame(win){
+  mgState.active=false;clearInterval(mgState.starIv);
+  G.gamesPlayed++;if(win){var ac=G.activeCat;if(ac){ac.mood=Math.min(100,ac.mood+14);ac.energy=Math.min(100,ac.energy+8);}updUI();}
+  var mc=document.getElementById('mg-content');mc.innerHTML='';
+  var res=document.createElement('div');res.className='mg-result';res.innerHTML=(win?'&#127881; GREAT GAME!<br>mood +14 energy +8':'&#128153; Good effort!<br>Try again tomorrow~');mc.appendChild(res);
+  document.getElementById('mg-title').textContent='GAME OVER';
+  document.getElementById('mg-prompt').textContent='Score: '+mgState.score;
+}
+
+// QUIZ
+function startQuiz(){
+  document.getElementById('mg-title').textContent='ZODIAC QUIZ &#128302;';
+  var zod=getZod();var ac=G.activeCat;
+  var qs=[
+    {q:ac.name+' is feeling '+zod.m+'...\nWhat do they want to drink?',a:zod.fav,opts:shuffle([zod.fav,ZODIAC[(ac.zodIdx+3)%12].fav,ZODIAC[(ac.zodIdx+7)%12].fav,ZODIAC[(ac.zodIdx+10)%12].fav])},
+    {q:'Your '+zod.n+' cat needs to GLOW.\nWhich step comes FIRST?',a:'Cleanser',opts:['Cleanser','Toner','Serum','Moisturizer']},
+    {q:'A fact about cats:\nHow many hours do kittens sleep?',a:'18-20 hours',opts:['8-10 hours','12-14 hours','18-20 hours','6-8 hours']},
+    {q:ac.name+" is sad (mood < 30).\nBest action?",a:'Play with them + fave food',opts:['Ignore them','Play with them + fave food','Just wait','Change their name']},
+    {q:'Correct skincare order\n(step 3 of 6)?',a:'Serum',opts:['Toner','SPF','Serum','Moisturizer']}
+  ];
+  var qi=0;
+  function showQ(){
+    if(qi>=qs.length||mgState.hp<=0){endGame(mgState.score>=3);return;}
+    var q=qs[qi];document.getElementById('mg-prompt').textContent=q.q;
+    document.getElementById('mg-prog').style.width=(qi/qs.length*100)+'%';
+    var mc=document.getElementById('mg-content');mc.innerHTML='';
+    var opts=document.createElement('div');opts.className='mg-opts';
+    q.opts.forEach(function(opt){
+      var b=document.createElement('button');b.className='mg-opt';b.textContent=opt;
+      b.onclick=function(){
+        var correct=opt===q.a;b.classList.add(correct?'correct':'wrong');
+        if(correct){mgState.score++;} else{mgState.hp--;updMgHp();if(mgState.hp<=0){setTimeout(function(){endGame(false);},600);return;}}
+        qi++;setTimeout(showQ,600);
+      };opts.appendChild(b);
+    });mc.appendChild(opts);
+  }showQ();
+}
+
+// SEQUENCE
+function startSeq(){
+  document.getElementById('mg-title').textContent='SKINCARE SEQUENCE &#10024;';
+  document.getElementById('mg-prompt').textContent='Tap the 6 steps in the correct order!\nCleanse → Tone → Serum → Moisturize → Mask → SPF';
+  var correct=[1,2,3,4,5,6];var current=[];
+  var mc=document.getElementById('mg-content');mc.innerHTML='';
+  var grid=document.createElement('div');grid.className='mg-seq-grid';
+  var shuffled=shuffle(SKINCARE.slice());
+  shuffled.forEach(function(sk){
+    var d=document.createElement('div');d.className='seq-item';d.innerHTML=sk.e+'<br><span style="font-size:8px">'+sk.n+'</span>';
+    d.onclick=function(){
+      if(d.classList.contains('used'))return;
+      current.push(sk.order);d.classList.add('used');
+      if(current.length===6){
+        var ok=JSON.stringify(current)===JSON.stringify(correct);
+        mgState.score=ok?6:3;
+        if(ok){SKIN.glo=Math.min(100,SKIN.glo+12);SKIN.rad=Math.min(100,SKIN.rad+10);}
+        setTimeout(function(){endGame(ok);},500);
+      }
+    };grid.appendChild(d);
+  });mc.appendChild(grid);
+}
+
+// STARS
+function startStars(){
+  document.getElementById('mg-title').textContent='STAR CATCHER &#11088;';
+  document.getElementById('mg-prompt').textContent='Tap the stars before they fade!';
+  var mc=document.getElementById('mg-content');mc.innerHTML='';
+  var cw=Math.min(document.getElementById('app').offsetWidth-44,280);
+  var ch=160;var cv=document.createElement('canvas');cv.className='star-canvas';cv.width=cw;cv.height=ch;cv.style.cssText='width:'+cw+'px;height:'+ch+'px';
+  mc.appendChild(cv);
+  var score=0,total=0,stars=[];
+  var ctx=cv.getContext('2d');
+  function addStar(){if(total>=12){setTimeout(function(){mgState.score=score;endGame(score>=7);},800);return;}total++;stars.push({x:20+Math.random()*(cw-40),y:20+Math.random()*(ch-40),born:Date.now(),life:1800,size:18+~~(Math.random()*12)});}
+  function render(){
+    ctx.clearRect(0,0,cw,ch);var now=Date.now();
+    stars=stars.filter(function(s){var age=(now-s.born)/s.life;if(age>1){if(mgState.hp>0){mgState.hp--;updMgHp();}return false;}ctx.globalAlpha=1-age;ctx.font=s.size+'px serif';ctx.fillText('⭐',s.x-s.size/2,s.y+s.size/2);ctx.globalAlpha=1;return true;});
+    document.getElementById('mg-prog').style.width=(total/12*100)+'%';
+    if(mgState.hp>0&&total<12)requestAnimationFrame(render);
+    else if(mgState.hp<=0){mgState.score=score;endGame(false);}
+  }
+  cv.onclick=function(e){var r=cv.getBoundingClientRect();var mx=(e.clientX-r.left)*(cw/r.width);var my=(e.clientY-r.top)*(ch/r.height);stars=stars.filter(function(s){var dx=mx-s.x,dy=my-s.y;if(Math.sqrt(dx*dx+dy*dy)<s.size*.9){score++;mgState.score=score;document.getElementById('mg-prog').style.width=(score/12*100)+'%';return false;}return true;});};
+  mgState.starIv=setInterval(addStar,900);render();
+}
+
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=~~(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+document.getElementById('mg-close-btn').onclick=function(){clearInterval(mgState.starIv);document.getElementById('mg-screen').classList.remove('show');};
+
+// ── TABS & PILLS ──────────────────────────────────────────────────────────────
+function setTab(t){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on');});document.getElementById('tb-'+t).classList.add('on');document.querySelectorAll('.tc-panel').forEach(function(p){p.classList.remove('on');});document.getElementById('tc-'+t).classList.add('on');}
+document.getElementById('pl-a').onclick=function(){openPanel('✦ ADOPT A KITTEN',buildAdoptPanel);};
+document.getElementById('pl-g').onclick=function(){openPanel('♡ GROW & SKINCARE',buildGrowPanel);};
+document.getElementById('pl-gw').onclick=function(){openPanel('✨ GLOW RITUAL',buildGrowPanel);};
+document.getElementById('btn-feed').onclick=function(){openPanel('🥤 KITTY CAFÉ MENU',buildCafePanel);};
+document.getElementById('btn-play').onclick=function(){openPanel('🎮 GAMES & PLAY',buildGamesPanel);};
+document.getElementById('btn-love').onclick=function(){openPanel('✨ GROW & GLOW',buildGrowPanel);};
+document.getElementById('adopt-cta').onclick=function(){openPanel('✦ ADOPT A KITTEN',buildAdoptPanel);};
+
+// ── POPUP ─────────────────────────────────────────────────────────────────────
+function showPop(ico,title,body,tip){document.getElementById('pu-ico').textContent=ico;document.getElementById('pu-title').textContent=title;document.getElementById('pu-body').textContent=body;var pt=document.getElementById('pu-tip');pt.textContent=tip||'';pt.style.display=tip?'block':'none';document.getElementById('popup').classList.add('show');}
+document.getElementById('pu-close').onclick=function(){document.getElementById('popup').classList.remove('show');};
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';setTimeout(function(){t.style.opacity='0';},3000);}
+
+// ── SPARKLE LAYER ─────────────────────────────────────────────────────────────
 (function(){
-  var l=document.getElementById('starlayer');
-  var sE=['✦','✧','⭐','🌟','💫','✨','🌸','💖','🫧','🌙','💗','🎀'];
-  for(var i=0;i<30;i++){(function(){
-    var s=document.createElement('div');s.className='fstar';
-    s.style.cssText='left:'+Math.random()*100+'%;bottom:'+(Math.random()*85)+'%;font-size:'+(7+Math.random()*14)+'px;animation-duration:'+(3+Math.random()*6)+'s;animation-delay:'+(Math.random()*9)+'s';
-    s.textContent=sE[~~(Math.random()*sE.length)];l.appendChild(s);})();}
+  var sl=document.getElementById('sparkles');if(!sl)return;
+  ['✦','✧','♦','★','◆'].forEach(function(ic,i){var s=document.createElement('div');s.className='sp';s.textContent=ic;s.style.cssText='left:'+[8,88,4,92,46][i]+'%;top:'+[28,17,52,57,6][i]+'%;color:'+['#f0c840','#c8a8e8','#f0a8c8','#a8e8d0','#f8d8b0'][i]+';font-size:'+(8+i*2)+'px;animation-duration:'+(2.2+i*.6)+'s;animation-delay:'+(i*.5)+'s';sl.appendChild(s);});
+  ['♡','♥','💜','💛','🩷'].forEach(function(h,i){var hp=document.createElement('div');hp.className='sp';hp.textContent=h;hp.style.cssText='left:'+[6,91,93,4,49][i]+'%;top:'+[17,25,49,43,79][i]+'%;font-size:'+(10+i*2)+'px;animation-duration:'+(2.5+i*.45)+'s;animation-delay:'+(i*.6)+'s';sl.appendChild(hp);});
 })();
 
-// ── PIXEL CAT RENDERER ─────────────────────────────────────────────
-var PALS=[
-  {b:'#2a2840',c:'#3a3860',e:'#ffb0c8',o:'#14122a',i:'#90d0ff',n:'#ffb0c8',bl:'#ffb8d0'},
-  {b:'#c87840',c:'#f8d8a8',e:'#ffb0c8',o:'#301800',i:'#704820',n:'#ff7898',bl:'#ffa888'},
-  {b:'#8898a8',c:'#c0d8e8',e:'#ffb0c8',o:'#283040',i:'#58b8d8',n:'#ffb0c8',bl:'#ffb8c8'},
-  {b:'#d07030',c:'#f8e098',e:'#ffb0c8',o:'#601808',i:'#389830',n:'#ffb0c8',bl:'#ffb888'},
-  {b:'#b0c8e0',c:'#d8f0ff',e:'#ffc8d8',o:'#304858',i:'#70b8d8',n:'#ffc8d8',bl:'#ffd0e8'},
-  {b:'#e0c090',c:'#fff8d8',e:'#ffb0c8',o:'#705020',i:'#705020',n:'#ffb0c8',bl:'#ffd0b0'}
-];
+// ── DAY CLOCK & DECAY ─────────────────────────────────────────────────────────
+var dayStart=Date.now(),decayTick=0;
+setInterval(function(){
+  var el=Date.now()-dayStart,pct=el/(5*60*1000);
+  if(pct>=1){
+    G.day++;G.cats.forEach(function(c){c.age++;});dayStart=Date.now();G.gamesPlayed=0;G.mealsToday=0;decayTick=0;
+    var ac=G.activeCat;if(ac)ac.stage=getStageObj().stage;
+    if(G.day===3&&G.cats.length===1)showPop('🐱','A FRIEND ARRIVED!','A cushion platform appeared for a second cat!\nVisit ADOPT to give them a companion.','Cats are social -- a friend helps them thrive!');
+    if(G.day===7)showPop('🎉','ONE WEEK TOGETHER!','Your kitten has grown so much.\n'+getZod().ep,'Cats need 1-2 weeks to fully settle into a new home. You\'re doing great!');
+    if(G.day===14)showPop('✨','TWO WEEKS OF GLOW!','Consistent skincare has paid off.\nTheir coat is visibly shinier.','Regular brushing distributes natural oils. Your cat knows this instinctively.');
+    var ep=EPISODES.find(function(e){return e.req===G.day&&G.completedEps.indexOf(e.id)<0;});if(ep){G.completedEps.push(ep.id);setTimeout(function(){showPop(ep.e,ep.t,ep.d,ep.tip);},1500);}
+    updUI();
+  }
+  var tick=~~(el/45000);
+  if(tick>decayTick){decayTick=tick;G.cats.forEach(function(c){c.hungry=Math.max(0,c.hungry-7);c.glow=Math.max(0,c.glow-5);c.energy=Math.max(0,c.energy-4);if(c.hungry<35)c.mood=Math.max(0,c.mood-5);if(c.glow<28)c.mood=Math.max(0,c.mood-3);});SKIN.hyd=Math.max(0,SKIN.hyd-3);SKIN.cla=Math.max(0,SKIN.cla-4);updUI();}
+},2000);
 
-function dc(id,ci,mood,clean,age){
-  var v=document.getElementById(id);if(!v)return;
-  var x=v.getContext('2d'),p=PALS[ci%6],w=v.width;
-  if(clean===undefined)clean=90;if(age===undefined)age=1;
-  var baseScale=0.6+age*0.35/4;var s=(w/96)*baseScale;
-  var offX=(w-96*s)/2,offY=(w-96*s)*0.75;
-  x.clearRect(0,0,w,w);
-  function r(a,b,c,d,col,al){if(al!==undefined)x.globalAlpha=al;x.fillStyle=col;x.fillRect(~~(offX+a*s),~~(offY+b*s),Math.max(1,~~(c*s)),Math.max(1,~~(d*s)));if(al!==undefined)x.globalAlpha=1;}
-  var dA=Math.max(0,(100-clean)/100*0.5);
-  r(16,46,64,32,p.b);r(10,52,8,22,p.b);r(78,52,8,22,p.b);r(18,40,60,10,p.b);
-  r(28,54,40,24,p.c);r(8,50,4,26,p.o);r(84,50,4,26,p.o);r(14,76,68,4,p.o);
-  r(20,22,16,20,p.b);r(60,22,16,20,p.b);r(24,25,9,13,p.e);r(64,25,9,13,p.e);
-  r(18,17,10,9,p.o);r(68,17,10,9,p.o);r(18,34,60,14,p.b);
-  r(26,35,16,11,p.o);r(54,35,16,11,p.o);r(27,36,14,9,p.i);r(55,36,14,9,p.i);
-  r(31,38,7,6,'#222');r(59,38,7,6,'#222');r(36,38,2,2,'white');r(64,38,2,2,'white');
-  r(34,37,1,1,'rgba(255,255,255,0.8)');r(62,37,1,1,'rgba(255,255,255,0.8)');
-  r(27,35,2,2,p.o);r(30,35,2,2,p.o);r(33,35,2,2,p.o);r(36,35,2,2,p.o);
-  r(55,35,2,2,p.o);r(58,35,2,2,p.o);r(61,35,2,2,p.o);r(64,35,2,2,p.o);
-  var blA=Math.min(0.65,clean/100*0.6);
-  r(12,44,13,5,p.bl,blA);r(71,44,13,5,p.bl,blA);
-  if(clean>80){x.globalAlpha=0.55;x.fillStyle='white';x.fillRect(~~(offX+17*s),~~(offY+44*s),~~(2*s),~~(2*s));x.fillRect(~~(offX+76*s),~~(offY+44*s),~~(2*s),~~(2*s));x.globalAlpha=1;}
-  r(45,46,6,4,p.n);
-  var happy=mood>50&&clean>40;
-  if(happy){r(40,52,6,2,p.o);r(50,52,6,2,p.o);r(37,50,5,2,p.o);r(53,50,5,2,p.o);}
-  else{r(37,54,6,2,p.o);r(53,54,6,2,p.o);r(40,52,5,2,p.o);r(51,52,5,2,p.o);}
-  if(clean>85&&mood>70){x.globalAlpha=0.8;x.fillStyle='white';x.fillRect(~~(offX+33*s),~~(offY+36*s),~~(2*s),~~(2*s));x.fillRect(~~(offX+61*s),~~(offY+36*s),~~(2*s),~~(2*s));x.globalAlpha=1;}
-  r(4,46,20,2,p.o);r(4,51,17,2,p.o);r(72,46,20,2,p.o);r(79,51,17,2,p.o);
-  r(74,66,10,8,p.b);r(78,58,8,12,p.b);r(82,56,5,6,p.o);
-  if(age>=4){r(30,35,4,3,'#c0c0c0',0.45);r(60,35,4,3,'#c0c0c0',0.45);}
-  if(dA>0.02){x.globalAlpha=dA;x.fillStyle='#7a5a30';x.fillRect(~~(offX+25*s),~~(offY+34*s),~~(6*s),~~(4*s));x.fillRect(~~(offX+50*s),~~(offY+38*s),~~(5*s),~~(3*s));x.fillRect(~~(offX+35*s),~~(offY+48*s),~~(4*s),~~(3*s));x.globalAlpha=1;}
-  if(clean>88){var gr=x.createRadialGradient(~~(offX+48*s),~~(offY+40*s),0,~~(offX+48*s),~~(offY+40*s),~~(40*s));gr.addColorStop(0,'rgba(181,234,215,0)');gr.addColorStop(0.7,'rgba(181,234,215,0.15)');gr.addColorStop(1,'rgba(181,234,215,0)');x.fillStyle=gr;x.fillRect(0,0,w,w);}
-}
+// ── ROOM LOOP ─────────────────────────────────────────────────────────────────
+function roomLoop(){drawRoom();requestAnimationFrame(roomLoop);}
 
-// Layered skincare renderer
-var SKIN={hydration:70,clarity:55,glow:40,radiance:30};
-var playerRoutine=[];
-
-function drawLayers(ci,mood,clean,age){
-  var p=PALS[ci%6],w=160;
-  if(clean===undefined)clean=90;if(age===undefined)age=1;
-  var baseScale=0.6+age*0.35/4;var s=(w/96)*baseScale;
-  var offX=(w-96*s)/2,offY=(w-96*s)*0.75;
-  function r(ctx,a,b,c,d,col,al){if(al!==undefined)ctx.globalAlpha=al;ctx.fillStyle=col;ctx.fillRect(~~(offX+a*s),~~(offY+b*s),Math.max(1,~~(c*s)),Math.max(1,~~(d*s)));if(al!==undefined)ctx.globalAlpha=1;}
-  var xb=document.getElementById('layer-base').getContext('2d');xb.clearRect(0,0,w,w);
-  r(xb,16,46,64,32,p.b);r(xb,10,52,8,22,p.b);r(xb,78,52,8,22,p.b);r(xb,18,40,60,10,p.b);
-  r(xb,8,50,4,26,p.o);r(xb,84,50,4,26,p.o);r(xb,14,76,68,4,p.o);
-  r(xb,20,22,16,20,p.b);r(xb,60,22,16,20,p.b);r(xb,18,17,10,9,p.o);r(xb,68,17,10,9,p.o);
-  r(xb,18,34,60,14,p.b);r(xb,74,66,10,8,p.b);r(xb,78,58,8,12,p.b);r(xb,82,56,5,6,p.o);
-  r(xb,4,46,20,2,p.o);r(xb,4,51,17,2,p.o);r(xb,72,46,20,2,p.o);r(xb,79,51,17,2,p.o);
-  var xc=document.getElementById('layer-coat').getContext('2d');xc.clearRect(0,0,w,w);
-  r(xc,28,54,40,24,p.c);r(xc,24,25,9,13,p.e);r(xc,64,25,9,13,p.e);r(xc,45,46,6,4,p.n);
-  var xbl=document.getElementById('layer-blush').getContext('2d');xbl.clearRect(0,0,w,w);
-  var blA=Math.min(0.7,clean/100*0.65);
-  r(xbl,12,44,13,5,p.bl,blA);r(xbl,71,44,13,5,p.bl,blA);
-  if(clean>80){xbl.globalAlpha=0.6;xbl.fillStyle='white';xbl.fillRect(~~(offX+17*s),~~(offY+44*s),~~(2*s),~~(2*s));xbl.fillRect(~~(offX+76*s),~~(offY+44*s),~~(2*s),~~(2*s));xbl.globalAlpha=1;}
-  var xe=document.getElementById('layer-eyes').getContext('2d');xe.clearRect(0,0,w,w);
-  r(xe,26,35,16,11,p.o);r(xe,54,35,16,11,p.o);r(xe,27,36,14,9,p.i);r(xe,55,36,14,9,p.i);
-  r(xe,31,38,7,6,'#222');r(xe,59,38,7,6,'#222');r(xe,36,38,2,2,'white');r(xe,64,38,2,2,'white');
-  r(xe,34,37,1,1,'rgba(255,255,255,0.8)');r(xe,62,37,1,1,'rgba(255,255,255,0.8)');
-  r(xe,27,35,2,2,p.o);r(xe,30,35,2,2,p.o);r(xe,33,35,2,2,p.o);r(xe,36,35,2,2,p.o);
-  r(xe,55,35,2,2,p.o);r(xe,58,35,2,2,p.o);r(xe,61,35,2,2,p.o);r(xe,64,35,2,2,p.o);
-  var happy2=mood>50&&clean>40;
-  if(happy2){r(xe,40,52,6,2,p.o);r(xe,50,52,6,2,p.o);r(xe,37,50,5,2,p.o);r(xe,53,50,5,2,p.o);}
-  else{r(xe,37,54,6,2,p.o);r(xe,53,54,6,2,p.o);r(xe,40,52,5,2,p.o);r(xe,51,52,5,2,p.o);}
-  if(clean>85&&mood>70){xe.globalAlpha=0.8;xe.fillStyle='white';xe.fillRect(~~(offX+33*s),~~(offY+36*s),~~(2*s),~~(2*s));xe.fillRect(~~(offX+61*s),~~(offY+36*s),~~(2*s),~~(2*s));xe.globalAlpha=1;}
-  var xd=document.getElementById('layer-dirt').getContext('2d');xd.clearRect(0,0,w,w);
-  var dA=Math.max(0,(100-clean)/100*0.65);
-  if(dA>0.02){xd.globalAlpha=dA;xd.fillStyle='#7a5a30';xd.fillRect(~~(offX+25*s),~~(offY+34*s),~~(6*s),~~(4*s));xd.fillRect(~~(offX+50*s),~~(offY+38*s),~~(5*s),~~(3*s));xd.fillRect(~~(offX+35*s),~~(offY+48*s),~~(4*s),~~(3*s));xd.globalAlpha=1;}
-  var xg=document.getElementById('layer-glow').getContext('2d');xg.clearRect(0,0,w,w);
-  if(SKIN.glow>20){var gA=SKIN.glow/100*0.55;var gr=xg.createRadialGradient(80,75,0,80,75,62);gr.addColorStop(0,'rgba(181,234,215,'+(gA*0.8)+')');gr.addColorStop(0.5,'rgba(255,220,255,'+(gA*0.5)+')');gr.addColorStop(1,'rgba(181,234,215,0)');xg.fillStyle=gr;xg.fillRect(0,0,w,w);}
-  applySCFilters();
-}
-
-function applySCFilters(){
-  var coatSat=80+SKIN.hydration*0.4,coatBright=85+SKIN.radiance*0.25,coatHue=Math.round((SKIN.glow-50)*0.3);
-  document.getElementById('layer-coat').style.filter='saturate('+coatSat+'%) brightness('+coatBright+'%) hue-rotate('+coatHue+'deg)';
-  document.getElementById('layer-blush').style.opacity=0.4+SKIN.hydration/100*0.5;
-  document.getElementById('layer-dirt').style.opacity=Math.max(0,(100-SKIN.clarity)/100*0.8);
-  document.getElementById('layer-glow').style.opacity=Math.min(1,SKIN.glow/100*0.9);
-  var a1=~~(SKIN.radiance/100*55),a2=~~(SKIN.glow/100*35);
-  document.getElementById('glow-aura').style.background='radial-gradient(circle,rgba(181,234,215,0.'+a1+') 0%,rgba(220,200,255,0.'+a2+') 45%,transparent 75%)';
-}
-
-function updateSCStats(){
-  [['hydration',SKIN.hydration,'#60b8ff'],['clarity',SKIN.clarity,'#80d040'],['sglow',SKIN.glow,'#ff90d0'],['radiance',SKIN.radiance,'#ffb040']].forEach(function(s){
-    var f=document.getElementById('fill-'+s[0]),v=document.getElementById('val-'+s[0]);
-    if(f)f.style.width=Math.min(100,s[1])+'%';if(v){v.textContent=~~s[1];v.style.color=s[2];}
-  });
-}
-
-// ── GAME DATA ────────────────────────────────────────────────────
-var AGE_STAGES=[
-  {label:'🐱 TINY KITTEN',min:1,max:3,age:0,sc:'gentle cleanser only — kitten fur is delicate! 🌸',tip:'Kittens need 18-20 hours of sleep a day!'},
-  {label:'🐈 YOUNG CAT',min:4,max:8,age:1,sc:'light hydration is key for young fur ✨',tip:'Young cats need daily play to build coordination!'},
-  {label:'🐈 TEEN CAT',min:9,max:15,age:2,sc:'cleanse + tone + hydrate daily 💧',tip:'Teen cats explore their boundaries — routine helps them feel safe!'},
-  {label:'🌿 ADULT CAT',min:16,max:25,age:3,sc:'full routine: cleanse, serum & SPF every day ☀️',tip:'Adult cats thrive on routine. Same feeding time = happier kitty!'},
-  {label:'👑 SENIOR CAT',min:26,max:999,age:3,sc:'extra nourishment: night mask every session 🌙',tip:'Senior cats need softer food, more warmth & extra cuddles!'}
-];
-function getAgeStage(day){for(var i=0;i<AGE_STAGES.length;i++){if(day>=AGE_STAGES[i].min&&day<=AGE_STAGES[i].max)return i;}return AGE_STAGES.length-1;}
-
-var ZS=[
-  {s:'♈',n:'ARIES',m:'competitive',fav:'🌶️ Spicy Mango Blast',d:'Feisty & fierce. Craves bold flavors & intense games.'},
-  {s:'♉',n:'TAURUS',m:'cozy',fav:'🍓 Strawberry Velvet',d:'Comfort-loving & luxe. Rich food, slow mornings.'},
-  {s:'♊',n:'GEMINI',m:'social',fav:'🫐 Double Berry Fizz',d:'Chatty & curious. Cravings shift every session!'},
-  {s:'♋',n:'CANCER',m:'emotional',fav:'🥛 Moon Milk Latte',d:'Soft & sensitive. Needs comfort food & gentle care.'},
-  {s:'♌',n:'LEO',m:'extra',fav:'🍊 Gold Rush Sparkle',d:'Glamorous & dramatic. Only the fanciest will do.'},
-  {s:'♍',n:'VIRGO',m:'perfectionist',fav:'🥦 Green Goddess',d:'Picky & precise. Right item at the right time only.'},
-  {s:'♎',n:'LIBRA',m:'balanced',fav:'🍑 Peach Harmony',d:'Needs ALL stats balanced. Neglect one = spiral.'},
-  {s:'♏',n:'SCORPIO',m:'secretive',fav:'🫙 Midnight Elixir',d:'Intense & mysterious. Earn trust through consistency.'},
-  {s:'♐',n:'SAGITT.',m:'restless',fav:'🥭 Tropical Storm',d:'Free spirit. Same routine twice = instant boredom.'},
-  {s:'♑',n:'CAPRI.',m:'driven',fav:'☕ Matcha Focus Shot',d:'Ambitious. Streak days matter — miss one, they notice.'},
-  {s:'♒',n:'AQUAR.',m:'eccentric',fav:'💜 Lavender Cosmic',d:'Quirky. Only rare items catch their eye.'},
-  {s:'♓',n:'PISCES',m:'dreamy',fav:'🌊 Butterfly Pea Dream',d:'Dreamy & delicate. Mood drifts — anchor with care.'}
-];
-var ZMON=['MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB'];
-var CATS=[['NOIR','mysterious'],['CALI','bold & bright'],['ASH','calm & cool'],['GINGER','playful'],['LUNA','dreamy'],['MOCHI','sweet']];
-
-var FOODS=[
-  {e:'🧃',n:'Fruit Juice',ms:['competitive','balanced','driven','restless'],b:8,mb:3,tier:0,slots:[0,1,2],u:1},
-  {e:'🥛',n:'Plain Milk',ms:['cozy','emotional','dreamy'],b:10,mb:4,tier:0,slots:[0,1,2],u:1},
-  {e:'🍵',n:'Herbal Tea',ms:['perfectionist','balanced','secretive'],b:8,mb:3,tier:0,slots:[0,1,2],u:1},
-  {e:'🍪',n:'Shortbread',ms:['cozy','extra','social'],b:9,mb:3,tier:0,slots:[0,1,2],u:1},
-  {e:'🥐',n:'Croissant',ms:['cozy','balanced','extra'],b:15,mb:7,tier:1,slots:[0],u:1},
-  {e:'🍓',n:'Berry Smoothie',ms:['social','emotional','dreamy'],b:16,mb:8,tier:1,slots:[0],u:1},
-  {e:'☕',n:'Matcha Latte',ms:['driven','perfectionist','balanced'],b:15,mb:7,tier:1,slots:[0],u:1},
-  {e:'🧋',n:'Bubble Tea',ms:['social','eccentric','restless'],b:17,mb:8,tier:1,slots:[1],u:1},
-  {e:'🍰',n:'Strawberry Cake',ms:['cozy','extra','emotional'],b:18,mb:9,tier:1,slots:[1],u:1},
-  {e:'🥤',n:'Protein Shake',ms:['competitive','driven','restless'],b:18,mb:8,tier:1,slots:[1],u:1},
-  {e:'🍜',n:'Cozy Ramen',ms:['emotional','cozy','secretive'],b:20,mb:10,tier:1,slots:[2],u:1},
-  {e:'🫖',n:'Moon Tea',ms:['dreamy','balanced','secretive'],b:17,mb:9,tier:1,slots:[2],u:1},
-  {e:'🍡',n:'Mochi Snack',ms:['cozy','extra','social'],b:17,mb:8,tier:1,slots:[2],u:1},
-  {e:'🌶️',n:'Spicy Mango Blast',ms:['competitive'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🍓',n:'Strawberry Velvet',ms:['cozy'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🫐',n:'Double Berry Fizz',ms:['social'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🥛',n:'Moon Milk Latte',ms:['emotional'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🍊',n:'Gold Rush Sparkle',ms:['extra'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🥦',n:'Green Goddess',ms:['perfectionist'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🫙',n:'Midnight Elixir',ms:['secretive'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🥭',n:'Tropical Storm',ms:['restless'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'💜',n:'Lavender Cosmic',ms:['eccentric'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-  {e:'🌊',n:'Butterfly Pea Dream',ms:['dreamy'],b:30,mb:20,tier:2,slots:[0,1,2],u:0},
-];
-
-var SKC=[
-  {e:'🧴',n:'CLEANSER',ef:{clarity:22,dirtyness:-25,hydration:5},splash:['💧','🫧','💦'],color:'#a0d8ff',label:'cleansed!',tip:'Always cleanse first — clean skin absorbs everything better!',order:1},
-  {e:'💧',n:'TONER',ef:{hydration:18,clarity:10,glow:8},splash:['💧','✨','🌿'],color:'#c8f0e0',label:'toned!',tip:'Pat toner in gently — never rub!',order:2},
-  {e:'🌸',n:'SERUM',ef:{glow:25,radiance:18,hydration:10},splash:['🌸','✨','💗'],color:'#ffd0f0',label:'glowing!',tip:'2-3 drops of serum — press in gently.',order:3},
-  {e:'✨',n:'MOISTURIZER',ef:{hydration:22,glow:15,radiance:12,clarity:8},splash:['✨','💖','🌟'],color:'#ffe8f0',label:'so dewy!',tip:'Moisturize while slightly damp!',order:4},
-  {e:'🌙',n:'NIGHT MASK',ef:{hydration:30,glow:20,radiance:25,clarity:18},splash:['🌙','💖','✨','💫'],color:'#d0c8ff',label:'nourished!',tip:'Apply last. Sleep on silk for extra benefits!',order:5},
-  {e:'☀️',n:'SPF MIST',ef:{radiance:20,hydration:8,glow:12},splash:['☀️','✨','⭐'],color:'#ffe0a0',label:'protected!',tip:'SPF is the most important step every single day!',order:6}
-];
-
-var SC_TIPS=[
-  {e:'🐱',t:'Cats groom 5+ hours/day. Their tongue has tiny papillae that act like a brush!',cat:true},
-  {e:'💧',t:'Fresh water daily is crucial — many cats prefer running water. Try a pet fountain!',cat:true},
-  {e:'🧴',t:'Correct order: cleanser→toner→serum→moisturiser→SPF. Always thinnest to thickest!',cat:false},
-  {e:'🪮',t:'Brushing your cat weekly removes loose fur, reduces hairballs & is great bonding.',cat:true},
-  {e:'🌸',t:'Serums have the highest concentration of actives. Use only 2-3 drops!',cat:false},
-  {e:'☀️',t:'UV causes 90% of visible skin ageing. Wear SPF daily — even indoors!',cat:false},
-  {e:'😴',t:'Kittens need 18-20 hours of sleep. Sleep is when all the repair happens!',cat:true},
-  {e:'🌙',t:'Night masks work while you sleep — always apply them as the very last step.',cat:false},
-  {e:'💖',t:'Slow blinking at your cat means "I love you" in cat language. Try it!',cat:true},
-];
-
-var EPS=[
-  {id:0,req:1,t:'DAY 1: THE ADOPTION',e:'🏠',tip:'🐱 Talk softly to your new kitten — they learn your voice and feel safe!',d:'You open the door and there they are — a tiny kitten blinking up at you with enormous eyes. They mew once, softly. You\'re already in love.'},
-  {id:1,req:2,t:'DAY 2: FIRST SMOOTHIE',e:'🥤',tip:'🥛 Never give real cats cow\'s milk — they\'re lactose intolerant! Fresh water only.',d:'Tiny paws drag them toward the café counter. They sniff a smoothie, deliberate for an eternity, then take the tiniest sip. Their eyes go wide. The café era has begun.'},
-  {id:2,req:3,t:'DAY 3: SKINCARE DISCOVERY',e:'✨',tip:'🪮 Brush your cat weekly — it reduces hairballs and they secretly love it!',d:'You introduce the cleanser. They immediately try to eat it. After gentle coaxing, one round of skincare is complete. Their fur catches the light differently now.'},
-  {id:3,req:5,t:'DAY 5: GROWING FAST',e:'📏',tip:'🍽️ Kittens need 3-4 small meals a day. Adults do well with 2.',d:'They\'ve grown noticeably. Their paws are slightly less enormous relative to their body. They look you in the eyes and meow with startling authority.'},
-  {id:4,req:7,t:'ONE WEEK TOGETHER',e:'🎉',tip:'💧 Cats are 60% water — hydration is critical. Wet food helps a lot!',d:'One whole week! They know what they want for breakfast. They have opinions. You wouldn\'t change a single thing.'},
-  {id:5,req:10,t:'THE RIVAL APPEARS',e:'😤',tip:'😼 Slow blink at your cat = "I trust you." Wait for them to blink back!',d:'A rival cat has been spotted near the café. Suspiciously well-groomed. Your kitty proceeds to do an entire skincare routine without being asked. War is declared (aesthetically).'},
-  {id:6,req:14,t:'TWO WEEKS OF GLOW',e:'✨',tip:'🪮 Regular brushing distributes natural oils and keeps their coat shiny!',d:'Two weeks of dedicated skincare has paid off. Their coat literally shimmers. Other cats in the neighbourhood have started watching tutorials.'},
-  {id:7,req:20,t:'THE ZODIAC AWAKENS',e:'⭐',tip:'🌙 Cats are crepuscular — most active at dawn and dusk. Normal!',d:'On day 20, something cosmic shifts. Their zodiac sign aligns with a celestial event. The café fills with warm golden light. They order their signature smoothie with newfound purpose.'},
-  {id:8,req:25,t:'SENIOR WISDOM',e:'👑',tip:'❤️ Senior cats need vet visits every 6 months. Regular check-ups = longer life!',d:'They\'ve grown into a wise, regal presence. They still act like a kitten when they want to. The café has become their sanctuary.'},
-  {id:9,req:30,t:'THE GRAND GALA',e:'🏆',tip:'🏅 The happiest cats have routine, play, affection & good nutrition every day!',d:'The Grand Smoothie Gala. Your kitty walks in with the confidence of someone who has done a full skincare routine for 30 days straight. They win. Obviously.'}
-];
-
-var MGS=[
-  {t:'🥤 SMOOTHIE QUIZ',d:'pick what they want based on mood!',e:'🥤',type:'quiz'},
-  {t:'💅 SKINCARE SORT',d:'tap skincare steps in correct order!',e:'✨',type:'sequence'},
-  {t:'💖 HEART CATCHER',d:'tap hearts before they vanish!',e:'💖',type:'rhythm'}
-];
-
-var G={name:'KITTY',ci:0,zi:0,mood:80,hunger:70,clean:90,energy:60,lv:1,day:1,gd:0,fd:0,td:0,ueps:[],_lastDecay:0};
-var DAY_MS=5*60*1000,gameStart=null,clockIv=null,lastSlot=-1;
-var SN=['🌅 MORNING','☀️ AFTERNOON','🌙 EVENING'];
-
-function show(id){['pg0','pg1','pg2','pg3','pg4'].forEach(function(p){var e=document.getElementById(p);if(e)e.style.display='none';});var t=document.getElementById(id);if(t)t.style.display='flex';}
-function stab(t){
-  var all={h:'th',c:'tc',g:'tg',p:'tp',s:'ts'},navs={h:'nh',c:'nc',g:'ng',p:'np',s:'ns'};
-  Object.keys(all).forEach(function(k){var e=document.getElementById(all[k]);if(e)e.style.display=(k===t)?'block':'none';var n=document.getElementById(navs[k]);if(n)n.classList.toggle('on',k===t);});
-  if(t==='c')bCafe();if(t==='g')bGlow();if(t==='p')bPlay();if(t==='s')bStories();
-}
-function scTab(t){
-  ['apply','routine','tips'].forEach(function(id){document.getElementById('scp-'+id).style.display=(id===t)?'block':'none';document.getElementById('sct-'+id).classList.toggle('on',id===t);});
-}
-
-function getAS(){return AGE_STAGES[getAge()];}
-function getAge(){for(var i=0;i<AGE_STAGES.length;i++){if(G.day>=AGE_STAGES[i].min&&G.day<=AGE_STAGES[i].max)return i;}return AGE_STAGES.length-1;}
-
-function updAgeBadge(){var a=getAS();document.getElementById('age-badge').textContent=a.label+' · day '+G.day;document.getElementById('sc-pref').textContent='💆 '+a.sc;}
-
-function upd(){
-  [['bm','vm',G.mood],['bh','vh',G.hunger],['bg2','vg',G.clean],['be','ve',G.energy]].forEach(function(b){var bar=document.getElementById(b[0]),val=document.getElementById(b[1]);if(bar)bar.style.width=Math.max(0,Math.min(100,b[2]))+'%';if(val)val.textContent=~~b[2];});
-  document.getElementById('ggd').textContent=G.gd;document.getElementById('gfd').textContent=G.fd;document.getElementById('glv').textContent=G.lv;
-  var ov=document.getElementById('layer-dirt');if(ov)ov.style.opacity=Math.max(0,(100-G.clean)/100*0.8);
-  updateSCStats();dc('cm',G.ci,G.mood,G.clean,getAS().age);
-}
-
-var SP={happy:['mrrp~ i am GLOWING ♡','that smoothie was DIVINE ✨','purrr~ life is good 🌸','radiating main character energy'],hungry:['...tummy is calling 🥤','smoothie?? please??','the café smells incredible...'],dirty:['pores need HELP 😩','skincare. NOW.','can feel the dirt building up 😣'],sad:['...','feeling a lil neglected 💔','*stares wistfully*'],ok:['*does a lil stretch*','vibes are okay~','what are we doing today~?','*flops dramatically*','thinking about smoothies...']};
-function upsp(){var pool=SP.ok;if(G.mood>78&&G.clean>75)pool=SP.happy;else if(G.hunger<30)pool=SP.hungry;else if(G.clean<30)pool=SP.dirty;else if(G.mood<35)pool=SP.sad;var el=document.getElementById('speech');if(el)el.textContent=pool[~~(Math.random()*pool.length)];dc('cm',G.ci,G.mood,G.clean,getAS().age);}
-
-function decay(){G.hunger=Math.max(0,G.hunger-7);G.clean=Math.max(0,G.clean-6);G.energy=Math.max(0,G.energy-4);SKIN.clarity=Math.max(0,SKIN.clarity-5);if(G.clean<40)G.mood=Math.max(0,G.mood-4);if(G.hunger<30)G.mood=Math.max(0,G.mood-5);if(G.gd<3)G.mood=Math.max(0,G.mood-2);upd();upsp();updateSCStats();}
-
-function checkLvl(){var nl=~~(G.td/5)+1;if(nl>G.lv){G.lv=nl;sLvl();var cnt=0;FOODS.forEach(function(f){if(!f.u&&f.tier===2&&cnt<G.lv){f.u=1;cnt++;}});showPopup('⭐','LEVEL '+G.lv+'!','You\'re getting so good at this!\nNew fancy smoothies just unlocked!','★ Check the café for new items!');}}
-function checkEps(){EPS.forEach(function(ep){if(G.ueps.indexOf(ep.id)<0&&G.td>=ep.req){G.ueps.push(ep.id);setTimeout(function(){showPopup(ep.e,ep.t,ep.d,ep.tip);},600);}});}
-function checkAgeUp(){var oldA=getAge();if(G.day>1){var wasAge=G.day-1;var oldStage=AGE_STAGES[0];for(var i=0;i<AGE_STAGES.length;i++){if(wasAge>=AGE_STAGES[i].min&&wasAge<=AGE_STAGES[i].max){oldStage=AGE_STAGES[i];break;}}if(getAS()!==oldStage){sLvl();showPopup(getAS().label.split(' ')[0],'THEY\'VE GROWN!','Your kitty is now a '+getAS().label.replace(/[🐱🐈🌿👑]/g,'').trim()+'! Their needs are changing.',getAS().tip);updAgeBadge();drawLayers(G.ci,G.mood,G.clean,getAS().age);dc('cm',G.ci,G.mood,G.clean,getAS().age);}}}
-
-function showPopup(icon,title,body,tip){sPopup();document.getElementById('popup-icon').textContent=icon;document.getElementById('popup-title').textContent=title;document.getElementById('popup-body').textContent=body;var pt=document.getElementById('popup-tip');pt.textContent=tip||'';pt.style.display=tip?'block':'none';document.getElementById('popup').classList.add('show');}
-document.getElementById('popup-close').onclick=function(){document.getElementById('popup').classList.remove('show');};
-
-function startClock(){gameStart=Date.now();G._lastDecay=0;clockIv=setInterval(tickClock,1000);tickClock();}
-function tickClock(){
-  var el=Date.now()-gameStart,pct=Math.min(1,el/DAY_MS);
-  var gh=pct*24,dh=~~gh,dm=~~((gh-dh)*60);
-  var cf=document.getElementById('clockfill'),ct=document.getElementById('clocktime'),sl=document.getElementById('slotlabel');
-  if(cf)cf.style.width=(pct*100)+'%';if(ct)ct.textContent=dh+':'+(dm<10?'0':'')+dm;
-  var slot=gh>=6&&gh<12?0:gh>=12&&gh<18?1:2;
-  if(sl)sl.textContent=SN[slot];
-  if(slot!==lastSlot&&lastSlot!==-1){toast('⏰ '+SN[slot]+'!\nNew menu items available ♡');if(document.getElementById('tc').style.display!=='none')bCafe();}
-  lastSlot=slot;
-  var dt=~~(el/(DAY_MS/4));if(dt!==G._lastDecay){G._lastDecay=dt;if(dt>0)decay();}
-  if(pct>=1){clearInterval(clockIv);endDay();}
-}
-function endDay(){G.day++;G.td++;document.getElementById('gday').textContent=G.day;G.gd=0;G.fd=0;updAgeBadge();checkLvl();checkAgeUp();checkEps();gameStart=Date.now();lastSlot=-1;G._lastDecay=0;clockIv=setInterval(tickClock,1000);tickClock();}
-function getSlot(){if(!gameStart)return 0;var pct=Math.min(1,(Date.now()-gameStart)/DAY_MS);var h=pct*24;return h>=6&&h<12?0:h>=12&&h<18?1:2;}
-
-function bCafe(){
-  var z=ZS[G.zi];var slot=getSlot();
-  document.getElementById('chint').textContent=G.name+' is feeling '+z.m+' ♡';
-  document.getElementById('timeslot').textContent=SN[slot]+' MENU · fave: '+z.fav;
-  var g=document.getElementById('fg');g.innerHTML='';
-  FOODS.filter(function(f){if(!f.u)return false;if(f.tier===0)return true;if(f.tier===1&&f.slots.indexOf(slot)>=0)return true;if(f.tier===2)return true;}).forEach(function(f){
-    var w=f.ms.indexOf(z.m)>=0;var d=document.createElement('div');d.className='fbtn'+(w?' wants':'');
-    var tl=f.tier===2?'<span class="star-badge">★ FANCY</span>':f.tier===1?'<span class="slot-tag" style="background:rgba(196,180,255,0.3);color:#7060c0">SPECIAL</span>':'<span class="slot-tag" style="background:rgba(200,200,220,0.3);color:#9090b0">basic</span>';
-    d.innerHTML='<div style="font-size:18px;margin-bottom:2px">'+f.e+'</div><div style="font-size:5px;color:#c0547a;line-height:1.4">'+f.n+'</div>'+tl+'<div style="font-size:5px;color:'+(w?'#e8609a':'#c8a0b8')+';margin-top:2px">'+(w?'♡ wants':'~ok')+'</div>';
-    d.onclick=function(){if(w){G.hunger=Math.min(100,G.hunger+f.b);G.mood=Math.min(100,G.mood+f.mb);G.fd++;G.td=Math.max(G.td,1);sEat();upd();upsp();toast(f.e+' they LOVED it!\nhunger +'+f.b+' mood +'+f.mb);}else{G.hunger=Math.min(100,G.hunger+~~(f.b*0.3));G.mood=Math.max(0,G.mood-5);upd();upsp();toast('😾 sniffed it and walked away\nmood -5');}};g.appendChild(d);
-  });
-}
-
-function bGlow(){
-  var a=getAS();var dp=~~((1-G.clean/100)*100);
-  document.getElementById('ghint').textContent=dp>55?'😩 URGENT: face needs help!':dp>25?'🧴 time for a refresh~':'✨ glow is IMMACULATE!';
-  document.getElementById('sc-pref').textContent='💆 '+a.sc;
-  drawLayers(G.ci,G.mood,G.clean,a.age);
-  var g=document.getElementById('sg');g.innerHTML='';
-  SKC.forEach(function(s,i){
-    var d=document.createElement('div');d.className='scbtn';
-    d.innerHTML='<div style="font-size:18px;margin-bottom:2px">'+s.e+'</div><div style="font-size:5px;color:#7060c0">'+s.n+'</div><div style="font-size:4px;color:#c8a0b8;margin-top:1px">'+s.label+'</div>';
-    d.onclick=function(){
-      Object.keys(s.ef).forEach(function(k){if(k==='dirtyness'){G.clean=Math.min(100,G.clean+Math.abs(s.ef[k]));}else if(SKIN[k]!==undefined){SKIN[k]=Math.min(100,SKIN[k]+s.ef[k]);}});
-      if(s.ef.clarity)G.clean=Math.min(100,G.clean+s.ef.clarity*0.5);
-      G.mood=Math.min(100,G.mood+4);sSC();upd();updateSCStats();
-      // splash
-      var stage=document.getElementById('glow-stage');
-      for(var i=0;i<8;i++){(function(ii){setTimeout(function(){var el=document.createElement('div');el.className='splash';var angle=Math.random()*Math.PI*2,dist=28+Math.random()*50;el.style.cssText='left:'+(80+Math.cos(angle)*dist)+'px;top:'+(75+Math.sin(angle)*dist)+'px;font-size:'+(11+Math.random()*10)+'px;animation-duration:'+(0.5+Math.random()*0.35)+'s';el.textContent=s.splash[~~(Math.random()*s.splash.length)];stage.appendChild(el);setTimeout(function(){if(el.parentNode)el.remove();},900);},ii*55);})(i);}
-      var txt=document.createElement('div');txt.className='floatup';txt.style.cssText='left:50%;top:8px;transform:translateX(-50%);color:'+s.color+';text-shadow:0 1px 3px rgba(0,0,0,0.12)';txt.textContent=s.label;stage.appendChild(txt);setTimeout(function(){if(txt.parentNode)txt.remove();},1000);
-      // routine
-      playerRoutine.push(s.order);var rt=document.getElementById('routine-track');if(playerRoutine.length===1)rt.innerHTML='';var step=document.createElement('span');step.className='routine-step';step.textContent=s.e;rt.appendChild(step);
-      setTimeout(function(){bGlow();},300);toast(s.e+' '+s.n+'\n'+s.tip.substring(0,40)+'...');
-      d.classList.add('used');setTimeout(function(){d.classList.remove('used');},700);
-    };
-    g.appendChild(d);
-  });
-  // tips
-  var tl=document.getElementById('sc-tips-list');tl.innerHTML='';
-  SC_TIPS.forEach(function(t){var d=document.createElement('div');d.style.cssText='background:rgba(255,255,255,0.72);border:2px solid rgba('+(t.cat?'255,179,200':'196,180,255')+',0.4);border-radius:12px;padding:8px 10px;margin-bottom:6px;font-size:6px;color:#a07090;line-height:1.8;display:flex;gap:8px;align-items:flex-start';d.innerHTML='<span style="font-size:15px;flex-shrink:0">'+t.e+'</span><div>'+(t.cat?'<span style="font-size:5px;color:#e8609a;background:rgba(255,179,200,0.3);padding:1px 5px;border-radius:8px;display:inline-block;margin-bottom:2px">🐱 CAT</span>':'<span style="font-size:5px;color:#7060c0;background:rgba(196,180,255,0.3);padding:1px 5px;border-radius:8px;display:inline-block;margin-bottom:2px">✨ SKIN</span>')+'<br>'+t.t+'</div>';tl.appendChild(d);});
-}
-
-function checkRoutine(){
-  if(playerRoutine.length<3){toast('add at least 3 steps first! 🌸');return;}
-  var ok=true;for(var i=1;i<playerRoutine.length;i++){if(playerRoutine[i]<playerRoutine[i-1]){ok=false;break;}}
-  if(ok){sWin();SKIN.glow=Math.min(100,SKIN.glow+15);SKIN.radiance=Math.min(100,SKIN.radiance+12);updateSCStats();drawLayers(G.ci,G.mood,G.clean,getAS().age);showPopup('🌟','PERFECT ROUTINE!','Steps in the correct order!\nGlow +15 · Radiance +12 ✨','Keep up the routine every day for maximum glow!');}
-  else{sFail();toast('out of order!\ncleanse→tone→serum→moisturise ♡');}
-}
-function clearRoutine(){playerRoutine=[];document.getElementById('routine-track').innerHTML='<span style="font-size:6px;color:#c8a0b8">steps appear here...</span>';toast('routine cleared! fresh start ✨');}
-
-function bPlay(){var l=document.getElementById('gl');l.innerHTML='';MGS.forEach(function(mg,i){var done=i<G.gd;var d=document.createElement('div');d.className='gbtn'+(done?' done':'');d.innerHTML='<div style="font-size:22px">'+mg.e+'</div><div style="flex:1"><div style="font-size:7px;color:#e8609a;margin-bottom:3px">'+mg.t+'</div><div style="font-size:6px;color:#c8a0b8;line-height:1.8">'+mg.d+'<br>'+(done?'✅ done today':'▶ tap to play')+'</div></div><div style="font-size:14px">'+(done?'✅':'')+'</div>';if(!done)d.onclick=function(){startMG(i);};l.appendChild(d);});}
-
-var mgHP=3;
-function setHP(n){mgHP=n;var h='';for(var i=0;i<3;i++)h+=i<n?'💖':'🤍';document.getElementById('mghp').textContent=h;}
-function setP(p){document.getElementById('mgprog').style.width=p+'%';}
-function startMG(i){mgHP=3;setHP(3);setP(0);document.getElementById('mgt').textContent=MGS[i].t;document.getElementById('mginner').innerHTML='';document.getElementById('mgo').classList.add('show');if(MGS[i].type==='quiz')mgQuiz(i);else if(MGS[i].type==='sequence')mgSeq(i);else mgRhythm(i);}
-function mgWin(i){document.getElementById('mgo').classList.remove('show');sWin();if(G.gd<3){G.gd++;G.mood=Math.min(100,G.mood+12);G.energy=Math.max(0,G.energy-4);G.td=Math.max(G.td,G.day);upd();upsp();toast('🎮 great job! mood +12\n('+G.gd+'/3 today)');if(G.gd>=3){G.mood=Math.min(100,G.mood+15);toast('🌟 ALL 3 done! ✨');}}bPlay();}
-function mgFail(i){mgHP--;setHP(mgHP);if(mgHP<=0){document.getElementById('mgo').classList.remove('show');sFail();toast('💔 out of hearts!\ntry again next time~');bPlay();}}
-
-function mgQuiz(gi){var z=ZS[G.zi];var correct=FOODS.filter(function(f){return f.ms.indexOf(z.m)>=0&&f.tier>=1&&f.u;});var wrong=FOODS.filter(function(f){return f.ms.indexOf(z.m)<0&&f.tier>=1&&f.u;});if(!correct.length)correct=FOODS.slice(0,2);if(wrong.length<2)wrong=FOODS.slice(4,7);var round=0,total=3,score=0;function nextQ(){if(round>=total){var inn=document.getElementById('mginner');inn.innerHTML='';setP(100);var r=document.createElement('div');r.className='mg-prompt';r.innerHTML=(score>=2?'🌟 SMOOTHIE EXPERT!':'💪 KEEP GOING!')+'\n'+score+'/'+total+' correct!';inn.appendChild(r);var btn=document.createElement('button');btn.style.cssText='background:rgba(255,143,171,0.88);color:white;border:2.5px solid #e8609a;font-family:\'Press Start 2P\',monospace;font-size:8px;padding:12px 18px;border-radius:14px;cursor:pointer;margin-top:8px;position:relative;z-index:1';btn.textContent=score>=2?'CLAIM REWARD ✓':'TRY AGAIN?';btn.onclick=function(){if(score>=2)mgWin(gi);else{round=0;score=0;setHP(3);setP(0);nextQ();}};inn.appendChild(btn);return;}setP(~~(round/total*100));var inn=document.getElementById('mginner');inn.innerHTML='';var c=correct[~~(Math.random()*correct.length)];var w=wrong.sort(function(){return Math.random()-0.5;}).slice(0,2);var opts=[c].concat(w).sort(function(){return Math.random()-0.5;});var q=document.createElement('div');q.className='mg-prompt';q.innerHTML=z.s+' '+z.n+' is feeling <b style="color:#e8609a">'+z.m+'</b>...<br>what do they want? 🤔';inn.appendChild(q);var pr=document.createElement('div');pr.style.cssText='font-size:6px;color:#c8a0b8;text-align:center;margin-bottom:4px;position:relative;z-index:1';pr.textContent='question '+(round+1)+' of '+total;inn.appendChild(pr);opts.forEach(function(opt){var btn=document.createElement('button');btn.className='mg-choice';btn.textContent=opt.e+' '+opt.n;btn.onclick=function(){var ok=opt===c;btn.className='mg-choice '+(ok?'correct':'wrong');if(ok)score++;else mgFail(gi);document.querySelectorAll('.mg-choice').forEach(function(b){b.onclick=null;});setTimeout(function(){round++;nextQ();},800);};inn.appendChild(btn);});}nextQ();}
-
-function mgSeq(gi){var steps=[{e:'🧴',n:'cleanse'},{e:'💧',n:'tone'},{e:'🌸',n:'serum'},{e:'✨',n:'moisturise'}];var round=0,total=2,score=0;function nextR(){if(round>=total){var inn=document.getElementById('mginner');inn.innerHTML='';setP(100);var r=document.createElement('div');r.className='mg-prompt';r.innerHTML=(score>=1?'💅 SKINCARE QUEEN!':'🧴 KEEP PRACTICING!')+'\n'+score+'/'+total+' perfect!';inn.appendChild(r);var btn=document.createElement('button');btn.style.cssText='background:rgba(255,143,171,0.88);color:white;border:2.5px solid #e8609a;font-family:\'Press Start 2P\',monospace;font-size:8px;padding:12px 18px;border-radius:14px;cursor:pointer;margin-top:8px;position:relative;z-index:1';btn.textContent=score>=1?'CLAIM REWARD ✓':'TRY AGAIN?';btn.onclick=function(){if(score>=1)mgWin(gi);else{round=0;score=0;setHP(3);setP(0);nextR();}};inn.appendChild(btn);return;}setP(~~(round/total*100));var inn=document.getElementById('mginner');inn.innerHTML='';var p2=document.createElement('div');p2.className='mg-prompt';p2.innerHTML='tap skincare steps<br>in correct order! 💅';inn.appendChild(p2);var sub=document.createElement('div');sub.style.cssText='font-size:6px;color:#c8a0b8;text-align:center;margin-bottom:6px;position:relative;z-index:1';sub.textContent='round '+(round+1)+'/'+total+' · memorise!';inn.appendChild(sub);var seq=document.createElement('div');seq.style.cssText='display:flex;gap:6px;justify-content:center;margin-bottom:6px';steps.forEach(function(s){var sp=document.createElement('span');sp.style.cssText='font-size:20px;padding:5px;background:rgba(255,179,200,0.2);border-radius:10px;border:1.5px solid rgba(255,143,171,0.3)';sp.textContent=s.e;seq.appendChild(sp);});inn.appendChild(seq);var cd=document.createElement('div');cd.style.cssText='font-size:7px;color:#9070c0;text-align:center;margin-bottom:6px;position:relative;z-index:1';cd.textContent='memorising... 3';inn.appendChild(cd);var t2=3,iv=setInterval(function(){t2--;if(t2>0){cd.textContent='memorising... '+t2;}else{clearInterval(iv);seq.innerHTML='';steps.forEach(function(s){var sp=document.createElement('span');sp.style.cssText='font-size:20px;padding:5px;background:rgba(200,200,220,0.2);border-radius:10px';sp.textContent='❓';seq.appendChild(sp);});cd.textContent='now tap in order! ↓';var shuffled=steps.slice().sort(function(){return Math.random()-0.5;});var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px';var taps=[],used=[];shuffled.forEach(function(s,si){var b=document.createElement('div');b.className='mg-tapitem';b.style.cssText='width:52px;height:52px;font-size:22px;position:relative;z-index:1';b.textContent=s.e;b.onclick=function(){if(used.indexOf(si)>=0)return;used.push(si);b.style.opacity='0.3';b.onclick=null;taps.push(s);var ok=true;for(var ti=0;ti<taps.length;ti++){if(taps[ti]!==steps[ti]){ok=false;break;}}if(!ok){mgFail(gi);cd.textContent='wrong order! 💔';taps=[];used=[];br.querySelectorAll('.mg-tapitem').forEach(function(x){x.style.opacity='1';});}else if(taps.length===steps.length){score++;round++;setTimeout(nextR,500);}};br.appendChild(b);});inn.appendChild(br);}},1000);}nextR();}
-
-function mgRhythm(gi){var inn=document.getElementById('mginner');inn.innerHTML='';var score=0,total=12,active=true;var p3=document.createElement('div');p3.className='mg-prompt';p3.textContent='tap the hearts before they vanish! 💖';inn.appendChild(p3);var sc=document.createElement('div');sc.style.cssText='font-size:10px;color:#e8609a;text-align:center;margin-bottom:4px;font-weight:bold;position:relative;z-index:1';sc.textContent='0';inn.appendChild(sc);var arena=document.createElement('div');arena.style.cssText='width:220px;height:180px;background:linear-gradient(135deg,rgba(255,230,240,0.6),rgba(220,255,220,0.6),rgba(240,230,255,0.6));border:2.5px solid rgba(255,143,171,0.4);position:relative;overflow:hidden;border-radius:16px;flex-shrink:0';inn.appendChild(arena);var hint=document.createElement('div');hint.style.cssText='font-size:6px;color:#c8a0b8;text-align:center;margin-top:4px;position:relative;z-index:1';hint.textContent='tap fast! they fade~';inn.appendChild(hint);var items=['💖','💗','💕','🌸','⭐','✨','🌟'];var sizes=[38,44,50,34];function spawn(){if(!active)return;var sz=sizes[~~(Math.random()*sizes.length)];var t=document.createElement('div');t.className='mg-tapitem';t.style.cssText='width:'+sz+'px;height:'+sz+'px;font-size:'+(sz-14)+'px;position:absolute;left:'+~~(Math.random()*(220-sz))+'px;top:'+~~(Math.random()*(180-sz))+'px;transition:opacity 0.3s;z-index:2';t.textContent=items[~~(Math.random()*items.length)];var dur=1100+~~(Math.random()*700);t.onclick=function(){score++;sc.textContent=score;setP(~~(score/total*100));t.style.transform='scale(1.5)';t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.remove();},200);if(score>=total)finish(true);};arena.appendChild(t);setTimeout(function(){if(t.parentNode){t.style.opacity='0.08';setTimeout(function(){if(t.parentNode)t.remove();},300);}},dur);setTimeout(spawn,460);}spawn();function finish(won){active=false;setTimeout(function(){arena.style.display='none';hint.style.display='none';var r=document.createElement('div');r.className='mg-prompt';r.innerHTML=(score>=total?'💖 PERFECT!':score>=7?'🌸 NICE JOB!':'💪 KEEP GOING!')+'\n'+score+'/'+total+' hearts!';inn.appendChild(r);var btn=document.createElement('button');btn.style.cssText='background:rgba(255,143,171,0.88);color:white;border:2.5px solid #e8609a;font-family:\'Press Start 2P\',monospace;font-size:8px;padding:12px 18px;border-radius:14px;cursor:pointer;margin-top:8px;position:relative;z-index:1';btn.textContent=score>=7?'CLAIM REWARD ✓':'TRY AGAIN?';btn.onclick=function(){if(score>=7)mgWin(gi);else{score=0;active=true;inn.innerHTML='';inn.appendChild(p3);inn.appendChild(sc);inn.appendChild(arena);inn.appendChild(hint);arena.innerHTML='';sc.textContent='0';setP(0);arena.style.display='';hint.style.display='';spawn();}};inn.appendChild(btn);},400);};}
-
-function bStories(){var z=ZS[G.zi];document.getElementById('shint').textContent=z.s+' '+z.n+' · play & care daily ✨';var l=document.getElementById('el');l.innerHTML='';EPS.forEach(function(ep){var u=G.ueps.indexOf(ep.id)>=0;var d=document.createElement('div');d.className='epc'+(u?'':' lk');d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:16px">'+ep.e+'</span><div><div style="font-size:5px;color:#a07090">DAY '+ep.req+' · '+(u?'UNLOCKED':'🔒')+'</div><div style="font-size:7px;color:#c0547a">'+ep.t+'</div></div></div><div style="font-size:6px;color:#b090a0;line-height:1.8">'+(u?ep.d:'???')+'</div>'+(u&&ep.tip?'<div style="font-size:6px;color:#7c5cbf;background:rgba(196,180,255,0.2);padding:5px 8px;border-radius:8px;margin-top:5px;line-height:1.8">'+ep.tip+'</div>':'');if(u)d.onclick=function(){G.mood=Math.min(100,G.mood+5);upd();upsp();toast('📖 reading...\nmood +5 ✨');};l.appendChild(d);});}
-
-var tT=null;
-function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';clearTimeout(tT);tT=setTimeout(function(){t.style.opacity='0';},3200);}
-
-// BUILD SETUP GRIDS
-var cg=document.getElementById('catgrid');
-CATS.forEach(function(cat,i){var b=document.createElement('button');b.className='catbtn'+(i===0?' sel':'');var cv=document.createElement('canvas');cv.width=44;cv.height=44;cv.id='cp'+i;cv.style.cssText='image-rendering:pixelated;width:44px;height:44px;display:block;pointer-events:none';b.appendChild(cv);var nm=document.createElement('span');nm.textContent=cat[0];b.appendChild(nm);var vb=document.createElement('span');vb.style.cssText='font-size:4px;color:#c8a0b8';vb.textContent=cat[1];b.appendChild(vb);b.onclick=function(){document.querySelectorAll('.catbtn').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');G.ci=i;dc('c1',i,80,90,0);};cg.appendChild(b);});
-
-var zg=document.getElementById('zodgrid');
-ZS.forEach(function(z,i){var b=document.createElement('button');b.className='zodbtn';b.innerHTML='<span style="font-size:12px;display:block">'+z.s+'</span>'+z.n.substring(0,6)+'<br><span style="font-size:4px;color:#c8a0b8">'+ZMON[i]+'</span>';b.onclick=function(){document.querySelectorAll('.zodbtn').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');G.zi=i;document.getElementById('zdesc').textContent=z.s+' '+z.n+' — '+z.d;};zg.appendChild(b);});
-
-// WIRE BUTTONS
-document.getElementById('b0').onclick=function(){show('pg1');};
-document.getElementById('b1').onclick=function(){var v=document.getElementById('namein').value.trim();if(v)G.name=v.toUpperCase();dc('c1',G.ci,80,90,0);show('pg2');};
-document.getElementById('b2').onclick=function(){show('pg3');};
-document.getElementById('b3').onclick=function(){
-  show('pg4');
-  document.getElementById('gname').textContent=G.name;
-  document.getElementById('gzod').textContent=ZS[G.zi].s+' '+ZS[G.zi].n;
-  dc('cm',G.ci,G.mood,G.clean,0);upd();upsp();updAgeBadge();stab('h');
-  startClock();
-  setTimeout(function(){showPopup('🐱','WELCOME HOME!','You just adopted '+G.name+'!\nThey\'re a tiny kitten full of potential.\nCare for them every day and watch them grow.','🐱 Talk softly to your kitten — they learn your voice and feel safe!');G.ueps.push(0);},700);
-};
-document.getElementById('cm').onclick=function(){G.mood=Math.min(100,G.mood+4);G.energy=Math.min(100,G.energy+2);sPet();upd();upsp();toast('💖 purr~ they like that!');};
-document.getElementById('glow-stage').addEventListener('click',function(){
-  G.clean=Math.min(100,G.clean+8);SKIN.clarity=Math.min(100,SKIN.clarity+10);SKIN.hydration=Math.min(100,SKIN.hydration+5);G.mood=Math.min(100,G.mood+2);sSC();upd();updateSCStats();
-  var stage=document.getElementById('glow-stage');['💧','🫧','✨'].forEach(function(e,i){setTimeout(function(){var el=document.createElement('div');el.className='splash';el.style.cssText='left:'+(50+Math.random()*60)+'px;top:'+(40+Math.random()*40)+'px;font-size:14px;animation-duration:0.6s';el.textContent=e;stage.appendChild(el);setTimeout(function(){if(el.parentNode)el.remove();},700);},i*80);});
-  toast('💧 quick cleanse done!\nstep 1 of your routine ♡');
-  drawLayers(G.ci,G.mood,G.clean,getAS().age);
-});
-document.getElementById('nh').onclick=function(){stab('h');};
-document.getElementById('nc').onclick=function(){stab('c');};
-document.getElementById('ng').onclick=function(){stab('g');};
-document.getElementById('np').onclick=function(){stab('p');};
-document.getElementById('ns').onclick=function(){stab('s');};
-document.getElementById('mgq').onclick=function(){document.getElementById('mgo').classList.remove('show');bPlay();};
-
-// INIT
-dc('c0',4,80,90,1);dc('c1',0,80,90,0);
-for(var i=0;i<6;i++)dc('cp'+i,i,80,90,0);
+// ── INIT ──────────────────────────────────────────────────────────────────────
+setTimeout(function(){
+  updUI();roomLoop();
+  setTimeout(function(){
+    showPop('🏠','WELCOME TO KITTY CAFÉ!',
+      'Your tiny kitten has just arrived.\nThey are nervous but incredibly cute.',
+      'HOW TO PLAY:\n• FEED to open the café menu\n• LOVE/GLOW for skincare\n• PLAY for minigames\n• ADOPT to add more cats\nEach in-game day = 5 real minutes!');
+  },1200);
+},80);
 </script>
