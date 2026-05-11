@@ -1,999 +1,904 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;overflow-x:hidden;background:#d8c0f0}
+*{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
+html,body{width:100%;overflow-x:hidden}
 :root{
   --lav:#ede0f8;--lavd:#c4a8d8;--lavdd:#9b7ab8;
   --blush:#ffe0ee;--blushd:#f0a8c8;
   --mint:#d4f5e8;--mintd:#8ad4b4;
-  --cream:#fff8f0;--or:#cf5527;--wine:#7d2027;--olive:#998731;
-  --pink:#ffcce0;--pinkd:#e880a8;--green:#c8f4dc;--greend:#60c890;
-  --txt:#2a1a3a;--txts:#5a3a6a;
-  --rise1:#FAE3B1;--rise2:#998731;--rise3:#5FA8C2;--rise4:#CF5527;--rise5:#7D2027;--rise6:#673C34;
+  --or:#cf5527;--wine:#7d2027;--olive:#998731;
+  --pinkd:#e880a8;--greend:#60c890;
+  --txt:#2a1a3a;--txts:#6a4a7a;
+  --yw:#fff5b0;--ywd:#f0c840;
 }
 #app{
-  width:100%;max-width:min(440px,100vw);margin:0 auto;
+  width:100%;max-width:min(420px,100vw);margin:0 auto;
   min-height:100svh;font-family:'Press Start 2P',monospace;
-  position:relative;overflow:hidden;display:flex;flex-direction:column;
-  background:linear-gradient(145deg,#f0d8ff 0%,#ffd8f0 30%,#e8c8ff 60%,#ffc8e8 100%);
-  background-size:400% 400%;animation:bgAnim 10s ease-in-out infinite;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  background:linear-gradient(145deg,#f0d8ff 0%,#ffd8f0 35%,#e8c8ff 65%,#ffc8e8 100%);
+  background-size:400%;animation:bgA 10s ease-in-out infinite;
 }
-@keyframes bgAnim{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes bgA{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
-/* ── BROWSER CHROME ─────── */
-#chrome{background:rgba(220,200,245,.9);border-bottom:2px solid var(--lavdd);padding:4px 7px;display:flex;align-items:center;gap:5px;flex-shrink:0}
-.ch-arr{width:20px;height:20px;background:rgba(255,255,255,.9);border:2px solid var(--lavdd);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--lavdd);cursor:pointer;flex-shrink:0}
-.ch-bar{flex:1;background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;height:20px;display:flex;align-items:center;padding:0 7px;font-size:clamp(5px,1.3vw,6px);color:var(--lavdd)}
+/* CHROME */
+#chrome{background:rgba(220,200,245,.9);border-bottom:2px solid var(--lavdd);padding:3px 6px;display:flex;align-items:center;gap:4px;flex-shrink:0;height:26px}
+.ch-b{width:17px;height:17px;background:rgba(255,255,255,.9);border:2px solid var(--lavdd);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:6px;color:var(--lavdd);cursor:pointer;flex-shrink:0}
+.ch-url{flex:1;background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:8px;height:17px;display:flex;align-items:center;padding:0 6px;font-size:5px;color:var(--lavdd);overflow:hidden;white-space:nowrap}
 
-/* ── TITLE ─────── */
-#title-area{text-align:center;padding:5px 8px 4px;background:rgba(255,255,255,.45);border-bottom:2px dashed var(--lavd);flex-shrink:0}
-.g-title{font-size:clamp(10px,3.2vw,14px);line-height:2;letter-spacing:1px}
+/* TITLE */
+#title{text-align:center;padding:5px 8px 4px;background:rgba(255,255,255,.42);border-bottom:2px dashed var(--lavd);flex-shrink:0}
+.t1{font-size:clamp(11px,3.4vw,15px);line-height:1.9;letter-spacing:1px}
 .t-or{color:var(--or)}.t-ol{color:var(--olive)}.t-lv{color:var(--lavdd)}
-.g-sub{font-size:clamp(6px,1.6vw,7px);color:var(--txts);line-height:2;margin-top:1px}
+.t2{font-size:clamp(7px,1.9vw,9px);color:var(--txts);line-height:1.8;margin-top:1px}
 
-/* ── DAY STRIP ─────── */
-#daystrip{background:rgba(255,255,255,.55);border-bottom:2px solid var(--lavd);padding:3px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.dbadge{background:rgba(230,210,255,.9);border:2px solid var(--lavdd);border-radius:5px;padding:2px 7px;font-size:clamp(5px,1.4vw,7px);color:var(--wine)}
-.dname{font-size:clamp(6px,1.7vw,8px);color:var(--wine)}
-.abadge{background:rgba(255,224,238,.9);border:2px solid var(--blushd);border-radius:5px;padding:2px 7px;font-size:clamp(5px,1.4vw,7px);color:var(--wine)}
+/* DAY STRIP */
+#daystrip{background:rgba(255,255,255,.55);border-bottom:2px solid var(--lavd);padding:3px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;height:28px}
+.db{background:rgba(230,210,255,.9);border:2px solid var(--lavdd);border-radius:5px;padding:1px 7px;font-size:clamp(7px,1.9vw,9px);color:var(--wine)}
+.dn{font-size:clamp(8px,2.1vw,10px);color:var(--wine)}
+.ab{background:rgba(255,224,238,.9);border:2px solid var(--blushd);border-radius:5px;padding:1px 7px;font-size:clamp(7px,1.9vw,9px);color:var(--wine)}
 
-/* ── ROOM ─────── */
-#room-wrap{position:relative;flex-shrink:0;height:clamp(230px,60vw,295px);background:linear-gradient(160deg,rgba(248,242,255,.95),rgba(234,255,246,.95));border-bottom:3px solid var(--lavd);overflow:hidden;cursor:pointer}
-#room-canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
-#sparkles{position:absolute;inset:0;pointer-events:none;z-index:5}
-.sp{position:absolute;animation:spA ease-in-out infinite;pointer-events:none}
+/* ROOM */
+#room-wrap{position:relative;flex-shrink:0;height:clamp(220px,58vw,275px);overflow:hidden;cursor:pointer;background:#f4eeff}
+#room-cv{width:100%;height:100%;display:block}
+#spl{position:absolute;inset:0;pointer-events:none;z-index:5}
+.sp{position:absolute;animation:spA ease-in-out infinite;pointer-events:none;font-size:11px}
 @keyframes spA{0%,100%{opacity:.3;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
-#speech-bubble{position:absolute;top:7px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.96);border:2px solid var(--pinkd);border-radius:9px;padding:3px 11px;font-size:clamp(5px,1.5vw,7px);color:var(--txt);white-space:nowrap;z-index:15;opacity:0;transition:opacity .4s;box-shadow:2px 2px 0 rgba(240,130,180,.2)}
-#speech-bubble.show{opacity:1}
-#speech-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--pinkd)}
+#bbl{position:absolute;top:7px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.97);border:2px solid var(--pinkd);border-radius:10px;padding:4px 12px;font-size:clamp(7px,1.9vw,9px);color:var(--txt);white-space:nowrap;z-index:15;opacity:0;transition:opacity .4s;pointer-events:none}
+#bbl.show{opacity:1}
+#bbl::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--pinkd)}
 
-/* ── ACTION BUTTONS ─────── */
-#actions{display:flex;gap:7px;padding:7px;flex-shrink:0;background:rgba(255,255,255,.35)}
-.abtn{flex:1;border:3px solid;border-radius:11px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:clamp(7px,2.2vw,10px);padding:clamp(10px,2.8vw,14px) 3px;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;transition:transform .1s;box-shadow:0 4px 0 rgba(0,0,0,.13)}
-.abtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.13)}
-.abtn-i{font-size:clamp(16px,4.5vw,22px)}
-.abtn-bow{position:absolute;top:-8px;right:4px;font-size:12px}
-.btn-feed{background:linear-gradient(180deg,#c8f4e0,#90d8b0);color:#1a4a30;border-color:#50a880}
-.btn-play{background:linear-gradient(180deg,#fff4b0,#f0d860);color:#3a2800;border-color:#c8a820}
-.btn-love{background:linear-gradient(180deg,#ffc8dc,#f088b0);color:#4a0020;border-color:#e060a0}
+/* CAT TOGGLE BAR */
+#cat-toggle{display:flex;gap:0;background:rgba(255,255,255,.55);border-bottom:3px solid var(--lavd);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+#cat-toggle::-webkit-scrollbar{display:none}
+.ct-slot{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:4px 6px;cursor:pointer;gap:2px;border-right:2px solid rgba(200,180,230,.4);min-width:58px;position:relative;background:transparent;transition:background .15s;border:none}
+.ct-slot:last-child{border-right:none}
+.ct-slot.active{background:rgba(255,220,240,.5)}
+.ct-slot canvas{width:36px;height:32px;image-rendering:pixelated}
+.ct-name{font-size:clamp(5px,1.3vw,6px);color:var(--wine);text-align:center;line-height:1.3;max-width:52px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ct-zod{font-size:5px;color:var(--lavdd)}
+.ct-indicator{position:absolute;top:2px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--pinkd)}
+.ct-add{flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:44px;cursor:pointer;font-size:18px;color:var(--lavdd);border:none;background:transparent;padding:4px}
 
-/* ── STAT BARS ─────── */
-#stats{background:rgba(255,255,255,.68);border-bottom:2px solid var(--lavd);padding:6px 9px;flex-shrink:0}
+/* ACTIONS */
+#actions{display:flex;gap:7px;padding:6px 7px;flex-shrink:0;background:rgba(255,255,255,.32)}
+.abtn{flex:1;border:3px solid;border-radius:11px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:clamp(8px,2.3vw,11px);padding:9px 3px;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;transition:transform .1s;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+.abtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.14)}
+.ai{font-size:clamp(18px,4.8vw,22px)}
+.bow{position:absolute;top:-8px;right:4px;font-size:12px}
+.bf{background:linear-gradient(180deg,#c8f4e0,#90d8b0);color:#1a4a30;border-color:#50a880}
+.bp{background:linear-gradient(180deg,#fff4b0,#f0d860);color:#3a2800;border-color:#c8a820}
+.bl{background:linear-gradient(180deg,#ffc8dc,#f088b0);color:#4a0020;border-color:#e060a0}
+
+/* STATS */
+#stats{background:rgba(255,255,255,.65);border-bottom:2px solid var(--lavd);padding:5px 9px;flex-shrink:0}
 .sr{display:flex;align-items:center;gap:6px;margin-bottom:4px}
 .sr:last-child{margin-bottom:0}
-.sr-i{font-size:12px;width:16px;text-align:center;flex-shrink:0}
-.sr-l{font-size:clamp(5px,1.5vw,7px);color:var(--txt);width:46px;flex-shrink:0;opacity:.8}
-.sr-t{flex:1;height:7px;background:rgba(180,150,220,.2);border:1.5px solid var(--lavd);border-radius:3px;overflow:hidden}
-.sr-f{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.34,1.56,.64,1)}
-.sr-v{font-size:clamp(5px,1.5vw,7px);color:var(--txt);width:20px;text-align:right;flex-shrink:0;opacity:.8}
-.f-mood{background:linear-gradient(90deg,#f080b0,#f8b0d0)}
-.f-hungry{background:linear-gradient(90deg,#cf5527,#f0c060)}
-.f-glow{background:linear-gradient(90deg,#70b840,#b0e870)}
-.f-energy{background:linear-gradient(90deg,#60b0f0,#a0d8f8)}
+.si{font-size:12px;width:15px;text-align:center;flex-shrink:0}
+.sl{font-size:clamp(7px,1.9vw,9px);color:var(--txt);width:48px;flex-shrink:0}
+.st{flex:1;height:7px;background:rgba(180,150,220,.2);border:1.5px solid var(--lavd);border-radius:3px;overflow:hidden}
+.sf{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+.sv{font-size:clamp(7px,1.9vw,9px);color:var(--txt);width:20px;text-align:right;flex-shrink:0}
+.fm{background:linear-gradient(90deg,#f080b0,#f8b0d0)}
+.fh{background:linear-gradient(90deg,#cf5527,#f0c060)}
+.fg{background:linear-gradient(90deg,#70b840,#b0e870)}
+.fe{background:linear-gradient(90deg,#60b0f0,#a0d8f8)}
 
-/* ── BOTTOM SECTION ─────── */
+/* BOTTOM */
 #bottom{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
 #tab-bar{display:flex;border-bottom:2px solid var(--lavd);flex-shrink:0}
-.tab-btn{flex:1;background:rgba(255,255,255,.45);border:none;border-right:1px solid var(--lavd);font-family:'Press Start 2P',monospace;font-size:clamp(5px,1.5vw,7px);color:var(--txt);opacity:.6;padding:6px 2px;cursor:pointer;transition:all .15s}
-.tab-btn:last-child{border-right:none}
-.tab-btn.on{background:rgba(255,255,255,.88);color:var(--wine);opacity:1}
-
-/* ── PILL ROW ─────── */
-.pill-row{display:flex;gap:5px;padding:5px 8px;border-bottom:2px solid var(--lavd);flex-shrink:0;background:linear-gradient(90deg,rgba(230,200,255,.75),rgba(255,200,230,.75),rgba(220,190,255,.75));background-size:200%;animation:pillShift 6s ease-in-out infinite}
-@keyframes pillShift{0%,100%{background-position:0%}50%{background-position:100%}}
-.pill{flex:1;border-radius:18px;font-family:'Press Start 2P',monospace;font-size:clamp(4px,1.3vw,6px);padding:5px 2px;cursor:pointer;transition:transform .1s;text-align:center;border-style:solid;border-width:2px;display:block}
+.tbb{flex:1;background:rgba(255,255,255,.42);border:none;border-right:1px solid var(--lavd);font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.9vw,9px);color:var(--txt);opacity:.6;padding:6px 2px;cursor:pointer}
+.tbb:last-child{border-right:none}
+.tbb.on{background:rgba(255,255,255,.88);color:var(--wine);opacity:1}
+.pill-row{display:flex;gap:5px;padding:5px 8px;border-bottom:2px solid var(--lavd);flex-shrink:0;background:linear-gradient(90deg,rgba(230,200,255,.78),rgba(255,200,230,.78),rgba(220,190,255,.78));background-size:200%;animation:pA 6s ease-in-out infinite}
+@keyframes pA{0%,100%{background-position:0%}50%{background-position:100%}}
+.pill{flex:1;border-radius:18px;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.9vw,9px);padding:6px 2px;cursor:pointer;transition:transform .1s;text-align:center;border-style:solid;border-width:2px;display:block}
 .pill:active{transform:scale(.93)}
-.p-a{background:#ffc0d8;border-color:#e880a8;color:#4a0820}
-.p-g{background:#b8f0d0;border-color:#50c880;color:#1a4030}
-.p-gw{background:#c8d8ff;border-color:#9b7ab8;color:#1a2060}
+.pa{background:#ffc0d8;border-color:#e880a8;color:#4a0820}
+.pg{background:#b8f0d0;border-color:#50c880;color:#1a4030}
+.pgw{background:#c8d8ff;border-color:#9b7ab8;color:#1a2060}
+#diary-elg{display:flex;flex:1;overflow:hidden;min-height:100px}
+#diary{flex:1;overflow-y:auto;padding:6px 8px;background:rgba(255,255,255,.60);border-right:2px solid var(--lavd);position:relative}
+#diary::before{content:'';position:absolute;inset:3px;border:2px dashed rgba(200,160,220,.35);border-radius:9px;pointer-events:none}
+.dt{font-size:clamp(7px,1.9vw,9px);color:var(--wine);text-align:center;margin-bottom:6px;letter-spacing:1px}
+.srow{display:flex;align-items:center;gap:7px;padding:4px 5px;border-radius:7px;margin-bottom:3px}
+.srow.cur{background:rgba(240,160,200,.2);border:1.5px solid var(--blushd)}
+.srow.lk{opacity:.35}
+.srow canvas{width:28px;height:24px;flex-shrink:0}
+.sn{font-size:clamp(7px,1.9vw,9px);color:var(--txt);line-height:1.5}
+.sd{font-size:clamp(6px,1.5vw,7px);color:var(--pinkd);margin-top:1px}
+#elg{width:clamp(90px,24vw,106px);flex-shrink:0;padding:6px;background:rgba(255,235,248,.78);border-left:2px solid var(--blushd);overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+.et{font-size:clamp(6px,1.6vw,8px);color:var(--wine);text-align:center;line-height:1.7}
+.er{display:flex;flex-direction:column;gap:2px}
+.el{font-size:clamp(6px,1.5vw,7px);color:var(--txt);opacity:.8;line-height:1.5}
+.etr{width:100%;height:6px;background:rgba(200,170,220,.25);border:1.5px solid var(--lavd);border-radius:3px;overflow:hidden}
+.ef{height:100%;border-radius:2px;transition:width .5s}
+.eff{background:linear-gradient(90deg,#f08040,#f0c040)}
+.efb{background:linear-gradient(90deg,#d070f0,#a040e0)}
+.en{font-size:clamp(5px,1.2vw,6px);color:var(--txt);line-height:1.8;opacity:.72}
 
-/* ── INNER TABS CONTENT ─────── */
-#tab-content{flex:1;overflow-y:auto;display:flex;flex-direction:column;min-height:0}
-.tc-panel{display:none;flex-direction:column;gap:0}
-.tc-panel.on{display:flex}
+/* CTA */
+#cta{width:100%;background:linear-gradient(90deg,#e8a0c8,#c880d8,#e8a0c8);background-size:200%;animation:ctaA 3s linear infinite;border:none;border-top:3px solid var(--wine);padding:clamp(10px,2.8vw,13px);text-align:center;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:clamp(9px,2.5vw,12px);color:var(--txt);letter-spacing:1px;display:block;flex-shrink:0}
+@keyframes ctaA{0%{background-position:0%}100%{background-position:200%}}
 
-/* DIARY + ELG side by side */
-#diary-elg{display:flex;flex:1;overflow:hidden;min-height:120px}
-#growth-diary{flex:1;overflow-y:auto;padding:6px 7px;background:rgba(255,255,255,.62);border-right:2px solid var(--lavd);position:relative}
-#growth-diary::before{content:'';position:absolute;inset:3px;border:2px dashed rgba(200,160,220,.4);border-radius:10px;pointer-events:none}
-.dt{font-size:clamp(6px,1.6vw,7px);color:var(--wine);text-align:center;margin-bottom:6px;letter-spacing:1px}
-.s-row{display:flex;align-items:center;gap:7px;padding:4px 5px;border-radius:7px;margin-bottom:3px}
-.s-row.cur{background:rgba(240,160,200,.2);border:1.5px solid var(--blushd)}
-.s-row.lk{opacity:.35}
-.sc{width:28px;height:24px;flex-shrink:0;image-rendering:pixelated}
-.si .sn{font-size:clamp(5px,1.4vw,7px);color:var(--txt);opacity:.85;line-height:1.4}
-.si .sd{font-size:clamp(4px,1.1vw,5px);color:var(--pinkd);margin-top:1px}
-#elg-panel{width:clamp(90px,24vw,108px);flex-shrink:0;padding:6px;background:rgba(255,235,248,.78);border-left:2px solid var(--blushd);overflow-y:auto}
-.elg-t{font-size:clamp(5px,1.3vw,6px);color:var(--wine);text-align:center;margin-bottom:6px;line-height:1.7}
-.elg-r{margin-bottom:5px}
-.elg-l{font-size:clamp(4px,1.2vw,5px);color:var(--txt);margin-bottom:2px;opacity:.8;line-height:1.4}
-.elg-tr{width:100%;height:6px;background:rgba(200,170,220,.25);border:1.5px solid var(--lavd);border-radius:3px;overflow:hidden}
-.elg-f{height:100%;border-radius:2px;transition:width .5s}
-.ef-fat{background:linear-gradient(90deg,#f08040,#f0c040)}
-.ef-bond{background:linear-gradient(90deg,#d070f0,#a040e0)}
-.elg-note{font-size:clamp(4px,1vw,5px);color:var(--txt);line-height:1.8;margin-top:5px;opacity:.72}
+/* PANEL OVERLAY */
+#overlay{display:none;position:absolute;inset:0;z-index:60;background:rgba(235,215,255,.97);flex-direction:column}
+#overlay.show{display:flex}
+#ov-head{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(220,190,255,.85);border-bottom:2px solid var(--lavdd);flex-shrink:0;height:34px}
+#ov-title{font-size:clamp(8px,2.2vw,11px);color:var(--wine)}
+#ov-close{background:var(--wine);color:#fff;border:none;border-radius:5px;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.8vw,9px);padding:4px 10px;cursor:pointer}
+#ov-body{flex:1;overflow-y:auto;padding:10px}
 
-/* ── FULL-SCREEN PANELS ─────── */
-#panel-overlay{display:none;position:absolute;inset:0;z-index:60;background:rgba(235,215,255,.97);flex-direction:column;overflow-y:auto}
-#panel-overlay.show{display:flex}
-#po-head{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(220,190,255,.8);border-bottom:2px solid var(--lavdd);flex-shrink:0}
-#po-title{font-size:clamp(7px,2vw,10px);color:var(--wine)}
-#po-close{background:var(--wine);color:#fff;border:none;border-radius:5px;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.5vw,7px);padding:4px 9px;cursor:pointer}
-#po-body{flex:1;overflow-y:auto;padding:10px}
+/* ── CAT PROFILE CARD (Spoon Pet Book style) ── */
+#cat-profile{display:none;position:absolute;inset:0;z-index:70;background:rgba(220,180,240,.85);flex-direction:column;align-items:center;justify-content:flex-start;padding:10px 8px;overflow-y:auto}
+#cat-profile.show{display:flex}
+.cp-outer{width:100%;max-width:360px;background:rgba(255,240,252,.97);border:4px solid var(--lavdd);border-radius:14px;overflow:hidden;position:relative}
+.cp-outer::before{content:'';position:absolute;inset:0;border:2px dashed rgba(200,160,220,.4);border-radius:12px;pointer-events:none;z-index:2}
+/* top strip */
+.cp-header{background:linear-gradient(90deg,#f090c8,#c870d8,#a050e0);padding:6px 10px;display:flex;align-items:center;justify-content:space-between}
+.cp-h-title{font-size:clamp(8px,2.2vw,10px);color:#fff}
+.cp-close{background:rgba(255,255,255,.3);color:#fff;border:2px solid rgba(255,255,255,.6);border-radius:6px;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.8vw,8px);padding:3px 8px;cursor:pointer}
+/* name banner */
+.cp-namebanner{background:rgba(255,255,255,.8);border-bottom:2px dashed var(--lavd);padding:6px 10px;display:flex;align-items:center;justify-content:space-between}
+.cp-catname{font-size:clamp(10px,2.8vw,14px);color:var(--wine)}
+.cp-zodiac{display:flex;align-items:center;gap:5px;font-size:clamp(7px,1.8vw,9px);color:var(--lavdd)}
+.cp-zodiac span{background:var(--lav);border:2px solid var(--lavdd);border-radius:20px;padding:2px 8px}
+/* main content */
+.cp-body{padding:10px;display:flex;gap:10px}
+/* portrait frame (Spoon Pet Book stamp style) */
+.cp-portrait{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px}
+.cp-frame{background:var(--yw);border:4px solid var(--ywd);border-radius:6px;padding:5px;position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cp-frame::after{content:'Faves ★';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);font-size:6px;color:var(--wine);font-family:'Press Start 2P',monospace;white-space:nowrap;background:rgba(255,240,160,.8);padding:1px 4px;border-radius:2px}
+.cp-frame canvas{width:80px;height:80px}
+.cp-personality{background:rgba(220,180,255,.5);border:2px solid var(--lavdd);border-radius:20px;padding:2px 8px;font-size:clamp(6px,1.5vw,7px);color:var(--wine);text-align:center}
+/* stats right side */
+.cp-stats{flex:1;display:flex;flex-direction:column;gap:6px}
+.cp-stat-row{display:flex;flex-direction:column;gap:2px}
+.cp-stat-label{font-size:clamp(6px,1.5vw,7px);color:var(--txts)}
+.cp-stat-track{width:100%;height:8px;background:rgba(180,150,220,.25);border:2px solid var(--lavd);border-radius:4px;overflow:hidden}
+.cp-stat-fill{height:100%;border-radius:2px;transition:width .6s cubic-bezier(.34,1.56,.64,1)}
+.cp-mood-f{background:linear-gradient(90deg,#f080b0,#f8c0d8)}
+.cp-hungry-f{background:linear-gradient(90deg,#cf5527,#f8c060)}
+.cp-glow-f{background:linear-gradient(90deg,#70b840,#c0e890)}
+.cp-energy-f{background:linear-gradient(90deg,#60b0f0,#b0dcf8)}
+/* facts row */
+.cp-facts{padding:8px 10px;border-top:2px dashed var(--lavd);display:flex;gap:8px;flex-wrap:wrap}
+.cp-fact{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:60px;background:rgba(255,255,255,.7);border:2px solid var(--lavd);border-radius:8px;padding:5px 3px}
+.cp-fact-num{font-size:clamp(11px,3vw,14px);color:var(--wine)}
+.cp-fact-label{font-size:clamp(5px,1.2vw,6px);color:var(--txts);text-align:center;line-height:1.5}
+/* zodiac bio */
+.cp-bio{padding:8px 10px;background:rgba(255,255,255,.6);border-top:2px dashed var(--lavd);font-size:clamp(7px,1.8vw,9px);color:var(--txts);line-height:2}
+/* top 3 fave items */
+.cp-faves{padding:8px 10px;border-top:2px dashed var(--lavd)}
+.cp-faves-title{font-size:clamp(7px,1.8vw,8px);color:var(--wine);margin-bottom:6px;text-align:center}
+.cp-faves-grid{display:flex;gap:6px;justify-content:center}
+.cp-fave-slot{width:48px;height:48px;background:rgba(255,255,255,.8);border:2px solid var(--lavd);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:22px;position:relative}
+.cp-fave-slot .fave-num{position:absolute;top:-5px;left:-5px;background:var(--lavdd);color:#fff;width:14px;height:14px;border-radius:50%;font-size:7px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace}
+/* nav arrows */
+.cp-nav{display:flex;gap:8px;justify-content:center;padding:8px;border-top:2px solid var(--lavd)}
+.cp-nav-btn{background:var(--lav);border:3px solid var(--lavdd);border-radius:8px;font-family:'Press Start 2P',monospace;font-size:clamp(8px,2vw,10px);color:var(--wine);padding:7px 14px;cursor:pointer;box-shadow:0 3px 0 var(--lavdd)}
+.cp-nav-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--lavdd)}
 
-/* food grid */
+/* FOOD GRID */
 .food-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
 .fi{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;transition:transform .1s;box-shadow:0 3px 0 var(--lavd)}
 .fi:active{transform:scale(.92)}
-.fi.fav{border-color:var(--pinkd);background:rgba(255,200,230,.2);box-shadow:0 3px 0 var(--blushd)}
-.fi-e{font-size:clamp(18px,5vw,22px);display:block;margin-bottom:3px}
-.fi-n{font-size:clamp(5px,1.3vw,6px);color:var(--txt);line-height:1.5}
-.fi-d{font-size:clamp(4px,1vw,5px);color:var(--txts);line-height:1.4;margin-top:1px;opacity:.8}
+.fi.fav{border-color:var(--pinkd);background:rgba(255,200,230,.2)}
+.fie{font-size:clamp(20px,5.5vw,24px);display:block;margin-bottom:3px}
+.fin{font-size:clamp(7px,1.8vw,9px);color:var(--txt);line-height:1.5}
+.fid{font-size:clamp(6px,1.5vw,7px);color:var(--txts);margin-top:1px;opacity:.85}
+.zcard{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:9px;margin-bottom:8px}
+.zt{font-size:clamp(8px,2.2vw,11px);color:var(--wine);margin-bottom:4px}
+.zd{font-size:clamp(7px,1.8vw,9px);color:var(--txts);line-height:1.9}
+.zfav{font-size:clamp(7px,1.7vw,9px);color:var(--pinkd);margin-top:4px}
+.hint{font-size:clamp(7px,1.8vw,9px);color:var(--txts);text-align:center;margin-bottom:8px;line-height:1.9;background:rgba(255,255,255,.7);border-radius:8px;padding:7px}
 
-/* skincare grid */
+/* SKINCARE */
+.skinbox{background:#fff;border:2px solid #b8d8f0;border-radius:9px;padding:9px;margin-bottom:8px}
+.skt{font-size:clamp(8px,2.2vw,10px);color:var(--wine);text-align:center;margin-bottom:7px}
+.skrow{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.skrow:last-child{margin-bottom:0}
+.skl{font-size:clamp(7px,1.8vw,9px);color:var(--txts);width:75px;flex-shrink:0}
+.skt2{flex:1;height:7px;background:rgba(180,210,240,.3);border:1.5px solid #b8d8f0;border-radius:3px;overflow:hidden}
+.skf{height:100%;border-radius:2px;transition:width .5s}
+.fhyd{background:linear-gradient(90deg,#60b0f0,#a0d8f8)}
+.fcla{background:linear-gradient(90deg,#70b040,#b0d870)}
+.fglo{background:linear-gradient(90deg,#e880a8,#f8b0d0)}
+.frad{background:linear-gradient(90deg,#f0c040,#f8e090)}
+.skv{font-size:clamp(7px,1.8vw,9px);color:var(--txts);width:20px;text-align:right}
 .sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
-.sci{background:#fff;border:2px solid #b8d8f0;border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;transition:transform .1s;box-shadow:0 3px 0 #a0c8e0}
+.sci{background:#fff;border:2px solid #b8d8f0;border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;box-shadow:0 3px 0 #a0c8e0;transition:transform .1s}
 .sci:active{transform:scale(.92)}
-.sci.used{border-color:var(--mintd);background:rgba(180,240,210,.25);opacity:.6;pointer-events:none}
-.sci-e{font-size:clamp(18px,5vw,22px);display:block;margin-bottom:3px}
-.sci-n{font-size:clamp(5px,1.3vw,6px);color:var(--txt);line-height:1.5}
-.sci-d{font-size:clamp(4px,1vw,5px);color:var(--txts);line-height:1.4;margin-top:1px;opacity:.8}
+.sci.used{opacity:.45;pointer-events:none;border-color:var(--mintd)}
+.scie{font-size:clamp(20px,5.5vw,24px);display:block;margin-bottom:3px}
+.scin{font-size:clamp(7px,1.8vw,9px);color:var(--txt);line-height:1.5}
+.scid{font-size:clamp(6px,1.5vw,7px);color:var(--txts);opacity:.8;margin-top:1px}
+.tip-card{background:#fff;border:2px solid var(--blushd);border-radius:9px;padding:8px 9px;margin-bottom:7px;display:flex;gap:8px;align-items:flex-start}
+.tce{font-size:20px;flex-shrink:0}
+.tct{font-size:clamp(7px,1.8vw,9px);color:var(--txt);line-height:1.9}
+.rtbox{background:#fff;border:2px solid var(--mintd);border-radius:9px;padding:8px;margin-bottom:8px}
+.rtlbl{font-size:clamp(7px,1.7vw,8px);color:var(--txts);margin-bottom:5px;line-height:1.8}
+.rttrack{display:flex;gap:4px;min-height:28px;padding:3px;flex-wrap:wrap;align-items:center}
+.rtbtns{display:flex;gap:6px;margin-top:6px}
+.rtbtn{flex:1;border-radius:7px;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.8vw,9px);padding:8px;cursor:pointer;border:2px solid;transition:transform .1s}
+.rtbtn.rtck{background:linear-gradient(180deg,var(--mintd),var(--greend));color:#1a4030;border-color:var(--greend)}
+.rtbtn.rtrst{background:rgba(255,255,255,.8);color:var(--txts);border-color:var(--lavd)}
 
-/* skin stats */
-.skin-panel{background:rgba(255,255,255,.8);border:2px solid #b8d8f0;border-radius:9px;padding:8px;margin-bottom:8px}
-.sk-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.sk-row:last-child{margin-bottom:0}
-.sk-l{font-size:clamp(5px,1.4vw,6px);color:var(--txts);width:70px;flex-shrink:0}
-.sk-t{flex:1;height:6px;background:rgba(180,210,240,.3);border:1.5px solid #b8d8f0;border-radius:3px;overflow:hidden}
-.sk-f{height:100%;border-radius:2px;transition:width .5s}
-.sk-v{font-size:clamp(5px,1.3vw,6px);color:var(--txts);width:18px;text-align:right}
-.f-hyd{background:linear-gradient(90deg,#60b0f0,#a0d8f8)}
-.f-cla{background:linear-gradient(90deg,#70b040,#b0d870)}
-.f-sg{background:linear-gradient(90deg,#e880a8,#f8b0d0)}
-.f-rad{background:linear-gradient(90deg,#f0c040,#f8e090)}
-
-/* cat tips */
-.tip-card{background:rgba(255,255,255,.85);border:2px solid var(--blushd);border-radius:9px;padding:8px 9px;margin-bottom:7px;display:flex;gap:8px;align-items:flex-start}
-.tip-e{font-size:18px;flex-shrink:0;margin-top:1px}
-.tip-t{font-size:clamp(5px,1.4vw,6px);color:var(--txt);line-height:1.9;opacity:.88}
-
-/* zodiac card */
-.zod-card{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:8px;margin-bottom:8px}
-.zod-title{font-size:clamp(7px,2vw,9px);color:var(--wine);margin-bottom:4px}
-.zod-desc{font-size:clamp(5px,1.4vw,6px);color:var(--txts);line-height:1.9}
-.zod-fav{font-size:clamp(5px,1.3vw,6px);color:var(--pinkd);margin-top:4px}
-
-/* story episodes */
-.ep-card{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:8px 9px;margin-bottom:7px;cursor:pointer;transition:transform .1s}
-.ep-card:active{transform:scale(.98)}
-.ep-card.locked{opacity:.38;pointer-events:none}
-.ep-head{display:flex;align-items:center;gap:7px;margin-bottom:4px}
-.ep-e{font-size:20px;flex-shrink:0}
-.ep-title{font-size:clamp(6px,1.7vw,8px);color:var(--wine)}
-.ep-day{font-size:clamp(4px,1.2vw,5px);color:var(--txts);margin-top:1px}
-.ep-body{font-size:clamp(5px,1.4vw,6px);color:var(--txts);line-height:1.9}
-.ep-tip{font-size:clamp(5px,1.3vw,6px);color:var(--lavdd);background:rgba(220,200,255,.3);border-radius:6px;padding:5px 7px;margin-top:5px;line-height:1.8}
-
-/* adopt panel */
+/* ADOPT */
 .adopt-sect{margin-bottom:10px}
-.a-sect-title{font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:7px;border-bottom:2px dashed var(--lavd);padding-bottom:4px}
-.adopt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
-.adopt-card{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
-.adopt-card:active{transform:scale(.92)}
-.adopt-card.active-cat{border-color:var(--pinkd);background:rgba(255,200,230,.2);box-shadow:0 3px 0 var(--blushd)}
-.ac-n{font-size:clamp(5px,1.3vw,6px);color:var(--txt);margin-top:3px;line-height:1.5}
-.ac-zod{font-size:clamp(4px,1.1vw,5px);color:var(--lavdd);margin-top:1px}
-.name-input-wrap{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:8px;margin-bottom:8px}
-.ni-label{font-size:clamp(6px,1.6vw,7px);color:var(--wine);margin-bottom:5px;display:block}
-.ni-row{display:flex;gap:6px;align-items:center}
-.ni-in{flex:1;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.6vw,8px);padding:7px 8px;background:var(--lav);border:2px solid var(--lavdd);border-radius:6px;color:var(--txt);outline:none}
-.ni-zsel{font-family:'Press Start 2P',monospace;font-size:clamp(5px,1.3vw,6px);padding:7px 5px;background:var(--lav);border:2px solid var(--lavdd);border-radius:6px;color:var(--txt);outline:none;width:90px;flex-shrink:0}
-.adopt-do-btn{display:block;width:100%;background:linear-gradient(90deg,var(--blushd),var(--pinkd));border:2px solid var(--wine);border-radius:9px;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.8vw,9px);color:var(--txt);padding:10px;cursor:pointer;text-align:center;box-shadow:0 3px 0 var(--wine);margin-top:4px}
-.adopt-do-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--wine)}
-.my-cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.asect-t{font-size:clamp(8px,2.2vw,10px);color:var(--wine);margin-bottom:8px;border-bottom:2px dashed var(--lavd);padding-bottom:4px}
+.ni-lbl{font-size:clamp(7px,1.9vw,9px);color:var(--wine);display:block;margin-bottom:5px}
+.ni-in{width:100%;font-family:'Press Start 2P',monospace;font-size:clamp(8px,2.2vw,11px);padding:8px;background:var(--lav);border:2px solid var(--lavdd);border-radius:7px;color:var(--txt);outline:none;margin-bottom:8px}
+.zodsel{width:100%;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.8vw,9px);padding:8px;background:var(--lav);border:2px solid var(--lavdd);border-radius:7px;color:var(--txt);outline:none;margin-bottom:8px}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.cat-card{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.cat-card.sel{border-color:var(--pinkd);background:rgba(255,200,230,.2);box-shadow:0 3px 0 var(--blushd)}
+.cat-card .cn{font-size:clamp(6px,1.6vw,8px);color:var(--txt);margin-top:3px}
+.adopt-btn{display:block;width:100%;background:linear-gradient(90deg,var(--blushd),var(--pinkd));border:2px solid var(--wine);border-radius:9px;font-family:'Press Start 2P',monospace;font-size:clamp(9px,2.5vw,12px);color:var(--txt);padding:11px;cursor:pointer;text-align:center;box-shadow:0 3px 0 var(--wine)}
+.adopt-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--wine)}
+.my-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.mc-card{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:7px 3px;text-align:center;cursor:pointer;box-shadow:0 3px 0 var(--lavd)}
+.mc-card.active{border-color:var(--pinkd);background:rgba(255,200,230,.2)}
+.mc-card .mcn{font-size:clamp(7px,1.8vw,9px);color:var(--txt);margin-top:3px}
+.mc-card .mcz{font-size:clamp(5px,1.3vw,6px);color:var(--lavdd);margin-top:1px}
+.set-btn{display:block;width:100%;background:var(--lav);border:1.5px solid var(--lavdd);border-radius:5px;font-family:'Press Start 2P',monospace;font-size:clamp(5px,1.3vw,6px);color:var(--wine);padding:3px;cursor:pointer;margin-top:4px}
 
-/* minigames */
-.mg-card{background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:9px;align-items:center;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
-.mg-card:active{transform:scale(.98)}
-.mg-e{font-size:24px;flex-shrink:0}
-.mg-info .mg-t{font-size:clamp(6px,1.7vw,9px);color:var(--wine);margin-bottom:3px}
-.mg-info .mg-d{font-size:clamp(5px,1.4vw,6px);color:var(--txts);line-height:1.8}
-.mg-done{font-size:clamp(4px,1.2vw,5px);color:var(--mintd);margin-top:3px}
+/* EPISODES */
+.ep{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:9px;margin-bottom:7px;cursor:pointer;transition:transform .1s}
+.ep:active{transform:scale(.98)}
+.ep.lk{opacity:.38;pointer-events:none}
+.ep-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.ep-e{font-size:22px;flex-shrink:0}
+.ep-t{font-size:clamp(8px,2.1vw,10px);color:var(--wine)}
+.ep-day{font-size:clamp(6px,1.5vw,7px);color:var(--txts);margin-top:1px}
+.ep-b{font-size:clamp(7px,1.8vw,9px);color:var(--txts);line-height:1.9;margin-top:4px}
+.ep-tip{font-size:clamp(7px,1.7vw,9px);color:var(--txt);background:rgba(220,200,255,.3);border-radius:6px;padding:6px 8px;margin-top:5px;line-height:1.9}
 
-/* MINIGAME SCREENS */
+/* GAMES */
+.mg-card{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.mg-card:active{transform:scale(.97)}
+.mg-e{font-size:26px;flex-shrink:0}
+.mg-t{font-size:clamp(8px,2.2vw,11px);color:var(--wine);margin-bottom:3px}
+.mg-d{font-size:clamp(7px,1.8vw,9px);color:var(--txts);line-height:1.8}
+
+/* MINIGAME */
 #mg-screen{display:none;position:absolute;inset:0;z-index:80;background:rgba(235,215,255,.98);flex-direction:column;align-items:center;padding:12px;gap:7px;overflow-y:auto}
 #mg-screen.show{display:flex}
-#mg-title{font-size:clamp(9px,2.5vw,12px);color:var(--wine);text-align:center}
+#mg-ttl{font-size:clamp(10px,2.8vw,13px);color:var(--wine);text-align:center}
 .hp-row{display:flex;gap:4px;justify-content:center}
 .hp{font-size:16px}
-.mg-prompt{font-size:clamp(7px,2vw,9px);color:var(--txt);text-align:center;line-height:1.8;max-width:280px}
-.mg-progress{width:100%;max-width:280px;height:10px;background:rgba(180,150,220,.25);border:2px solid var(--lavd);border-radius:5px;overflow:hidden}
-.mg-prog-fill{height:100%;background:linear-gradient(90deg,var(--pinkd),var(--lavdd));transition:width .3s}
-.mg-opts{display:flex;flex-direction:column;gap:7px;width:100%;max-width:280px}
-.mg-opt{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:10px 8px;font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.7vw,8px);color:var(--txt);cursor:pointer;text-align:left;line-height:1.6;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.mg-pw{width:100%;max-width:300px;height:10px;background:rgba(180,150,220,.2);border:2px solid var(--lavd);border-radius:5px;overflow:hidden}
+.mg-pf{height:100%;background:linear-gradient(90deg,var(--pinkd),var(--lavdd));transition:width .3s}
+.mg-q{font-size:clamp(8px,2.1vw,10px);color:var(--txt);text-align:center;line-height:1.8;max-width:290px}
+.mg-opts{width:100%;max-width:300px;display:flex;flex-direction:column;gap:6px}
+.mg-opt{background:#fff;border:2px solid var(--lavdd);border-radius:9px;padding:10px 9px;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.9vw,9px);color:var(--txt);cursor:pointer;text-align:left;line-height:1.6;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
 .mg-opt:active{transform:scale(.97)}
-.mg-opt.correct{border-color:var(--greend);background:rgba(180,240,210,.3)}
-.mg-opt.wrong{opacity:.35;text-decoration:line-through;pointer-events:none}
-.mg-seq-grid{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:280px}
-.seq-item{width:62px;height:62px;background:#fff;border:2px solid var(--lavdd);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
-.seq-item:active{transform:scale(.9)}
-.seq-item.used{opacity:.4;pointer-events:none;border-color:var(--mintd)}
-.star-canvas{border:2px solid var(--lavdd);border-radius:9px;cursor:pointer;background:rgba(255,248,255,.9)}
-.mg-result{font-size:clamp(8px,2.2vw,11px);color:var(--wine);text-align:center;line-height:1.8}
-.mg-close-btn{background:linear-gradient(180deg,var(--blushd),var(--pinkd));color:var(--txt);border:2px solid var(--wine);border-radius:8px;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.9vw,9px);padding:10px 20px;cursor:pointer;box-shadow:0 3px 0 var(--wine)}
-.mg-close-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--wine)}
-
-/* ── BOTTOM STUFF ─────── */
-#adopt-cta{position:sticky;bottom:0;width:100%;background:linear-gradient(90deg,#e8a0c8,#c880d8,#e8a0c8);background-size:200%;animation:ctaS 3s linear infinite;border:none;border-top:3px solid var(--wine);padding:clamp(10px,2.8vw,14px);text-align:center;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:clamp(7px,2.2vw,10px);color:var(--txt);letter-spacing:1px;display:block;flex-shrink:0}
-@keyframes ctaS{0%{background-position:0%}100%{background-position:200%}}
-#adopt-cta:active{filter:brightness(.9)}
-
-/* BOTTOM NAV BAR */
-#bot-bar{background:rgba(220,200,245,.9);border-top:2px solid var(--lavdd);padding:4px 8px;display:flex;align-items:center;gap:5px;flex-shrink:0}
-.bot-arr{width:20px;height:20px;background:rgba(255,255,255,.9);border:2px solid var(--lavdd);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--lavdd);cursor:pointer;flex-shrink:0}
-.bot-search{flex:1;background:rgba(255,255,255,.85);border:2px solid var(--lavdd);border-radius:9px;height:20px;display:flex;align-items:center;padding:0 7px;font-size:clamp(5px,1.3vw,6px);color:var(--lavdd)}
-.bot-dots{display:flex;gap:4px}
-.bot-dot{width:6px;height:6px;border-radius:50%;background:var(--lavdd);opacity:.4}
-.bot-dot.on{opacity:1;background:var(--pinkd)}
+.mg-opt.ok{border-color:var(--greend);background:rgba(180,240,210,.3)}
+.mg-opt.no{opacity:.3;text-decoration:line-through;pointer-events:none}
+.seq-grid{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:300px}
+.si2{width:64px;height:64px;background:#fff;border:2px solid var(--lavdd);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 3px 0 var(--lavd);transition:transform .1s}
+.si2:active{transform:scale(.9)}
+.si2.used{opacity:.38;pointer-events:none;border-color:var(--mintd)}
+.si2 span{font-size:6px;color:var(--txts);margin-top:2px}
+.star-cv{border:2px solid var(--lavdd);border-radius:9px;cursor:pointer;background:rgba(255,248,255,.9)}
+.mg-res{font-size:clamp(10px,2.8vw,13px);color:var(--wine);text-align:center;line-height:1.9}
+.mg-close{background:linear-gradient(180deg,var(--blushd),var(--pinkd));color:var(--txt);border:2px solid var(--wine);border-radius:8px;font-family:'Press Start 2P',monospace;font-size:clamp(8px,2.2vw,11px);padding:10px 20px;cursor:pointer;box-shadow:0 3px 0 var(--wine)}
 
 /* POPUP */
 #popup{display:none;position:absolute;inset:0;background:rgba(232,210,255,.96);z-index:200;flex-direction:column;align-items:center;justify-content:center;padding:18px;gap:9px}
 #popup.show{display:flex}
-#pu-ico{font-size:38px}
-#pu-title{font-size:clamp(8px,2.5vw,12px);color:var(--wine);text-align:center;line-height:1.8}
-#pu-body{font-size:clamp(6px,1.8vw,8px);color:var(--txt);text-align:center;line-height:2.1;max-width:280px}
-#pu-tip{font-size:clamp(6px,1.6vw,7px);color:var(--txt);background:rgba(230,210,255,.85);border:2px solid var(--lavdd);border-radius:8px;padding:7px 10px;text-align:center;line-height:1.9;max-width:280px;display:none}
-#pu-close{background:linear-gradient(180deg,var(--blushd),var(--pinkd));color:var(--txt);border:3px solid var(--wine);font-family:'Press Start 2P',monospace;font-size:clamp(7px,2vw,9px);padding:10px 22px;border-radius:9px;cursor:pointer;box-shadow:0 4px 0 var(--wine)}
-#pu-close:active{transform:translateY(3px);box-shadow:0 1px 0 var(--wine)}
-
-#toast{position:fixed;bottom:clamp(60px,16vw,80px);left:50%;transform:translateX(-50%);background:var(--wine);border:2px solid #ffd0e8;color:#fff;font-family:'Press Start 2P',monospace;font-size:clamp(5px,1.4vw,7px);padding:6px 12px;opacity:0;transition:opacity .3s;z-index:300;text-align:center;max-width:250px;line-height:1.9;pointer-events:none;border-radius:7px;white-space:pre-line}
-
-/* HELP BADGE */
-.help-badge{display:inline-block;background:var(--lavdd);color:#fff;border-radius:50%;width:16px;height:16px;font-size:8px;text-align:center;line-height:16px;cursor:pointer;flex-shrink:0;vertical-align:middle;margin-left:4px}
+#pu-ico{font-size:40px}
+#pu-t{font-size:clamp(10px,2.8vw,13px);color:var(--wine);text-align:center;line-height:1.8}
+#pu-b{font-size:clamp(8px,2.1vw,10px);color:var(--txt);text-align:center;line-height:2;max-width:280px}
+#pu-tip{font-size:clamp(7px,1.8vw,9px);color:var(--txt);background:rgba(230,210,255,.85);border:2px solid var(--lavdd);border-radius:8px;padding:8px 12px;text-align:center;line-height:1.9;max-width:280px;display:none}
+#pu-ok{background:linear-gradient(180deg,var(--blushd),var(--pinkd));color:var(--txt);border:3px solid var(--wine);font-family:'Press Start 2P',monospace;font-size:clamp(9px,2.4vw,12px);padding:11px 24px;border-radius:9px;cursor:pointer;box-shadow:0 4px 0 var(--wine)}
+#pu-ok:active{transform:translateY(3px);box-shadow:0 1px 0 var(--wine)}
+#toast{position:fixed;bottom:clamp(60px,15vw,80px);left:50%;transform:translateX(-50%);background:var(--wine);border:2px solid #ffd0e8;color:#fff;font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.8vw,9px);padding:7px 13px;opacity:0;transition:opacity .3s;z-index:300;text-align:center;max-width:260px;line-height:1.9;pointer-events:none;border-radius:8px;white-space:pre-line}
 </style>
 
 <div id="app">
-
-<!-- BROWSER CHROME -->
-<div id="chrome">
-  <div class="ch-arr">&#9664;</div><div class="ch-arr">&#9664;</div>
-  <div class="ch-bar">&#128269; kitty-cafe-tamagotchi.freaque</div>
-  <div class="ch-arr">&#9664;</div><div class="ch-arr">&#9654;</div>
-</div>
-
-<!-- TITLE -->
-<div id="title-area">
-  <div class="g-title"><span class="t-or">KITTY</span> <span class="t-ol">CAF&#201;</span><br><span class="t-lv">&#10022; TAMAGOTCHI &#10022;</span></div>
-  <div class="g-sub">adopt a kitten &middot; watch them grow<br>feed &#128155; glow &middot; play &middot; love &#9825;</div>
-</div>
-
-<!-- DAY STRIP -->
-<div id="daystrip">
-  <span class="dbadge">DAY <span id="d-day">1</span></span>
-  <span class="dname" id="d-name">KITTY</span>
-  <span class="abadge" id="d-age">TINY KITTEN</span>
-</div>
+<div id="chrome"><div class="ch-b">&#9664;</div><div class="ch-b">&#9664;</div><div class="ch-url">&#128269; kitty-cafe-tamagotchi.freaque</div><div class="ch-b">&#9654;</div><div class="ch-b">&#9654;</div></div>
+<div id="title"><div class="t1"><span class="t-or">KITTY</span> <span class="t-ol">CAF&#201;</span> <span class="t-lv">&#10022; TAMAGOTCHI &#10022;</span></div><div class="t2">adopt &middot; feed &middot; glow &middot; play &middot; love</div></div>
+<div id="daystrip"><span class="db">DAY <span id="d-day">1</span></span><span class="dn" id="d-name">KITTY</span><span class="ab" id="d-age">TINY KITTEN</span></div>
 
 <!-- ROOM -->
-<div id="room-wrap">
-  <canvas id="room-canvas"></canvas>
-  <div id="sparkles"></div>
-  <div id="speech-bubble">mrrp~ &#128149;</div>
-</div>
+<div id="room-wrap"><canvas id="room-cv"></canvas><div id="spl"></div><div id="bbl">mrrp~ &#128149;</div></div>
+
+<!-- CAT TOGGLE BAR -->
+<div id="cat-toggle" id="cat-toggle"></div>
 
 <!-- ACTIONS -->
 <div id="actions">
-  <button class="abtn btn-feed" id="btn-feed">
-    <span class="abtn-bow">&#127890;</span><span class="abtn-i">&#127858;</span>FEED
-  </button>
-  <button class="abtn btn-play" id="btn-play">
-    <span class="abtn-bow">&#127890;</span><span class="abtn-i">&#127905;</span>PLAY
-  </button>
-  <button class="abtn btn-love" id="btn-love">
-    <span class="abtn-bow">&#128144;</span><span class="abtn-i">&#128149;</span>LOVE/GLOW
-  </button>
+  <button class="abtn bf" id="btn-feed"><span class="bow">&#127890;</span><span class="ai">&#127858;</span>FEED</button>
+  <button class="abtn bp" id="btn-play"><span class="bow">&#127890;</span><span class="ai">&#127905;</span>PLAY</button>
+  <button class="abtn bl" id="btn-love"><span class="bow">&#128144;</span><span class="ai">&#128149;</span>LOVE/GLOW</button>
 </div>
 
 <!-- STATS -->
 <div id="stats">
-  <div class="sr"><span class="sr-i">&#128149;</span><span class="sr-l">MOOD</span><div class="sr-t"><div class="sr-f f-mood" id="sf-mood" style="width:80%"></div></div><span class="sr-v" id="sv-mood">80</span></div>
-  <div class="sr"><span class="sr-i">&#127858;</span><span class="sr-l">HUNGRY</span><div class="sr-t"><div class="sr-f f-hungry" id="sf-hungry" style="width:70%"></div></div><span class="sr-v" id="sv-hungry">70</span></div>
-  <div class="sr"><span class="sr-i">&#10024;</span><span class="sr-l">GLOW</span><div class="sr-t"><div class="sr-f f-glow" id="sf-glow" style="width:60%"></div></div><span class="sr-v" id="sv-glow">60</span></div>
-  <div class="sr"><span class="sr-i">&#9889;</span><span class="sr-l">ENERGY</span><div class="sr-t"><div class="sr-f f-energy" id="sf-energy" style="width:75%"></div></div><span class="sr-v" id="sv-energy">75</span></div>
+  <div class="sr"><span class="si">&#128149;</span><span class="sl">MOOD</span><div class="st"><div class="sf fm" id="sf-m" style="width:80%"></div></div><span class="sv" id="sv-m">80</span></div>
+  <div class="sr"><span class="si">&#127858;</span><span class="sl">HUNGRY</span><div class="st"><div class="sf fh" id="sf-h" style="width:70%"></div></div><span class="sv" id="sv-h">70</span></div>
+  <div class="sr"><span class="si">&#10024;</span><span class="sl">GLOW</span><div class="st"><div class="sf fg" id="sf-g" style="width:60%"></div></div><span class="sv" id="sv-g">60</span></div>
+  <div class="sr"><span class="si">&#9889;</span><span class="sl">ENERGY</span><div class="st"><div class="sf fe" id="sf-e" style="width:75%"></div></div><span class="sv" id="sv-e">75</span></div>
 </div>
 
-<!-- BOTTOM SECTION -->
+<!-- BOTTOM -->
 <div id="bottom">
-  <div id="tab-bar">
-    <button class="tab-btn on" id="tb-kitties" onclick="setTab('kitties')">KITTIES</button>
-    <button class="tab-btn" id="tb-cafe" onclick="setTab('cafe')">CAF&#201; DECOR</button>
-  </div>
+  <div id="tab-bar"><button class="tbb on" id="tb-k" onclick="setTab('k')">KITTIES</button><button class="tbb" id="tb-c" onclick="setTab('c')">CAF&#201; DECOR</button></div>
   <div class="pill-row">
-    <button class="pill p-a" id="pl-a" style="color:#4a0820">&#10022; ADOPT</button>
-    <button class="pill p-g" id="pl-g" style="color:#1a4030">&#9825; GROW</button>
-    <button class="pill p-gw" id="pl-gw" style="color:#1a2060">&#10024; GLOW</button>
+    <button class="pill pa" id="pl-a" style="color:#4a0820">&#10022; ADOPT</button>
+    <button class="pill pg" id="pl-g" style="color:#1a4030">&#9825; GROW</button>
+    <button class="pill pgw" id="pl-gw" style="color:#1a2060">&#10024; GLOW</button>
   </div>
-  <div id="tab-content">
-    <!-- KITTIES -->
-    <div class="tc-panel on" id="tc-kitties">
-      <div id="diary-elg">
-        <div id="growth-diary">
-          <div class="dt">&#10022; GROWTH DIARY &#10022;</div>
-          <div id="growth-stages"></div>
-        </div>
-        <div id="elg-panel">
-          <div class="elg-t">EMOTIONAL<br>LABOR<br>GAUGES</div>
-          <div class="elg-r">
-            <div class="elg-l">&#128543; Caregiver Fatigue</div>
-            <div class="elg-tr"><div class="elg-f ef-fat" id="ef-fat" style="width:20%"></div></div>
-          </div>
-          <div class="elg-r">
-            <div class="elg-l">&#128149; Bond Strength</div>
-            <div class="elg-tr"><div class="elg-f ef-bond" id="ef-bond" style="width:35%"></div></div>
-          </div>
-          <div class="elg-note">The real emotional labor of nurturing is real. Use Care Actions carefully.</div>
-        </div>
+  <div id="diary-elg">
+    <div id="diary"><div class="dt">&#10022; GROWTH DIARY &#10022;</div><div id="gstages"></div></div>
+    <div id="elg">
+      <div class="et">EMOTIONAL<br>LABOR<br>GAUGES</div>
+      <div class="er"><div class="el">&#128543; Fatigue</div><div class="etr"><div class="ef eff" id="ef-f" style="width:20%"></div></div></div>
+      <div class="er"><div class="el">&#128149; Bond</div><div class="etr"><div class="ef efb" id="ef-b" style="width:35%"></div></div></div>
+      <div class="en">The real emotional labor of nurturing is real. Use Care Actions carefully.</div>
+    </div>
+  </div>
+</div>
+<button id="cta">&#9658; ADOPT YOUR KITTY</button>
+
+<!-- PANEL OVERLAY -->
+<div id="overlay"><div id="ov-head"><div id="ov-title">PANEL</div><button id="ov-close">&#10005; CLOSE</button></div><div id="ov-body"></div></div>
+
+<!-- CAT PROFILE CARD OVERLAY -->
+<div id="cat-profile">
+  <div class="cp-outer" id="cp-outer">
+    <div class="cp-header">
+      <div class="cp-h-title" id="cp-h-title">CAT PROFILE</div>
+      <button class="cp-close" id="cp-close-btn">&#10005; CLOSE</button>
+    </div>
+    <div class="cp-namebanner">
+      <div class="cp-catname" id="cp-name">KITTY</div>
+      <div class="cp-zodiac"><span id="cp-zod-sign">&#9800;</span> <span id="cp-zod-name">ARIES</span></div>
+    </div>
+    <div class="cp-body">
+      <div class="cp-portrait">
+        <div class="cp-frame"><canvas id="cp-cat-cv" width="80" height="80" style="width:80px;height:80px"></canvas></div>
+        <div class="cp-personality" id="cp-personality">COMPETITIVE</div>
       </div>
+      <div class="cp-stats" id="cp-stats-list"></div>
     </div>
-    <!-- CAFE DECOR (placeholder) -->
-    <div class="tc-panel" id="tc-cafe">
-      <div style="padding:12px;font-size:clamp(6px,1.6vw,7px);color:var(--txts);text-align:center;line-height:2">Coming soon!<br>Unlock café furniture<br>as your bond grows &#128149;</div>
+    <div class="cp-facts" id="cp-facts"></div>
+    <div class="cp-bio" id="cp-bio">Zodiac bio here.</div>
+    <div class="cp-faves">
+      <div class="cp-faves-title">TOP 3 FAVE ITEMS</div>
+      <div class="cp-faves-grid" id="cp-faves"></div>
+    </div>
+    <div class="cp-nav">
+      <button class="cp-nav-btn" id="cp-prev">&#9664; PREV</button>
+      <button class="cp-nav-btn" id="cp-next">NEXT &#9654;</button>
     </div>
   </div>
 </div>
 
-<!-- ADOPT CTA -->
-<button id="adopt-cta">&#9658; ADOPT YOUR KITTY</button>
-
-<!-- BOTTOM NAV BAR -->
-<div id="bot-bar">
-  <div class="bot-arr">&#9664;</div><div class="bot-arr">&#9664;</div>
-  <div class="bot-search">&#128269;</div>
-  <div class="bot-dots"><div class="bot-dot on"></div><div class="bot-dot"></div><div class="bot-dot"></div></div>
-  <div class="bot-arr">&#9654;</div><div class="bot-arr">&#9654;</div>
-</div>
-
-<!-- FULL-SCREEN PANEL OVERLAY -->
-<div id="panel-overlay">
-  <div id="po-head">
-    <div id="po-title">PANEL</div>
-    <button id="po-close">&#10005; CLOSE</button>
-  </div>
-  <div id="po-body"></div>
-</div>
-
-<!-- MINIGAME SCREEN -->
+<!-- MINIGAME -->
 <div id="mg-screen">
-  <div id="mg-title">GAME</div>
+  <div id="mg-ttl">GAME</div>
   <div class="hp-row" id="mg-hp"></div>
-  <div class="mg-progress"><div class="mg-prog-fill" id="mg-prog" style="width:0%"></div></div>
-  <div class="mg-prompt" id="mg-prompt"></div>
-  <div id="mg-content" style="width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;gap:7px"></div>
-  <button class="mg-close-btn" id="mg-close-btn">&#10005; QUIT</button>
+  <div class="mg-pw"><div class="mg-pf" id="mg-pf" style="width:0%"></div></div>
+  <div class="mg-q" id="mg-q"></div>
+  <div id="mg-cont" style="width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;gap:7px"></div>
+  <button class="mg-close" id="mg-close-btn">&#10005; QUIT</button>
 </div>
 
 <!-- POPUP -->
-<div id="popup">
-  <div id="pu-ico">&#127775;</div>
-  <div id="pu-title">MILESTONE!</div>
-  <div id="pu-body">something happened!</div>
-  <div id="pu-tip"></div>
-  <button id="pu-close">GOT IT &#128149;</button>
-</div>
-
+<div id="popup"><div id="pu-ico">&#127775;</div><div id="pu-t">MILESTONE!</div><div id="pu-b">something happened!</div><div id="pu-tip"></div><button id="pu-ok">GOT IT &#128149;</button></div>
 <div id="toast"></div>
 </div>
 
 <script>
-// ── PIXEL CAT RENDERER ───────────────────────────────────────────────────────
+// ── PIXEL CAT RENDERER (much more detailed) ────────────────────────────────────
 function drawCat(canvas, opts) {
   if (!canvas) return;
   opts = opts || {};
   var stage = opts.stage || 0, mood = opts.mood || 'happy', color = opts.color || 0;
-  var ctx = canvas.getContext('2d'); var W = canvas.width, H = canvas.height;
-  ctx.clearRect(0,0,W,H); ctx.imageSmoothingEnabled = false;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.imageSmoothingEnabled = false;
   var pals = [
-    {b:'#8878c0',bel:'#d0cce8',ear:'#d8b0cc',n:'#e880a8',eye:'#2a1a5a'},
-    {b:'#d08040',bel:'#f8d0a0',ear:'#e89060',n:'#c84820',eye:'#2a1000'},
-    {b:'#3a3a3a',bel:'#808080',ear:'#555555',n:'#e080a0',eye:'#50a030'},
-    {b:'#e8d0b8',bel:'#fffaf4',ear:'#f0b8a8',n:'#d08070',eye:'#5a7090'},
-    {b:'#c07848',bel:'#f0d8a8',ear:'#d09060',n:'#b85838',eye:'#406028'},
-    {b:'#90b8d0',bel:'#d8eef8',ear:'#c0d4e8',n:'#d09098',eye:'#3a5a80'}
+    // Gray-Lilac: body, belly, ear-inner, nose, eye, blush, collar
+    {b:'#8878c0',bl:'#d0cce8',ei:'#d8b0cc',n:'#e880a8',ey:'#2a1a5a',bsh:'#f8b8d8',col:'#c080e0'},
+    // Orange Tabby
+    {b:'#d08040',bl:'#f8d0a0',ei:'#e89060',n:'#c84820',ey:'#2a1000',bsh:'#f8c090',col:'#e88030'},
+    // Midnight Black
+    {b:'#3a3a3a',bl:'#787878',ei:'#555555',n:'#e080a0',ey:'#50a030',bsh:'#888888',col:'#e060a0'},
+    // Cream
+    {b:'#e8d0b8',bl:'#fffaf4',ei:'#f0b8a8',n:'#d08070',ey:'#5a7090',bsh:'#f0d0c0',col:'#c0a080'},
+    // Calico
+    {b:'#c07848',bl:'#f0d8a8',ei:'#d09060',n:'#b85838',ey:'#406028',bsh:'#f0c090',col:'#e09050'},
+    // Blue-Grey
+    {b:'#90b8d0',bl:'#d8eef8',ei:'#c0d4e8',n:'#d09098',ey:'#3a5a80',bsh:'#c8e0f0',col:'#80a8c8'}
   ];
   var p = pals[color % pals.length];
   var scl = [.42,.58,.72,.88,.94][stage] || .72;
-  var s = (Math.min(W,H)/32) * scl;
-  var cx = W/2, cy = H*.60;
-  function px(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(~~(cx+x*s),~~(cy+y*s),Math.max(1,~~(w*s)),Math.max(1,~~(h*s)));}
-  ctx.fillStyle='rgba(140,90,180,.14)';ctx.beginPath();ctx.ellipse(~~cx,~~(cy+10*s),~~(8*s),~~(3*s),0,0,Math.PI*2);ctx.fill();
-  px(-6,0,12,9,p.b);px(-4,2,8,6,p.bel);
-  px(-7,-12,14,13,p.b);px(-6,-13,12,2,p.b);px(-5,-14,10,2,p.b);px(-4,-15,8,1,p.b);
-  px(-8,-11,2,8,p.b);px(6,-11,2,8,p.b);
-  px(-7,-15,3,4,p.b);px(-6,-17,2,3,p.b);px(-5,-18,1,2,p.b);px(-6,-14,2,2,p.ear);
-  px(4,-15,3,4,p.b);px(4,-17,2,3,p.b);px(5,-18,1,2,p.b);px(4,-14,2,2,p.ear);
-  px(-4,-3,8,5,p.bel);px(-5,-2,10,4,p.bel);
-  ctx.fillStyle='#fff';ctx.fillRect(~~(cx-6*s),~~(cy-10*s),~~(5*s),~~(5*s));ctx.fillRect(~~(cx+1*s),~~(cy-10*s),~~(5*s),~~(5*s));
-  ctx.fillStyle=p.eye;ctx.fillRect(~~(cx-5*s),~~(cy-9*s),~~(3*s),~~(3*s));ctx.fillRect(~~(cx+2*s),~~(cy-9*s),~~(3*s),~~(3*s));
-  ctx.fillStyle='#fff';ctx.fillRect(~~(cx-4*s),~~(cy-10*s),~~s,~~s);ctx.fillRect(~~(cx+3*s),~~(cy-10*s),~~s,~~s);
-  if(mood==='sad'){ctx.fillStyle=p.b;ctx.fillRect(~~(cx-7*s),~~(cy-12*s),~~(2*s),~~s);ctx.fillRect(~~(cx-5*s),~~(cy-13*s),~~(3*s),~~s);ctx.fillRect(~~(cx+2*s),~~(cy-13*s),~~(3*s),~~s);ctx.fillRect(~~(cx+5*s),~~(cy-12*s),~~(2*s),~~s);}
-  else{ctx.fillStyle=p.b;ctx.fillRect(~~(cx-6*s),~~(cy-12*s),~~(5*s),~~s);ctx.fillRect(~~(cx+1*s),~~(cy-12*s),~~(5*s),~~s);}
-  px(-1,-2,2,2,p.n);
-  if(mood==='happy'){px(-2,-1,5,1,p.n);px(-3,0,2,1,p.n);px(1,0,2,1,p.n);}
-  else if(mood==='sad'){px(-2,0,5,1,p.n);px(-3,-1,2,1,p.n);px(1,-1,2,1,p.n);}
-  else{px(-2,-1,4,1,p.n);}
-  ctx.fillStyle='rgba(80,50,110,.32)';
-  [[-8*s,-3*s,4*s],[-8*s,-2*s,3*s],[-8*s,-1*s,3.5*s],[-8*s,0,2.8*s]].forEach(function(w){ctx.fillRect(~~(cx+w[0]),~~(cy+w[1]),~~w[2],1);});
-  [[4*s,-3*s,4*s],[4*s,-2*s,3*s],[4*s,-1*s,3.5*s],[4*s,0,2.8*s]].forEach(function(w){ctx.fillRect(~~(cx+w[0]),~~(cy+w[1]),~~w[2],1);});
-  px(6,2,3,4,p.b);px(7,-1,3,4,p.b);px(8,-3,2,3,p.b);px(8,-4,2,2,p.bel);
-  px(-5,8,4,4,p.b);px(-4,11,4,2,p.bel);px(1,8,4,4,p.b);px(1,11,4,2,p.bel);px(-6,5,3,5,p.b);px(3,5,3,5,p.b);
+  // scale pixel size
+  var ps = Math.max(1, Math.floor((Math.min(W, H) / 32) * scl));
+  var cx = Math.floor(W / 2), cy = Math.floor(H * 0.58);
+  function px(x, y, w, h, c) {
+    ctx.fillStyle = c;
+    ctx.fillRect(cx + x * ps, cy + y * ps, Math.max(1, w * ps), Math.max(1, h * ps));
+  }
+  // SHADOW
+  ctx.fillStyle = 'rgba(140,90,180,.15)';
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 11 * ps, 9 * ps, 3 * ps, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // BODY -- chunkier, rounder
+  px(-6, 0, 12, 9, p.b);
+  px(-7, 1, 14, 7, p.b);
+  px(-5, 2, 10, 7, p.bl); // belly
+  // LEGS - 4 distinct chunky legs
+  px(-6, 8, 4, 5, p.b); // back-left
+  px(-2, 8, 4, 5, p.b); // front-left
+  px(2, 8, 4, 5, p.b);  // front-right
+  px(6, 8, 4, 5, p.b);  // back-right
+  // PAWS
+  px(-7, 12, 5, 2, p.bl);
+  px(-3, 12, 5, 2, p.bl);
+  px(1, 12, 5, 2, p.bl);
+  px(5, 12, 5, 2, p.bl);
+  // paw toe lines
+  ctx.fillStyle = p.b;
+  px(-6, 13, 1, 1, p.b); px(-5, 13, 1, 1, p.b);
+  px(-2, 13, 1, 1, p.b); px(-1, 13, 1, 1, p.b);
+  px(2, 13, 1, 1, p.b);  px(3, 13, 1, 1, p.b);
+  px(6, 13, 1, 1, p.b);  px(7, 13, 1, 1, p.b);
+  // HEAD -- large and round
+  px(-7, -13, 14, 13, p.b);
+  px(-8, -11, 16, 9, p.b); // extra wide sides
+  px(-6, -14, 12, 2, p.b); // top curve
+  px(-5, -15, 10, 2, p.b);
+  px(-4, -16, 8, 2, p.b);
+  // POINTY EARS (detailed)
+  px(-7, -17, 4, 5, p.b);
+  px(-6, -19, 2, 3, p.b);
+  px(-5, -20, 1, 2, p.b);
+  px(-6, -16, 3, 4, p.ei); // ear inner left
+  px(3, -17, 4, 5, p.b);
+  px(4, -19, 2, 3, p.b);
+  px(5, -20, 1, 2, p.b);
+  px(3, -16, 3, 4, p.ei); // ear inner right
+  // FACE -- detailed muzzle
+  px(-5, -4, 10, 6, p.bl); // muzzle puff
+  px(-6, -3, 12, 5, p.bl);
+  // EYES -- big cute with multiple layers
+  // eye whites
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(cx - 7 * ps, cy - 12 * ps, 5 * ps, 5 * ps);
+  ctx.fillRect(cx + 2 * ps, cy - 12 * ps, 5 * ps, 5 * ps);
+  // colored iris
+  ctx.fillStyle = p.ey;
+  ctx.fillRect(cx - 6 * ps, cy - 11 * ps, 3 * ps, 3 * ps);
+  ctx.fillRect(cx + 3 * ps, cy - 11 * ps, 3 * ps, 3 * ps);
+  // pupil
+  ctx.fillStyle = '#1a0a2a';
+  ctx.fillRect(cx - 5 * ps, cy - 11 * ps, 2 * ps, 2 * ps);
+  ctx.fillRect(cx + 4 * ps, cy - 11 * ps, 2 * ps, 2 * ps);
+  // shine dots
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(cx - 5 * ps, cy - 12 * ps, ps, ps);
+  ctx.fillRect(cx + 4 * ps, cy - 12 * ps, ps, ps);
+  ctx.fillRect(cx - 4 * ps, cy - 10 * ps, ps, ps);
+  ctx.fillRect(cx + 5 * ps, cy - 10 * ps, ps, ps);
+  // BROWS
+  if (mood === 'sad') {
+    ctx.fillStyle = p.b;
+    ctx.fillRect(cx - 8 * ps, cy - 14 * ps, 3 * ps, ps);
+    ctx.fillRect(cx - 5 * ps, cy - 15 * ps, 3 * ps, ps);
+    ctx.fillRect(cx + 2 * ps, cy - 15 * ps, 3 * ps, ps);
+    ctx.fillRect(cx + 5 * ps, cy - 14 * ps, 3 * ps, ps);
+  } else if (mood === 'happy') {
+    ctx.fillStyle = p.b;
+    ctx.fillRect(cx - 7 * ps, cy - 14 * ps, 5 * ps, ps);
+    ctx.fillRect(cx + 2 * ps, cy - 14 * ps, 5 * ps, ps);
+  }
+  // NOSE (heart-shaped in pixel art)
+  px(-1, -2, 2, 2, p.n);
+  px(-2, -3, 4, 2, p.n);
+  // MOUTH
+  if (mood === 'happy') {
+    px(-2, 0, 5, 1, p.n);
+    px(-3, -1, 2, 1, p.n);
+    px(1, -1, 2, 1, p.n);
+  } else if (mood === 'sad') {
+    px(-2, 0, 5, 1, p.n);
+    px(-3, 1, 2, 1, p.n);
+    px(1, 1, 2, 1, p.n);
+  } else {
+    px(-2, -1, 4, 1, p.n);
+  }
+  // WHISKERS (4 each side)
+  ctx.fillStyle = 'rgba(80,50,110,.4)';
+  [[-9*ps,-4*ps,5*ps],[-9*ps,-3*ps,4.5*ps],[-9*ps,-2*ps,5*ps],[-9*ps,-1*ps,3.5*ps]].forEach(function(w){
+    ctx.fillRect(cx+w[0], cy+w[1], w[2], ps > 1 ? Math.max(1,Math.floor(ps*.4)) : 1);
+  });
+  [[4*ps,-4*ps,5*ps],[4*ps,-3*ps,4.5*ps],[4*ps,-2*ps,5*ps],[4*ps,-1*ps,3.5*ps]].forEach(function(w){
+    ctx.fillRect(cx+w[0], cy+w[1], w[2], ps > 1 ? Math.max(1,Math.floor(ps*.4)) : 1);
+  });
+  // BLUSH MARKS
+  ctx.fillStyle = p.bsh + '99';
+  ctx.fillRect(cx - 8 * ps, cy - 7 * ps, 4 * ps, 2 * ps);
+  ctx.fillRect(cx + 4 * ps, cy - 7 * ps, 4 * ps, 2 * ps);
+  // COLLAR with tag
+  ctx.fillStyle = p.col;
+  ctx.fillRect(cx - 5 * ps, cy - 1 * ps, 10 * ps, 2 * ps);
+  // collar bell/tag
+  ctx.fillStyle = '#f8e060';
+  ctx.fillRect(cx - ps, cy, 2 * ps, 2 * ps);
+  // TAIL -- curled, more detailed
+  px(7, 0, 3, 5, p.b);
+  px(8, -3, 3, 4, p.b);
+  px(9, -5, 2, 3, p.b);
+  px(9, -7, 2, 3, p.b);
+  px(8, -8, 3, 2, p.b);
+  px(7, -8, 2, 2, p.bl); // tail tip
+  // STRIPES for tabby/calico
+  if (color === 1 || color === 4) {
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    px(-4, 2, 2, 6, 'rgba(0,0,0,0.15)');
+    px(0, 2, 2, 6, 'rgba(0,0,0,0.15)');
+    px(3, 2, 2, 6, 'rgba(0,0,0,0.15)');
+    px(-3, -8, 2, 4, 'rgba(0,0,0,0.12)');
+    px(1, -8, 2, 4, 'rgba(0,0,0,0.12)');
+  }
+  // scan-line overlay
+  ctx.fillStyle = 'rgba(0,0,0,0.04)';
+  for (var i = 0; i < H; i += 3) ctx.fillRect(0, i, W, 1);
 }
 
 // ── ROOM RENDERER ────────────────────────────────────────────────────────────
-var roomF = 0;
+var rf = 0;
 function drawRoom() {
-  var cv = document.getElementById('room-canvas'); if (!cv) return;
+  var cv = document.getElementById('room-cv'); if (!cv) return;
   var W = cv.parentElement.offsetWidth, H = cv.parentElement.offsetHeight;
   if (cv.width !== W) { cv.width = W; cv.height = H; }
-  var ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.clearRect(0,0,W,H);
-  var bg = ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#f4eeff');bg.addColorStop(1,'#e4fff6');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  // wallpaper dots
-  ctx.fillStyle='rgba(200,168,228,.1)';for(var wx=10;wx<W;wx+=22)for(var wy=10;wy<H*.6;wy+=20){ctx.fillRect(wx,wy,3,3);ctx.fillRect(wx+3,wy-3,2,3);ctx.fillRect(wx+6,wy,3,3);}
-  var flY = H*.62;
-  // floor
-  ctx.fillStyle='#eee4ff';ctx.fillRect(0,flY,W,H-flY);
-  ctx.strokeStyle='rgba(190,160,220,.28)';ctx.lineWidth=1;for(var fx=0;fx<W;fx+=18){ctx.beginPath();ctx.moveTo(fx,flY);ctx.lineTo(fx,H);ctx.stroke();}
-  ctx.strokeStyle='rgba(180,148,218,.4)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,flY);ctx.lineTo(W,flY);ctx.stroke();
-  // wall
-  ctx.fillStyle='rgba(250,248,255,.6)';ctx.fillRect(0,0,W,flY);
+  var ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.clearRect(0, 0, W, H);
+  // BG
+  var bg = ctx.createLinearGradient(0,0,W,H); bg.addColorStop(0,'#f4eeff'); bg.addColorStop(1,'#e4fff6');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+  // wallpaper
+  ctx.fillStyle = 'rgba(200,168,228,.1)';
+  for (var wx=10; wx<W; wx+=22) for (var wy=10; wy<H*.6; wy+=20) { ctx.fillRect(wx,wy,3,3); ctx.fillRect(wx+3,wy-3,2,3); ctx.fillRect(wx+6,wy,3,3); }
+  var fl = H * .62;
+  ctx.fillStyle='#eee4ff'; ctx.fillRect(0,fl,W,H-fl);
+  ctx.strokeStyle='rgba(190,160,220,.28)'; ctx.lineWidth=1;
+  for (var fx=0; fx<W; fx+=18) { ctx.beginPath(); ctx.moveTo(fx,fl); ctx.lineTo(fx,H); ctx.stroke(); }
+  ctx.strokeStyle='rgba(180,148,218,.4)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,fl); ctx.lineTo(W,fl); ctx.stroke();
+  ctx.fillStyle='rgba(250,248,255,.6)'; ctx.fillRect(0,0,W,fl);
   // window
   var wX=W*.54,wY=H*.07,wW=W*.3,wH=H*.3;
-  ctx.fillStyle='#d4eef8';ctx.fillRect(wX,wY,wW,wH);ctx.strokeStyle='#b0a0c8';ctx.lineWidth=3;ctx.strokeRect(wX,wY,wW,wH);
-  ctx.strokeStyle='#b0a0c8';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(wX+wW/2,wY);ctx.lineTo(wX+wW/2,wY+wH);ctx.stroke();ctx.beginPath();ctx.moveTo(wX,wY+wH/2);ctx.lineTo(wX+wW,wY+wH/2);ctx.stroke();
-  ctx.fillStyle='rgba(248,190,220,.5)';ctx.fillRect(wX-9,wY-4,13,wH+8);ctx.fillRect(wX+wW-4,wY-4,13,wH+8);
-  // wall frames
-  dFrame(ctx,W*.07,H*.1,28,26,'#fff8f0','#c4a8d8');dFrame(ctx,W*.07,H*.28,24,30,'#ffe8f0','#f0a8c8');
-  // hanging lights
-  ctx.strokeStyle='rgba(160,130,200,.4)';ctx.lineWidth=1;
+  ctx.fillStyle='#d4eef8'; ctx.fillRect(wX,wY,wW,wH);
+  ctx.strokeStyle='#b0a0c8'; ctx.lineWidth=3; ctx.strokeRect(wX,wY,wW,wH);
+  ctx.strokeStyle='#b0a0c8'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(wX+wW/2,wY); ctx.lineTo(wX+wW/2,wY+wH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(wX,wY+wH/2); ctx.lineTo(wX+wW,wY+wH/2); ctx.stroke();
+  ctx.fillStyle='rgba(248,190,220,.5)'; ctx.fillRect(wX-9,wY-4,13,wH+8); ctx.fillRect(wX+wW-4,wY-4,13,wH+8);
+  dFrame(ctx,W*.07,H*.1,26,24,'#fff8f0','#c4a8d8');
+  dFrame(ctx,W*.07,H*.28,22,28,'#ffe8f0','#f0a8c8');
+  // lights
+  ctx.strokeStyle='rgba(160,130,200,.4)'; ctx.lineWidth=1;
   [[.15,.28],[.3,.17],[.46,.24],[.62,.19],[.77,.28],[.88,.15]].forEach(function(bl){
-    var bh=bl[1]*H;ctx.beginPath();ctx.moveTo(bl[0]*W,0);ctx.lineTo(bl[0]*W,bh);ctx.stroke();
-    var gr=ctx.createRadialGradient(bl[0]*W,bh,0,bl[0]*W,bh,9);gr.addColorStop(0,'rgba(255,238,170,.85)');gr.addColorStop(1,'rgba(255,220,120,0)');ctx.fillStyle=gr;ctx.fillRect(bl[0]*W-9,bh-9,18,18);
-    ctx.fillStyle='#fffae0';ctx.beginPath();ctx.ellipse(bl[0]*W,bh+3,4,5,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#c8a040';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#c8a040';ctx.fillRect(bl[0]*W-2,bh-2,4,3);
+    var bh=bl[1]*H; ctx.beginPath(); ctx.moveTo(bl[0]*W,0); ctx.lineTo(bl[0]*W,bh); ctx.stroke();
+    var gr=ctx.createRadialGradient(bl[0]*W,bh,0,bl[0]*W,bh,10);
+    gr.addColorStop(0,'rgba(255,238,170,.85)'); gr.addColorStop(1,'rgba(255,220,120,0)');
+    ctx.fillStyle=gr; ctx.fillRect(bl[0]*W-10,bh-10,20,20);
+    ctx.fillStyle='#fffae0'; ctx.beginPath(); ctx.ellipse(bl[0]*W,bh+3,4,5,0,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#c8a040'; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle='#c8a040'; ctx.fillRect(bl[0]*W-2,bh-2,4,3);
   });
   // cushion platforms
-  var bob=Math.sin(roomF*.045)*4;
-  dCushion(ctx,W*.07,flY-52+bob,54,'#d4c0f0');
-  dCushion(ctx,W*.73,flY-66+Math.sin(roomF*.045+1.2)*4,54,'#b8d8f4');
+  var bob = Math.sin(rf*.045)*4;
+  dCushion(ctx, W*.07, fl-52+bob, 52, '#d4c0f0');
+  dCushion(ctx, W*.73, fl-65+Math.sin(rf*.045+1.2)*4, 52, '#b8d8f4');
   // cats on cushions
-  if(G.cats.length>1){var mc1=document.createElement('canvas');mc1.width=34;mc1.height=30;drawCat(mc1,{stage:1,mood:'happy',color:G.cats[1]?G.cats[1].color:2});ctx.drawImage(mc1,~~(W*.07+27-17),~~(flY-52+bob-26),34,30);}
-  else{ctx.fillStyle='rgba(180,150,218,.35)';ctx.font='12px serif';ctx.textAlign='center';ctx.fillText('?',~~(W*.07+27),~~(flY-48+bob));}
-  if(G.cats.length>2){var mc2=document.createElement('canvas');mc2.width=34;mc2.height=30;drawCat(mc2,{stage:1,mood:'happy',color:G.cats[2]?G.cats[2].color:0});ctx.drawImage(mc2,~~(W*.73+27-17),~~(flY-66+Math.sin(roomF*.045+1.2)*4-26),34,30);}
-  else{ctx.fillStyle='rgba(180,150,218,.35)';ctx.font='12px serif';ctx.textAlign='center';ctx.fillText('?',~~(W*.73+27),~~(flY-60));}
-  // furniture
-  dIsoTable(ctx,W*.38,flY-22,54,22,'#ffcce0','#f0a8c8');
-  ctx.font=~~(W*.04)+'px serif';ctx.textAlign='center';ctx.fillText('🍵',W*.42,flY-26);ctx.fillText('🧋',W*.57,flY-26);
-  dSofa(ctx,W*.04,flY+2,W*.52,H-flY-10);
-  dScratch(ctx,W*.87,flY-10);
-  // floor items
-  ctx.font=~~(W*.038)+'px serif';ctx.fillText('🍚',W*.22,flY+15);ctx.fillText('💧',W*.33,flY+15);ctx.fillText('🧶',W*.67,flY+14);
-  // main cat
-  var catBob=Math.sin(roomF*.05)*5;
-  var stN=G.activeCat?G.activeCat.stage:0;
-  var catSz=~~(Math.min(W,H)*.23);var mc3=document.createElement('canvas');mc3.width=catSz;mc3.height=catSz;
-  drawCat(mc3,{stage:stN,mood:G.activeCat&&G.activeCat.mood>45?'happy':'sad',color:G.activeCat?G.activeCat.color:0});
-  ctx.drawImage(mc3,~~(W*.38-catSz/2),~~(flY-10+catBob-catSz*.72),catSz,catSz);
-  // tamagotchi
-  dTama(ctx,W*.5,H*.13,Math.min(W*.14,52));
-  // hearts & sparkles
-  dHearts(ctx,W,H);dSparkles(ctx,W,H);
-  roomF++;
+  if (G.cats.length > 1) {
+    var mc1 = document.createElement('canvas'); mc1.width = 36; mc1.height = 32;
+    drawCat(mc1, {stage:1, mood:'happy', color:G.cats[1].color});
+    ctx.drawImage(mc1, ~~(W*.07+26-18), ~~(fl-52+bob-28), 36, 32);
+  } else {
+    ctx.fillStyle='rgba(180,150,218,.35)'; ctx.font='13px serif'; ctx.textAlign='center';
+    ctx.fillText('?', ~~(W*.07+26), ~~(fl-46+bob));
+  }
+  if (G.cats.length > 2) {
+    var mc2 = document.createElement('canvas'); mc2.width = 36; mc2.height = 32;
+    drawCat(mc2, {stage:1, mood:'happy', color:G.cats[2].color});
+    ctx.drawImage(mc2, ~~(W*.73+26-18), ~~(fl-65+Math.sin(rf*.045+1.2)*4-28), 36, 32);
+  } else {
+    ctx.fillStyle='rgba(180,150,218,.35)'; ctx.font='13px serif'; ctx.textAlign='center';
+    ctx.fillText('?', ~~(W*.73+26), ~~(fl-59));
+  }
+  // table
+  dIsoTable(ctx, W*.38, fl-22, 52, 22, '#ffcce0', '#f0a8c8');
+  ctx.font = ~~(W*.042)+'px serif'; ctx.textAlign='center';
+  ctx.fillText('🍵', W*.42, fl-26); ctx.fillText('🧋', W*.57, fl-26);
+  dSofa(ctx, W*.04, fl+2, W*.5, H-fl-10);
+  dScratch(ctx, W*.87, fl-10);
+  ctx.font=~~(W*.04)+'px serif';
+  ctx.fillText('🍚', W*.22, fl+15); ctx.fillText('💧', W*.33, fl+15); ctx.fillText('🧶', W*.67, fl+14);
+  // MAIN CAT
+  var bob2 = Math.sin(rf*.05)*5;
+  var ac = G.activeCat;
+  var stN = ac ? ac.stage : 0;
+  var csz = ~~(Math.min(W,H)*.24);
+  var mc3 = document.createElement('canvas'); mc3.width = csz; mc3.height = csz;
+  drawCat(mc3, {stage:stN, mood:ac&&ac.mood>45?'happy':'sad', color:ac?ac.color:0});
+  ctx.drawImage(mc3, ~~(W*.38-csz/2), ~~(fl-10+bob2-csz*.73), csz, csz);
+  // Tamagotchi
+  dTama(ctx, W*.5, H*.13, Math.min(W*.14, 50));
+  dH(ctx,W,H); dSp(ctx,W,H);
+  rf++;
 }
-function dFrame(ctx,x,y,w,h,fill,stroke){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h);ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;ctx.strokeRect(x+3,y+3,w-6,h-6);ctx.fillStyle=stroke;ctx.fillRect(x+w/2-4,y+h/2,8,6);ctx.fillRect(x+w/2-3,y+h/2-4,6,5);ctx.fillRect(x+w/2-4,y+h/2-5,2,3);ctx.fillRect(x+w/2+2,y+h/2-5,2,3);}
-function dCushion(ctx,x,y,w,col){var h=w*.32;ctx.fillStyle='rgba(140,90,180,.13)';ctx.beginPath();ctx.ellipse(x+w/2,y+h+5,w/2,5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=col;ctx.beginPath();ctx.roundRect(x,y,w,h,6);ctx.fill();ctx.fillStyle='rgba(255,255,255,.26)';ctx.beginPath();ctx.roundRect(x+3,y+3,w-6,h*.5,4);ctx.fill();ctx.strokeStyle='rgba(140,90,200,.32)';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x,y,w,h,6);ctx.stroke();ctx.fillStyle='rgba(140,90,200,.22)';[[4,4],[w-8,4],[4,h-8],[w-8,h-8]].forEach(function(d){ctx.fillRect(x+d[0],y+d[1],4,4);});}
-function dIsoTable(ctx,x,y,w,h,top,side){ctx.fillStyle=side;ctx.fillRect(x,y,w,h);ctx.fillStyle=top;ctx.fillRect(x,y-9,w,11);ctx.strokeStyle='rgba(0,0,0,.07)';ctx.lineWidth=1;ctx.strokeRect(x,y-9,w,h+9);ctx.fillStyle=side;ctx.fillRect(x+5,y+h,4,12);ctx.fillRect(x+w-9,y+h,4,12);}
-function dSofa(ctx,x,y,w,h){ctx.fillStyle='#ffb8d0';ctx.fillRect(x,y,w,h);ctx.fillStyle='rgba(255,255,255,.16)';ctx.fillRect(x+4,y+4,w-8,h*.4);ctx.fillStyle='#ffd0e0';[0,1,2].forEach(function(i){ctx.fillRect(x+5+i*(w/3-3),y+4,w/3-7,h*.55);});ctx.fillStyle='#f0a0c0';ctx.fillRect(x,y,8,h);ctx.fillRect(x+w-8,y,8,h);ctx.strokeStyle='rgba(210,130,160,.4)';ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.fillStyle='rgba(240,160,190,.22)';for(var si=0;si<2;si++){var sx2=x+28+si*78;ctx.fillRect(sx2,y+h*.62,8,6);ctx.fillRect(sx2+2,y+h*.56,4,7);ctx.fillRect(sx2,y+h*.56,3,4);ctx.fillRect(sx2+7,y+h*.56,3,4);}}
-function dScratch(ctx,x,y){ctx.fillStyle='#c8a870';ctx.fillRect(x-4,y,8,30);ctx.strokeStyle='#a07840';ctx.lineWidth=2;for(var sy=0;sy<30;sy+=4){ctx.beginPath();ctx.moveTo(x-4,y+sy);ctx.lineTo(x+4,y+sy);ctx.stroke();}ctx.fillStyle='#fffaf0';ctx.fillRect(x-10,y+30,20,6);ctx.fillRect(x-6,y-12,12,14);}
+
+function dFrame(ctx,x,y,w,h,f,s){ctx.fillStyle=f;ctx.fillRect(x,y,w,h);ctx.strokeStyle=s;ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;ctx.strokeRect(x+3,y+3,w-6,h-6);ctx.fillStyle=s;ctx.fillRect(x+w/2-4,y+h/2,8,6);ctx.fillRect(x+w/2-3,y+h/2-4,6,5);ctx.fillRect(x+w/2-4,y+h/2-5,2,3);ctx.fillRect(x+w/2+2,y+h/2-5,2,3);}
+function dCushion(ctx,x,y,w,col){var h=w*.32;ctx.fillStyle='rgba(140,90,180,.13)';ctx.beginPath();ctx.ellipse(x+w/2,y+h+5,w/2,5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=col;ctx.beginPath();ctx.roundRect(x,y,w,h,6);ctx.fill();ctx.fillStyle='rgba(255,255,255,.28)';ctx.beginPath();ctx.roundRect(x+3,y+3,w-6,h*.5,4);ctx.fill();ctx.strokeStyle='rgba(140,90,200,.32)';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x,y,w,h,6);ctx.stroke();ctx.fillStyle='rgba(140,90,200,.22)';[[4,4],[w-8,4],[4,h-8],[w-8,h-8]].forEach(function(d){ctx.fillRect(x+d[0],y+d[1],4,4);});}
+function dIsoTable(ctx,x,y,w,h,top,side){ctx.fillStyle=side;ctx.fillRect(x,y,w,h);ctx.fillStyle=top;ctx.fillRect(x,y-9,w,11);ctx.strokeStyle='rgba(0,0,0,.07)';ctx.lineWidth=1;ctx.strokeRect(x,y-9,w,h+9);ctx.fillStyle=side;ctx.fillRect(x+5,y+h,4,11);ctx.fillRect(x+w-9,y+h,4,11);}
+function dSofa(ctx,x,y,w,h){ctx.fillStyle='#ffb8d0';ctx.fillRect(x,y,w,h);ctx.fillStyle='rgba(255,255,255,.16)';ctx.fillRect(x+4,y+4,w-8,h*.4);ctx.fillStyle='#ffd0e0';[0,1,2].forEach(function(i){ctx.fillRect(x+5+i*(w/3-3),y+4,w/3-7,h*.55);});ctx.fillStyle='#f0a0c0';ctx.fillRect(x,y,8,h);ctx.fillRect(x+w-8,y,8,h);ctx.strokeStyle='rgba(210,130,160,.4)';ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.fillStyle='rgba(240,160,190,.2)';for(var si=0;si<2;si++){var sx=x+26+si*75;ctx.fillRect(sx,y+h*.62,8,6);ctx.fillRect(sx+2,y+h*.56,4,7);ctx.fillRect(sx,y+h*.56,3,4);ctx.fillRect(sx+7,y+h*.56,3,4);}}
+function dScratch(ctx,x,y){ctx.fillStyle='#c8a870';ctx.fillRect(x-4,y,8,28);ctx.strokeStyle='#a07840';ctx.lineWidth=2;for(var sy=0;sy<28;sy+=4){ctx.beginPath();ctx.moveTo(x-4,y+sy);ctx.lineTo(x+4,y+sy);ctx.stroke();}ctx.fillStyle='#fffaf0';ctx.fillRect(x-10,y+28,20,6);ctx.fillRect(x-6,y-11,12,13);}
 function dTama(ctx,x,y,r){var gr=ctx.createRadialGradient(x,y,0,x,y,r*2.2);gr.addColorStop(0,'rgba(255,210,255,.55)');gr.addColorStop(1,'rgba(255,210,255,0)');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,r*2.2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f4dff8';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#9b7ab8';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#c4e8d4';ctx.fillRect(x-r*.5,y-r*.42,r,r*.72);ctx.strokeStyle='#9b7ab8';ctx.lineWidth=2;ctx.strokeRect(x-r*.5,y-r*.42,r,r*.72);ctx.fillStyle='#8878c0';ctx.fillRect(x-4,y-8,8,6);ctx.fillRect(x-3,y-11,6,4);ctx.fillRect(x-5,y-12,2,3);ctx.fillRect(x+3,y-12,2,3);ctx.fillStyle='#f0a8c8';[x-r*.35,x,x+r*.35].forEach(function(bx){ctx.beginPath();ctx.arc(bx,y+r*.52,r*.13,0,Math.PI*2);ctx.fill();});ctx.fillStyle='#9b7ab8';ctx.fillRect(x-2,y-r-9,4,11);ctx.strokeStyle='#9b7ab8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y-r-9,4,0,Math.PI*2);ctx.stroke();}
-function dHearts(ctx,W,H){var hts=[{x:.06,y:.16,c:'#d0d0f8',s:11},{x:.9,y:.22,c:'#c8f8e0',s:9},{x:.94,y:.5,c:'#fcc0d8',s:12},{x:.04,y:.46,c:'#f8f0b0',s:10},{x:.82,y:.8,c:'#d0c8f8',s:8}];hts.forEach(function(h,i){var al=.4+.5*Math.abs(Math.sin(roomF*.045+i*1.8));var b2=Math.sin(roomF*.05+i*2)*4;ctx.globalAlpha=al;var ps=Math.max(1,~~(h.s/5));ctx.fillStyle=h.c;var hx=h.x*W,hy=h.y*H+b2;ctx.fillRect(hx-2*ps,hy-ps,ps*2,ps);ctx.fillRect(hx,hy-ps,ps*2,ps);ctx.fillRect(hx-3*ps,hy,ps*6,ps);ctx.fillRect(hx-2*ps,hy+ps,ps*4,ps);ctx.fillRect(hx-ps,hy+2*ps,ps*2,ps);ctx.globalAlpha=1;});}
-function dSparkles(ctx,W,H){var sp=[[.09,.32],[.91,.2],[.04,.56],[.93,.62],[.44,.05],[.79,.44]];sp.forEach(function(s,i){var al=.3+.55*Math.abs(Math.sin(roomF*.06+i*1.4));ctx.globalAlpha=al;ctx.fillStyle=i%2===0?'#f0c840':'#c0a0e8';var sx=s[0]*W,sy=s[1]*H,ss=1.5+Math.abs(Math.sin(i))*.8;ctx.fillRect(sx-ss,sy,ss*2,1);ctx.fillRect(sx,sy-ss,1,ss*2);ctx.fillRect(sx-ss*.6,sy-ss*.6,2,2);ctx.fillRect(sx+ss*.6-2,sy-ss*.6,2,2);ctx.globalAlpha=1;});}
+function dH(ctx,W,H){[{x:.06,y:.16,c:'#d0d0f8',s:11},{x:.9,y:.22,c:'#c8f8e0',s:9},{x:.94,y:.5,c:'#fcc0d8',s:12},{x:.04,y:.46,c:'#f8f0b0',s:10},{x:.82,y:.8,c:'#d0c8f8',s:8}].forEach(function(h,i){var al=.4+.5*Math.abs(Math.sin(rf*.045+i*1.8));var b2=Math.sin(rf*.05+i*2)*4;ctx.globalAlpha=al;var ps=Math.max(1,~~(h.s/5));ctx.fillStyle=h.c;var hx=h.x*W,hy=h.y*H+b2;ctx.fillRect(hx-2*ps,hy-ps,ps*2,ps);ctx.fillRect(hx,hy-ps,ps*2,ps);ctx.fillRect(hx-3*ps,hy,ps*6,ps);ctx.fillRect(hx-2*ps,hy+ps,ps*4,ps);ctx.fillRect(hx-ps,hy+2*ps,ps*2,ps);ctx.globalAlpha=1;});}
+function dSp(ctx,W,H){[[.09,.32],[.91,.2],[.04,.56],[.93,.62],[.44,.05],[.79,.44]].forEach(function(s,i){var al=.3+.55*Math.abs(Math.sin(rf*.06+i*1.4));ctx.globalAlpha=al;ctx.fillStyle=i%2===0?'#f0c840':'#c0a0e8';var sx=s[0]*W,sy=s[1]*H,ss=1.5+Math.abs(Math.sin(i))*.8;ctx.fillRect(sx-ss,sy,ss*2,1);ctx.fillRect(sx,sy-ss,1,ss*2);ctx.fillRect(sx-ss*.6,sy-ss*.6,2,2);ctx.fillRect(sx+ss*.6-2,sy-ss*.6,2,2);ctx.globalAlpha=1;});}
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
-var ZODIAC = [
-  {s:'♈',n:'ARIES',m:'competitive',fav:'Spicy Mango Matcha',d:'Feisty and fierce. Craves bold flavors. Hates losing at anything, even napping.',ep:'Your Aries kitten has declared themself the main character. Boldly.'},
-  {s:'♉',n:'TAURUS',m:'cozy',fav:'Strawberry Cream Latte',d:'Comfort-obsessed. Will only nap on the softest pillow. Judges all food harshly.',ep:'Your Taurus kitten has located the warmest spot in the café and claimed it forever.'},
-  {s:'♊',n:'GEMINI',m:'social',fav:'Double Berry Fizz',d:'Chatty, curious, contradictory. Cravings shift every session. Two moods simultaneously.',ep:'Your Gemini kitten has opinions about everything and will share them all.'},
-  {s:'♋',n:'CANCER',m:'emotional',fav:'Moon Milk Chamomile',d:'Soft and sensitive. Needs comfort food and gentle care. Remembers every kindness.',ep:'Your Cancer kitten has memorized your schedule and is waiting by the door.'},
-  {s:'♌',n:'LEO',m:'extra',fav:'Gold Rush Sparkle',d:'Glamorous. Only the fanciest items will do. Genuinely believes the sun rises for them.',ep:'Your Leo kitten has arranged themselves for maximum photo opportunity.'},
-  {s:'♍',n:'VIRGO',m:'perfectionist',fav:'Matcha Clarity Shot',d:'Picky and precise. Right item at the right time only. Silent judgment is their love language.',ep:'Your Virgo kitten has reorganized the food bowls for optimal efficiency.'},
-  {s:'♎',n:'LIBRA',m:'balanced',fav:'Peach Harmony Blend',d:'Needs ALL stats perfectly balanced. Gets anxious when things are uneven.',ep:'Your Libra kitten cannot choose between two identical cushions. Both are perfect. Neither is selected.'},
-  {s:'♏',n:'SCORPIO',m:'secretive',fav:'Midnight Elderflower',d:'Intense. Earn their trust slowly. They know where you keep the treats.',ep:'Your Scorpio kitten has learned to open the treat cabinet. They are keeping this information private.'},
-  {s:'♐',n:'SAGITTARIUS',m:'restless',fav:'Tropical Storm Tea',d:'Free spirit. Hates routine. Incredibly fun, impossible to schedule.',ep:'Your Sagittarius kitten has discovered the concept of the open window.'},
-  {s:'♑',n:'CAPRICORN',m:'driven',fav:'Cold Brew Focus Shot',d:'Ambitious. Streak days matter to them personally. Very serious about nap goals.',ep:'Your Capricorn kitten has set a 30-day growth plan. Progress tracking begins immediately.'},
-  {s:'♒',n:'AQUARIUS',m:'eccentric',fav:'Lavender Cosmic Mist',d:'Quirky. Only rare items catch their attention. Lowkey judging all mainstream things.',ep:'Your Aquarius kitten refuses to use the expensive cat bed and sleeps in the box it came in.'},
-  {s:'♓',n:'PISCES',m:'dreamy',fav:'Butterfly Pea Dream',d:'Dreamy and intuitive. Anchor them with consistent care or they will simply float away.',ep:'Your Pisces kitten has been staring at something only they can see for 20 minutes.'}
-];
-
-var FOODS = [
-  {e:'🥛',n:'Oat Milk',d:'creamy & gentle',b:8,mb:4,g:2,ms:['cozy','emotional','dreamy']},
-  {e:'🍵',n:'Matcha Latte',d:'earthy & grounding',b:10,mb:5,g:6,ms:['perfectionist','driven','balanced']},
-  {e:'🧃',n:'Berry Juice',d:'fresh & bright',b:7,mb:6,g:3,ms:['competitive','social','restless']},
-  {e:'🥐',n:'Croissant',d:'buttery & flaky',b:14,mb:7,g:1,ms:['cozy','extra','balanced']},
-  {e:'🍓',n:'Strawberry Cake',d:'sweet & celebratory',b:16,mb:9,g:4,ms:['cozy','extra','emotional']},
-  {e:'☕',n:'Cozy Latte',d:'warm & comforting',b:12,mb:8,g:2,ms:['cozy','emotional','secretive']},
-  {e:'🧋',n:'Bubble Tea',d:'fun & surprising',b:15,mb:10,g:3,ms:['social','eccentric','restless']},
-  {e:'🍡',n:'Mochi Trio',d:'soft & dreamy',b:11,mb:8,g:5,ms:['dreamy','cozy','extra']},
-  {e:'🌸',n:'Sakura Drink',d:'rare & delicate',b:13,mb:12,g:8,ms:['dreamy','perfectionist','secretive']}
-];
-
-var SKINCARE = [
-  {e:'🧴',n:'Cleanser',ef:{hyd:18,cla:22,glo:5,rad:3},order:1,tip:'Always cleanse first! Removes the day. Cats need daily grooming too -- their tongue has tiny papillae like a brush!'},
-  {e:'💧',n:'Toner',ef:{hyd:20,cla:10,glo:8,rad:5},order:2,tip:'Pat toner in gently -- never rub! Hydrates and preps skin. Like giving your cat fresh water daily.'},
-  {e:'🌸',n:'Rose Serum',ef:{hyd:12,cla:8,glo:28,rad:18},order:3,tip:'2-3 drops only! High concentration actives. Serums are the powerhouse step -- do not skip!'},
-  {e:'✨',n:'Moisturizer',ef:{hyd:24,cla:8,glo:16,rad:12},order:4,tip:'Apply while skin is still damp! Locks in all the previous steps. Like brushing your cat weekly to distribute oils.'},
-  {e:'🌙',n:'Night Mask',ef:{hyd:30,cla:18,glo:22,rad:25},order:5,tip:'Last step! Overnight repair. Sleep on a silk pillow -- your cat knows this instinctively.'},
-  {e:'☀️',n:'SPF Mist',ef:{hyd:8,cla:5,glo:14,rad:20},order:6,tip:'SPF every day -- even cloudy days! UV is the #1 cause of visible ageing. Your cat avoids the midday sun for a reason.'}
-];
-
-var CAT_TIPS = [
-  {e:'🐱',t:'Cats groom themselves 3-5 hours a day. Their tongues have hollow spines that act like a comb AND distribute saliva for cooling. Absolute engineering.'},
-  {e:'💧',t:'Cats have a low thirst drive because their wild ancestors got most water from prey. Wet food or a fountain helps keep them hydrated. Fresh water daily is non-negotiable.'},
-  {e:'😴',t:'Kittens sleep 18-20 hours a day. This is not laziness -- it is when growth hormone is released. Sleep is literally how they grow.'},
-  {e:'🪮',t:'Brush your cat weekly. It reduces hairballs by 70%, strengthens your bond, and lets you spot skin changes early. Long-hair cats need daily brushing.'},
-  {e:'💖',t:'Slow blinking at your cat means "I love you" in cat language. Wait for them to slow blink back. It builds trust measurably over time.'},
-  {e:'🎮',t:'Adult cats need 15-20 minutes of active play daily. This prevents boredom, obesity, and destructive behaviour. Wand toys engage their prey drive best.'},
-  {e:'🍽️',t:'Cats are obligate carnivores. They cannot synthesize taurine, which is found only in animal tissue. A plant-based diet will make a cat very unwell.'},
-  {e:'📅',t:'Senior cats (7+) need vet visits every 6 months. Many conditions -- kidney disease, hyperthyroidism -- are completely manageable when caught early.'},
-  {e:'🌡️',t:'A cat\'s normal body temperature is 101-102.5°F (38.3-39.2°C). Ears that feel hot plus lethargy can indicate fever. Know your cat\'s baseline.'}
-];
-
-var EPISODES = [
-  {id:0,req:1,t:'Day 1: The Arrival',e:'🏠',tip:'Cats need 1-2 weeks to adjust to a new home. Give them a small safe room first.',d:'You open the carrier and there they are -- a tiny kitten blinking up at you with enormous eyes. You are already completely in love. They are terrified. This is fine. This is the beginning.'},
-  {id:1,req:2,t:'Day 2: First Smoothie',e:'🥤',tip:'Never give real cats cow milk -- most are lactose intolerant after kittenhood!',d:'Tiny paws drag them toward the café counter. They sniff every single item with intense suspicion. Eventually: one tentative, deliberate sip. They sit back. They have opinions.'},
-  {id:2,req:3,t:'Day 3: Skincare Begins',e:'✨',tip:'Cats benefit from regular grooming checks -- skin, ears, paws, and teeth.',d:'You introduce the gentle cleanser. They immediately try to eat it. After significant negotiation, one full skincare routine is completed. They look three times as cute. You take seventeen photos.'},
-  {id:3,req:5,t:'Day 5: Growing Fast',e:'📏',tip:'Kittens need 3-4 small meals a day. Adults do well with 2 measured meals.',d:'They have visibly grown. Their paws are still slightly too large for their body. They look you directly in the eyes and meow with surprising authority. You give them a treat immediately.'},
-  {id:4,req:7,t:'One Week Together',e:'🎉',tip:'Cats are 60% water by body weight -- hydration is critical for kidney health!',d:'One whole week. They have a favourite cushion. They have preferences. They have a whole personality. You would not change a single thing about them.'},
-  {id:5,req:10,t:'The Rival Appears',e:'😤',tip:'Slow blink at your cat to say I love you. Wait for them to blink back.',d:'A suspiciously well-groomed rival cat has appeared near the café. Your kitten clocks them immediately. They proceed to begin a spontaneous and very thorough skincare routine. Unprompted. Motivated.'},
-  {id:6,req:14,t:'Two Weeks of Glow',e:'🌟',tip:'Regular brushing distributes natural oils and makes their coat visibly shinier.',d:'Two weeks of consistent skincare has had a measurable impact. Their coat shimmers. Strangers comment. The rival cat has not been seen since.'},
-  {id:7,req:20,t:'The Zodiac Awakens',e:'⭐',tip:'Cats are crepuscular -- most active at dawn and dusk, not nocturnal.',d:'Something has shifted. On day 20, your kitten orders their signature zodiac drink with complete and absolute confidence. A new era has begun.'},
-  {id:8,req:25,t:'Senior Wisdom',e:'👑',tip:'Senior cats need vet visits every 6 months. Early detection changes everything.',d:'They have grown into something wise and regal. The café is their domain. They survey it with quiet satisfaction. You are deeply honoured to share their space.'},
-  {id:9,req:30,t:'The Grand Smoothie Gala',e:'🏆',tip:'The happiest cats have routine, play, affection, and good nutrition. That is the whole secret.',d:'The Grand Smoothie Gala. Day 30. Your kitten walks in with 30 days of consistent skincare, a full zodiac storyline, and the bearing of a creature who has absolutely figured it out. They win. Obviously.'}
-];
-
-var MINIGAMES = [
-  {id:'quiz',t:'Zodiac Quiz',d:'Match your cat\'s mood to the right item!',e:'🔮',type:'quiz'},
-  {id:'seq',t:'Skincare Sequence',d:'Tap steps in the correct order for a bonus glow!',e:'✨',type:'seq'},
-  {id:'stars',t:'Star Catcher',d:'Tap the falling stars before they disappear!',e:'⭐',type:'stars'}
-];
+var ZOD=[{s:'♈',n:'ARIES',m:'competitive',fav:'Spicy Mango Matcha',d:'Feisty and fierce. Craves bold flavors. Hates losing at anything, even napping.',personality:'FIERCE',ep:'Your Aries kitten declared themselves the main character. Boldly.'},{s:'♉',n:'TAURUS',m:'cozy',fav:'Strawberry Cream Latte',d:'Comfort-obsessed. Only naps on the softest pillow. Judges all food harshly.',personality:'COZY QUEEN',ep:'Your Taurus kitten found the warmest spot and claimed it forever.'},{s:'♊',n:'GEMINI',m:'social',fav:'Double Berry Fizz',d:'Chatty, curious, contradictory. Cravings shift every session.',personality:'TWO MOODS',ep:'Your Gemini kitten has opinions about everything.'},{s:'♋',n:'CANCER',m:'emotional',fav:'Moon Milk Chamomile',d:'Soft and sensitive. Needs comfort food and gentle care.',personality:'SOFT BABY',ep:'Your Cancer kitten memorized your schedule and waits by the door.'},{s:'♌',n:'LEO',m:'extra',fav:'Gold Rush Sparkle',d:'Glamorous. Only the fanciest items will do.',personality:'MAIN CHAR',ep:'Your Leo kitten arranged for maximum photo opportunity.'},{s:'♍',n:'VIRGO',m:'perfectionist',fav:'Matcha Clarity Shot',d:'Picky and precise. Right item at the right time only.',personality:'PERFECTIONIST',ep:'Your Virgo kitten reorganized the food bowls for efficiency.'},{s:'♎',n:'LIBRA',m:'balanced',fav:'Peach Harmony Blend',d:'Needs ALL stats balanced. Gets anxious when things are uneven.',personality:'BALANCED',ep:'Your Libra kitten cannot choose between two identical cushions.'},{s:'♏',n:'SCORPIO',m:'secretive',fav:'Midnight Elderflower',d:'Intense. Earn their trust slowly.',personality:'MYSTERIOUS',ep:'Your Scorpio kitten learned to open the treat cabinet.'},{s:'♐',n:'SAGITTARIUS',m:'restless',fav:'Tropical Storm Tea',d:'Free spirit. Hates routine.',personality:'FREE SPIRIT',ep:'Your Sagittarius kitten discovered the open window.'},{s:'♑',n:'CAPRICORN',m:'driven',fav:'Cold Brew Focus Shot',d:'Ambitious. Streak days matter.',personality:'BOSS MODE',ep:'Your Capricorn kitten has a 30-day growth plan.'},{s:'♒',n:'AQUARIUS',m:'eccentric',fav:'Lavender Cosmic Mist',d:'Quirky. Only rare items catch their attention.',personality:'ECCENTRIC',ep:'Your Aquarius kitten refuses the expensive bed. Sleeps in the box.'},{s:'♓',n:'PISCES',m:'dreamy',fav:'Butterfly Pea Dream',d:'Dreamy and intuitive. Anchor with consistent care.',personality:'DREAMY',ep:'Your Pisces kitten stares at something only they can see.'}];
+var FOODS=[{e:'🥛',n:'Oat Milk',d:'creamy & gentle',b:8,mb:4,g:2,ms:['cozy','emotional','dreamy']},{e:'🍵',n:'Matcha Latte',d:'earthy & grounding',b:10,mb:5,g:6,ms:['perfectionist','driven','balanced']},{e:'🧃',n:'Berry Juice',d:'fresh & bright',b:7,mb:6,g:3,ms:['competitive','social','restless']},{e:'🥐',n:'Croissant',d:'buttery & flaky',b:14,mb:7,g:1,ms:['cozy','extra','balanced']},{e:'🍓',n:'Strawberry Cake',d:'sweet & celebratory',b:16,mb:9,g:4,ms:['cozy','extra','emotional']},{e:'☕',n:'Cozy Latte',d:'warm & comforting',b:12,mb:8,g:2,ms:['cozy','emotional','secretive']},{e:'🧋',n:'Bubble Tea',d:'fun & surprising',b:15,mb:10,g:3,ms:['social','eccentric','restless']},{e:'🍡',n:'Mochi Trio',d:'soft & dreamy',b:11,mb:8,g:5,ms:['dreamy','cozy','extra']},{e:'🌸',n:'Sakura Drink',d:'rare & delicate',b:13,mb:12,g:8,ms:['dreamy','perfectionist','secretive']}];
+var SKIN_DATA=[{e:'🧴',n:'Cleanser',ef:{hyd:18,cla:22,glo:5,rad:3},order:1,tip:'Always cleanse first! Like daily grooming for your cat.'},{e:'💧',n:'Toner',ef:{hyd:20,cla:10,glo:8,rad:5},order:2,tip:'Pat toner gently -- never rub! Fresh water daily for your cat.'},{e:'🌸',n:'Rose Serum',ef:{hyd:12,cla:8,glo:28,rad:18},order:3,tip:'2-3 drops only! The powerhouse step -- never skip!'},{e:'✨',n:'Moisturizer',ef:{hyd:24,cla:8,glo:16,rad:12},order:4,tip:'Apply while damp! Locks in everything.'},{e:'🌙',n:'Night Mask',ef:{hyd:30,cla:18,glo:22,rad:25},order:5,tip:'Last step! Overnight repair. Sleep on silk.'},{e:'☀️',n:'SPF Mist',ef:{hyd:8,cla:5,glo:14,rad:20},order:6,tip:'SPF every day -- even cloudy! UV is #1 cause of ageing.'}];
+var CAT_TIPS=[{e:'🐱',t:'Cats groom 3-5 hours daily. Their tongues have hollow spines that act like a comb AND distribute saliva for cooling.'},{e:'💧',t:'Cats have a low thirst drive. Wet food or a fountain helps. Fresh water daily is non-negotiable.'},{e:'😴',t:'Kittens sleep 18-20 hours a day. Growth hormone is released during sleep -- sleep is how they grow!'},{e:'🪮',t:'Brush your cat weekly. Reduces hairballs by 70%, strengthens your bond, and helps spot skin changes.'},{e:'💖',t:'Slow blinking at your cat means I love you in cat language. Wait for them to blink back.'},{e:'🎮',t:'Adult cats need 15-20 minutes of active play daily. Wand toys engage their prey drive best.'},{e:'🍽️',t:'Cats are obligate carnivores. They cannot synthesize taurine, found only in animal tissue.'},{e:'📅',t:'Senior cats (7+) need vet visits every 6 months. Kidney disease and hyperthyroidism are manageable when caught early.'}];
+var EPS=[{id:0,req:1,t:'Day 1: The Arrival',e:'🏠',tip:'Cats need 1-2 weeks to adjust. Give them a small safe room first.',d:'You open the carrier and there they are. You are already completely in love.'},{id:1,req:2,t:'Day 2: First Smoothie',e:'🥤',tip:'Never give real cats cow milk -- most are lactose intolerant!',d:'Tiny paws drag them toward the café counter. One tentative sip. They have opinions.'},{id:2,req:3,t:'Day 3: Skincare Begins',e:'✨',tip:'Cats benefit from regular grooming checks -- skin, ears, paws, teeth.',d:'You introduce the gentle cleanser. They immediately try to eat it.'},{id:3,req:5,t:'Day 5: Growing Fast',e:'📏',tip:'Kittens need 3-4 small meals a day.',d:'They have visibly grown. They look you in the eyes and meow with surprising authority.'},{id:4,req:7,t:'One Week Together',e:'🎉',tip:'Cats are 60% water by body weight -- hydration is critical!',d:'One whole week. They have a favourite cushion. They have a whole personality.'},{id:5,req:10,t:'The Rival Appears',e:'😤',tip:'Slow blink at your cat to say I love you.',d:'A well-groomed rival cat appeared. Your kitten did an unprompted skincare routine.'},{id:6,req:14,t:'Two Weeks of Glow',e:'🌟',tip:'Regular brushing distributes oils and makes their coat shinier.',d:'Two weeks of skincare. Their coat shimmers. The rival cat has not been seen since.'},{id:7,req:20,t:'The Zodiac Awakens',e:'⭐',tip:'Cats are crepuscular -- most active at dawn and dusk.',d:'Your kitten orders their signature zodiac drink with complete confidence.'},{id:8,req:25,t:'Senior Wisdom',e:'👑',tip:'Senior cats need vet visits every 6 months.',d:'They have grown into something wise and regal. The café is their domain.'},{id:9,req:30,t:'The Grand Smoothie Gala',e:'🏆',tip:'Happiest cats have routine, play, affection, and good nutrition.',d:'Day 30. Consistent skincare, full zodiac storyline. They win. Obviously.'}];
+var MGS=[{id:'quiz',t:'Zodiac Quiz',d:'Match your cat\'s mood to the right item!',e:'🔮'},{id:'seq',t:'Skincare Sequence',d:'Tap the 6 steps in correct order!',e:'✨'},{id:'stars',t:'Star Catcher',d:'Tap falling stars before they disappear!',e:'⭐'}];
+var CAT_NAMES=['Gray-Lilac','Orange Tabby','Midnight','Cream','Calico','Blue-Grey'];
+var FAVE_FOODS=['🌸','🧋','🍓','🥐','🍵','🥛','☕','🍡','🧃'];
 
 // ── GAME STATE ────────────────────────────────────────────────────────────────
-var SKIN = {hyd:70, cla:55, glo:40, rad:30};
-var skinRoutine = [];
-var G = {
-  cats: [],
-  activeCat: null,
-  day: 1,
-  gamesPlayed: 0,
-  mealsToday: 0,
-  completedEps: [],
-  lv: 1
-};
-
-// helper: make a cat object
-function makeCat(name, color, zodIdx) {
-  return {
-    name: name || 'KITTY',
-    color: color || 0,
-    zodIdx: zodIdx || 0,
-    mood: 80, hungry: 70, glow: 60, energy: 75,
-    stage: 0,
-    age: 1
-  };
-}
-
-// default first cat
-G.cats.push(makeCat('KITTY', 0, 0));
-G.activeCat = G.cats[0];
-
-function getZod() { return ZODIAC[G.activeCat ? G.activeCat.zodIdx : 0]; }
-function getStageObj() {
-  var d = G.activeCat ? G.activeCat.age : 1;
-  if(d<=3)return{name:'TINY KITTEN',stage:0};if(d<=8)return{name:'YOUNG CAT',stage:1};if(d<=15)return{name:'TEEN CAT',stage:2};if(d<=25)return{name:'ADULT CAT',stage:3};return{name:'SENIOR CAT',stage:4};
-}
+var SKIN={hyd:70,cla:55,glo:40,rad:30};var skinR=[];
+var G={cats:[],activeCat:null,day:1,gPlayed:0,meals:0,doneEps:[],lv:1};
+function mkCat(n,c,z){return{name:n||'KITTY',color:c||0,zodIdx:z||0,mood:80,hungry:70,glow:60,energy:75,stage:0,age:1,visits:1,timesGroomed:0};}
+G.cats.push(mkCat('KITTY',0,0)); G.activeCat=G.cats[0];
+function getZod(){return ZOD[G.activeCat?G.activeCat.zodIdx:0];}
+function getSt(){var d=G.activeCat?G.activeCat.age:1;if(d<=3)return{name:'TINY KITTEN',stage:0};if(d<=8)return{name:'YOUNG CAT',stage:1};if(d<=15)return{name:'TEEN CAT',stage:2};if(d<=25)return{name:'ADULT CAT',stage:3};return{name:'SENIOR CAT',stage:4};}
 
 // ── UI UPDATE ─────────────────────────────────────────────────────────────────
-function updUI() {
-  var ac = G.activeCat;
-  document.getElementById('d-day').textContent = G.day;
-  document.getElementById('d-name').textContent = ac ? ac.name : 'KITTY';
-  document.getElementById('d-age').textContent = getStageObj().name;
-  setBar('sf-mood','sv-mood', ac?ac.mood:0);
-  setBar('sf-hungry','sv-hungry', ac?ac.hungry:0);
-  setBar('sf-glow','sv-glow', ac?ac.glow:0);
-  setBar('sf-energy','sv-energy', ac?ac.energy:0);
-  setBar('ef-fat',null, Math.min(100, G.cats.length*12 + G.day*2));
-  setBar('ef-bond',null, Math.min(100, G.completedEps.length*8 + G.mealsToday*5));
-  buildDiary();
-  if(ac) { ac.stage = getStageObj().stage; }
+function updUI(){
+  var ac=G.activeCat;
+  document.getElementById('d-day').textContent=G.day;
+  document.getElementById('d-name').textContent=ac?ac.name:'KITTY';
+  document.getElementById('d-age').textContent=getSt().name;
+  sB('sf-m','sv-m',ac?ac.mood:0);sB('sf-h','sv-h',ac?ac.hungry:0);sB('sf-g','sv-g',ac?ac.glow:0);sB('sf-e','sv-e',ac?ac.energy:0);
+  sB('ef-f',null,Math.min(100,G.cats.length*12+G.day*2));sB('ef-b',null,Math.min(100,G.doneEps.length*9+G.meals*5));
+  bDiary(); if(ac)ac.stage=getSt().stage;
+  bToggleBar();
 }
-function setBar(fi,vi,v){var f=document.getElementById(fi);if(f)f.style.width=Math.min(100,Math.max(0,~~v))+'%';if(vi){var el=document.getElementById(vi);if(el)el.textContent=~~v;}}
-
-function buildDiary() {
-  var el = document.getElementById('growth-stages'); if (!el) return; el.innerHTML='';
-  var stages=[{name:'TINY KITTEN',day:1,stage:0},{name:'YOUNG CAT',day:4,stage:1},{name:'TEEN CAT',day:9,stage:2},{name:'ADULT CAT',day:16,stage:3},{name:'SENIOR CAT',day:26,stage:4}];
-  var d = G.activeCat ? G.activeCat.age : 1;
-  stages.forEach(function(st){
-    var row=document.createElement('div');var cur=getStageObj().name===st.name,lk=d<st.day;
-    row.className='s-row'+(cur?' cur':'')+(lk?' lk':'');
-    var c=document.createElement('canvas');c.className='sc';c.width=28;c.height=24;drawCat(c,{stage:st.stage,mood:'happy',color:G.activeCat?G.activeCat.color:0});
-    var info=document.createElement('div');info.className='si';info.innerHTML='<div class="sn">'+st.name+'</div><div class="sd">day '+st.day+'+'+(lk?' 🔒':'')+'</div>';
+function sB(fi,vi,v){var f=document.getElementById(fi);if(f)f.style.width=Math.min(100,Math.max(0,~~v))+'%';if(vi){var el=document.getElementById(vi);if(el)el.textContent=~~v;}}
+function bDiary(){
+  var el=document.getElementById('gstages');if(!el)return;el.innerHTML='';
+  [{name:'TINY KITTEN',day:1,stage:0},{name:'YOUNG CAT',day:4,stage:1},{name:'TEEN CAT',day:9,stage:2},{name:'ADULT CAT',day:16,stage:3},{name:'SENIOR CAT',day:26,stage:4}].forEach(function(st){
+    var row=document.createElement('div');var cur=getSt().name===st.name,lk=G.day<st.day;row.className='srow'+(cur?' cur':'')+(lk?' lk':'');
+    var c=document.createElement('canvas');c.width=28;c.height=24;c.style.cssText='width:28px;height:24px;flex-shrink:0';drawCat(c,{stage:st.stage,mood:'happy',color:G.activeCat?G.activeCat.color:0});
+    var info=document.createElement('div');info.innerHTML='<div class="sn">'+st.name+'</div><div class="sd">day '+st.day+'+'+(lk?' 🔒':'')+'</div>';
     row.appendChild(c);row.appendChild(info);el.appendChild(row);
   });
 }
 
+// ── CAT TOGGLE BAR ─────────────────────────────────────────────────────────────
+function bToggleBar(){
+  var bar=document.getElementById('cat-toggle');bar.innerHTML='';
+  G.cats.forEach(function(cat,ci){
+    var slot=document.createElement('button');slot.className='ct-slot'+(G.activeCat===cat?' active':'');
+    var cv=document.createElement('canvas');cv.width=36;cv.height=32;cv.style.cssText='width:36px;height:32px';
+    drawCat(cv,{stage:cat.stage||0,mood:'happy',color:cat.color});
+    slot.appendChild(cv);
+    var nm=document.createElement('div');nm.className='ct-name';nm.textContent=cat.name;slot.appendChild(nm);
+    var zd=document.createElement('div');zd.className='ct-zod';zd.textContent=ZOD[cat.zodIdx].s;slot.appendChild(zd);
+    if(G.activeCat===cat){var ind=document.createElement('div');ind.className='ct-indicator';slot.appendChild(ind);}
+    // click = set active; double tap / long tap = open profile
+    var tapTimer=null,tapCount=0;
+    slot.onclick=function(e){
+      e.preventDefault();tapCount++;
+      if(tapCount===1){
+        tapTimer=setTimeout(function(){tapCount=0;setActive(cat);},280);
+      } else if(tapCount===2){
+        clearTimeout(tapTimer);tapCount=0;showCatProfile(ci);
+      }
+    };
+    bar.appendChild(slot);
+  });
+  // add button
+  var addBtn=document.createElement('button');addBtn.className='ct-add';addBtn.innerHTML='&#43;';addBtn.title='Add cat';addBtn.onclick=function(){openPanel('&#10022; ADOPT A KITTEN',bAdopt);};
+  bar.appendChild(addBtn);
+}
+
+function setActive(cat){
+  G.activeCat=cat;
+  bToggleBar();updUI();
+  var bbl=document.getElementById('bbl');bbl.textContent='now playing with '+cat.name+' '+ZOD[cat.zodIdx].s;bbl.classList.add('show');setTimeout(function(){bbl.classList.remove('show');},2500);
+}
+
+// ── CAT PROFILE CARD ──────────────────────────────────────────────────────────
+var cpIdx=0;
+function showCatProfile(idx){
+  cpIdx=idx;var cat=G.cats[idx];if(!cat)return;
+  var z=ZOD[cat.zodIdx];
+  document.getElementById('cp-h-title').textContent='&#9733; CAT PROFILE';
+  document.getElementById('cp-name').textContent=cat.name;
+  document.getElementById('cp-zod-sign').textContent=z.s;
+  document.getElementById('cp-zod-name').textContent=z.n;
+  document.getElementById('cp-personality').textContent=z.personality;
+  // portrait
+  var cc=document.getElementById('cp-cat-cv');cc.width=80;cc.height=80;drawCat(cc,{stage:cat.stage||0,mood:cat.mood>45?'happy':'sad',color:cat.color});
+  // stat bars
+  var sl=document.getElementById('cp-stats-list');sl.innerHTML='';
+  [{label:'MOOD',val:cat.mood,cls:'cp-mood-f'},{label:'HUNGRY',val:cat.hungry,cls:'cp-hungry-f'},{label:'GLOW',val:cat.glow,cls:'cp-glow-f'},{label:'ENERGY',val:cat.energy,cls:'cp-energy-f'}].forEach(function(stat){
+    var row=document.createElement('div');row.className='cp-stat-row';
+    var lbl=document.createElement('div');lbl.className='cp-stat-label';lbl.textContent=stat.label+' '+~~stat.val;row.appendChild(lbl);
+    var track=document.createElement('div');track.className='cp-stat-track';
+    var fill=document.createElement('div');fill.className='cp-stat-fill '+stat.cls;fill.style.width=~~stat.val+'%';
+    track.appendChild(fill);row.appendChild(track);sl.appendChild(row);
+  });
+  // facts
+  var fl=document.getElementById('cp-facts');fl.innerHTML='';
+  [{n:G.day,l:'DAYS\nTOGETHER'},{n:cat.visits,l:'CAFÉ\nVISITS'},{n:cat.timesGroomed||0,l:'TIMES\nGROOMED'},{n:~~((cat.mood+cat.glow+cat.hungry+cat.energy)/4),l:'OVERALL\nSCORE'}].forEach(function(f){
+    var fc=document.createElement('div');fc.className='cp-fact';
+    var num=document.createElement('div');num.className='cp-fact-num';num.textContent=f.n;
+    var lbl=document.createElement('div');lbl.className='cp-fact-label';lbl.textContent=f.l;
+    fc.appendChild(num);fc.appendChild(lbl);fl.appendChild(fc);
+  });
+  // bio
+  document.getElementById('cp-bio').textContent=z.d+'\n'+z.ep;
+  // faves
+  var fv=document.getElementById('cp-faves');fv.innerHTML='';
+  [FAVE_FOODS[cat.zodIdx%9],FAVE_FOODS[(cat.zodIdx+3)%9],FAVE_FOODS[(cat.zodIdx+6)%9]].forEach(function(f,i){
+    var slot=document.createElement('div');slot.className='cp-fave-slot';slot.textContent=f;
+    var num=document.createElement('div');num.className='fave-num';num.textContent=i+1;
+    slot.appendChild(num);fv.appendChild(slot);
+  });
+  // nav buttons
+  document.getElementById('cp-prev').disabled=idx===0;document.getElementById('cp-next').disabled=idx>=G.cats.length-1;
+  document.getElementById('cat-profile').classList.add('show');
+  // animate portrait
+  setTimeout(function(){var cc2=document.getElementById('cp-cat-cv');if(cc2){cc2.width=80;cc2.height=80;drawCat(cc2,{stage:cat.stage||0,mood:cat.mood>45?'happy':'sad',color:cat.color});}},80);
+}
+
+document.getElementById('cp-close-btn').onclick=function(){document.getElementById('cat-profile').classList.remove('show');};
+document.getElementById('cp-prev').onclick=function(){if(cpIdx>0)showCatProfile(cpIdx-1);};
+document.getElementById('cp-next').onclick=function(){if(cpIdx<G.cats.length-1)showCatProfile(cpIdx+1);};
+// Also: tap the room cat to open its profile
+document.getElementById('room-wrap').onclick=function(){showCatProfile(G.cats.indexOf(G.activeCat)||0);};
+
 // ── SPEECH ────────────────────────────────────────────────────────────────────
-var SPEECHES = ['mrrp~ ♡','*slow blinks at you*','snack time??','skincare hour ✨','purring so loud rn','main character energy','*kneads your heart*','so cozy rn','lowkey obsessed with you','do you hear that? me neither. purring.'];
-function showSpeech() {
-  var el=document.getElementById('speech-bubble');if(!el)return;
-  var ac=G.activeCat;
-  var s=SPEECHES[~~(Math.random()*SPEECHES.length)];
-  if(ac){if(ac.hungry<30)s='so hungry rn... 🥺';else if(ac.glow<25)s='my pores!! skincare NOW';else if(ac.mood<30)s='feeling a lil sad...';}
-  el.textContent=s;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},3200);
-}
-setInterval(showSpeech, 7000); setTimeout(showSpeech, 3000);
+var SPS=['mrrp~ ♡','*slow blinks at you*','snack time??','skincare hour ✨','purring so loud rn','main character energy','*kneads your heart*','so cozy rn'];
+function showSpeech(){var el=document.getElementById('bbl');if(!el||document.getElementById('cat-profile').classList.contains('show'))return;var ac=G.activeCat;var s=SPS[~~(Math.random()*SPS.length)];if(ac){if(ac.hungry<30)s='so hungry rn... 🥺';else if(ac.glow<25)s='skincare NOW!!';else if(ac.mood<30)s='feeling a lil sad...';}el.textContent=s;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},3200);}
+setInterval(showSpeech,7000);setTimeout(showSpeech,3000);
 
-// ── PANEL SYSTEM ──────────────────────────────────────────────────────────────
-function openPanel(title, buildFn) {
-  document.getElementById('po-title').textContent = title;
-  var body = document.getElementById('po-body'); body.innerHTML = '';
-  buildFn(body);
-  document.getElementById('panel-overlay').classList.add('show');
-}
-function closePanel() { document.getElementById('panel-overlay').classList.remove('show'); }
-document.getElementById('po-close').onclick = closePanel;
+// ── PANELS ────────────────────────────────────────────────────────────────────
+function openPanel(title,fn){document.getElementById('ov-title').innerHTML=title;var b=document.getElementById('ov-body');b.innerHTML='';fn(b);document.getElementById('overlay').classList.add('show');}
+function closePanel(){document.getElementById('overlay').classList.remove('show');}
+document.getElementById('ov-close').onclick=closePanel;
 
-// ── CAFÉ PANEL ────────────────────────────────────────────────────────────────
-function buildCafePanel(body) {
-  var zod = getZod();
-  var zcard = document.createElement('div'); zcard.className='zod-card';
-  zcard.innerHTML='<div class="zod-title">'+zod.s+' '+zod.n+' &bull; '+G.activeCat.name+'</div>'
-    +'<div class="zod-desc">'+zod.d+'</div>'
-    +'<div class="zod-fav">&#128155; Fave: '+zod.fav+'</div>';
-  body.appendChild(zcard);
-  var hint=document.createElement('div');hint.style.cssText='font-size:clamp(5px,1.4vw,7px);color:var(--txts);margin-bottom:8px;text-align:center;line-height:1.8';hint.textContent='Items with ♡ match their zodiac mood. They get bonus stats!';body.appendChild(hint);
-  var grid=document.createElement('div');grid.className='food-grid';
+function bCafe(body){
+  var z=getZod(),ac=G.activeCat;
+  var zc=document.createElement('div');zc.className='zcard';zc.innerHTML='<div class="zt">'+z.s+' '+z.n+' &bull; '+(ac?ac.name:'KITTY')+'</div><div class="zd">'+z.d+'</div><div class="zfav">&#128155; Fave: '+z.fav+'</div>';body.appendChild(zc);
+  var h=document.createElement('div');h.className='hint';h.textContent='Items with ♡ match their zodiac mood for 1.8× bonus stats!';body.appendChild(h);
+  var g=document.createElement('div');g.className='food-grid';
   FOODS.forEach(function(f){
-    var fav=f.ms.indexOf(zod.m)>=0;
-    var d=document.createElement('div');d.className='fi'+(fav?' fav':'');
-    d.innerHTML='<span class="fi-e">'+f.e+'</span><span class="fi-n">'+f.n+(fav?' ♡':'')+'</span><span class="fi-d">'+f.d+'</span>';
-    d.onclick=function(){
-      var ac=G.activeCat;if(!ac)return;
-      var mult=fav?1.8:1;
-      ac.hungry=Math.min(100,ac.hungry+~~(f.b*mult));ac.mood=Math.min(100,ac.mood+~~(f.mb*mult));ac.glow=Math.min(100,ac.glow+~~(f.g*mult));
-      G.mealsToday++;updUI();
-      toast((fav?'✨ '+ac.name+' LOVED it! Zodiac bonus! +':'🥤 yum! +')+~~(f.b*mult)+' hungry +'+~~(f.mb*mult)+' mood');
-      closePanel();
-    };
-    grid.appendChild(d);
-  });
-  body.appendChild(grid);
+    var fav=f.ms.indexOf(z.m)>=0;var d=document.createElement('div');d.className='fi'+(fav?' fav':'');
+    d.innerHTML='<span class="fie">'+f.e+'</span><span class="fin">'+f.n+(fav?' ♡':'')+'</span><span class="fid">'+f.d+'</span>';
+    d.onclick=function(){var mult=fav?1.8:1;if(ac){ac.hungry=Math.min(100,ac.hungry+~~(f.b*mult));ac.mood=Math.min(100,ac.mood+~~(f.mb*mult));ac.glow=Math.min(100,ac.glow+~~(f.g*mult));ac.visits=(ac.visits||1)+1;}G.meals++;updUI();toast((fav?'✨ '+ac.name+' LOVED it! Zodiac bonus!\n+':'🥤 yum! +')+~~(f.b*mult)+' hungry');closePanel();};g.appendChild(d);
+  });body.appendChild(g);
 }
 
-// ── GROW/SKINCARE PANEL ───────────────────────────────────────────────────────
-function buildGrowPanel(body) {
-  // skin stats
-  var sp=document.createElement('div');sp.className='skin-panel';
-  sp.innerHTML='<div style="font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:7px;text-align:center">SKIN STATUS</div>'
-    +'<div class="sk-row"><span class="sk-l">&#128167; Hydration</span><div class="sk-t"><div class="sk-f f-hyd" id="sk-hyd" style="width:'+SKIN.hyd+'%"></div></div><span class="sk-v" id="sv-hyd">'+~~SKIN.hyd+'</span></div>'
-    +'<div class="sk-row"><span class="sk-l">&#127807; Clarity</span><div class="sk-t"><div class="sk-f f-cla" id="sk-cla" style="width:'+SKIN.cla+'%"></div></div><span class="sk-v" id="sv-cla">'+~~SKIN.cla+'</span></div>'
-    +'<div class="sk-row"><span class="sk-l">&#127800; Glow</span><div class="sk-t"><div class="sk-f f-sg" id="sk-glo" style="width:'+SKIN.glo+'%"></div></div><span class="sk-v" id="sv-glo">'+~~SKIN.glo+'</span></div>'
-    +'<div class="sk-row"><span class="sk-l">&#11088; Radiance</span><div class="sk-t"><div class="sk-f f-rad" id="sk-rad" style="width:'+SKIN.rad+'%"></div></div><span class="sk-v" id="sv-rad">'+~~SKIN.rad+'</span></div>';
-  body.appendChild(sp);
-  // routine tracker
-  var rt=document.createElement('div');rt.style.cssText='background:rgba(255,255,255,.8);border:2px solid var(--mintd);border-radius:9px;padding:8px;margin-bottom:8px';
-  var rtLabel=document.createElement('div');rtLabel.style.cssText='font-size:clamp(5px,1.4vw,7px);color:var(--txts);margin-bottom:5px;line-height:1.8';rtLabel.textContent='✦ Do steps in order (Cleanser→Toner→Serum→Moisturizer→Mask→SPF) for a GLOW BONUS!';rt.appendChild(rtLabel);
-  var rtTrack=document.createElement('div');rtTrack.style.cssText='display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:28px;padding:3px';rtTrack.id='routine-track';rtTrack.innerHTML='<span style="font-size:clamp(5px,1.3vw,6px);color:var(--txts);opacity:.7">steps appear here...</span>';rt.appendChild(rtTrack);
-  var rtBtns=document.createElement('div');rtBtns.style.cssText='display:flex;gap:6px;margin-top:6px';
-  var checkBtn=document.createElement('button');checkBtn.style.cssText='flex:1;background:linear-gradient(180deg,var(--mintd),var(--greend));color:#1a4030;border:2px solid var(--greend);border-radius:7px;font-family:"Press Start 2P",monospace;font-size:clamp(6px,1.6vw,8px);padding:8px;cursor:pointer';checkBtn.textContent='CHECK ✓';
-  checkBtn.onclick=function(){checkRoutine();};
-  var clrBtn=document.createElement('button');clrBtn.style.cssText='flex:1;background:rgba(255,255,255,.8);color:var(--txts);border:2px solid var(--lavd);border-radius:7px;font-family:"Press Start 2P",monospace;font-size:clamp(6px,1.6vw,8px);padding:8px;cursor:pointer';clrBtn.textContent='RESET ↺';
-  clrBtn.onclick=function(){skinRoutine=[];var rt2=document.getElementById('routine-track');if(rt2){rt2.innerHTML='<span style="font-size:clamp(5px,1.3vw,6px);color:var(--txts);opacity:.7">steps appear here...</span>';}document.querySelectorAll('.sci').forEach(function(el){el.classList.remove('used');});};
-  rtBtns.appendChild(checkBtn);rtBtns.appendChild(clrBtn);rt.appendChild(rtBtns);
-  body.appendChild(rt);
-  // skincare items
-  var sLabel=document.createElement('div');sLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:7px;text-align:center';sLabel.textContent='GLOW RITUAL ✨';body.appendChild(sLabel);
-  var grid=document.createElement('div');grid.className='sc-grid';
-  SKINCARE.forEach(function(sk){
-    var d=document.createElement('div');d.className='sci';
-    d.innerHTML='<span class="sci-e">'+sk.e+'</span><span class="sci-n">'+sk.n+'</span><span class="sci-d">step '+sk.order+'</span>';
-    d.onclick=function(){
-      if(d.classList.contains('used'))return;
-      d.classList.add('used');skinRoutine.push(sk.order);
-      Object.keys(sk.ef).forEach(function(k){SKIN[k]=Math.min(100,SKIN[k]+sk.ef[k]);});
-      var ac=G.activeCat;if(ac){ac.glow=Math.min(100,ac.glow+sk.ef.glo*.4);ac.mood=Math.min(100,ac.mood+3);}
-      updSkinBars();updUI();
-      var rt2=document.getElementById('routine-track');if(rt2){if(skinRoutine.length===1)rt2.innerHTML='';var step=document.createElement('span');step.style.fontSize='18px';step.textContent=sk.e;rt2.appendChild(step);}
-      toast(sk.e+' '+sk.tip.substring(0,40)+'...');
-    };
-    grid.appendChild(d);
-  });
-  body.appendChild(grid);
-  // cat tips
-  var tLabel=document.createElement('div');tLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin:8px 0 7px;text-align:center';tLabel.textContent='CAT CARE TIPS 🐱';body.appendChild(tLabel);
-  CAT_TIPS.forEach(function(tip){
-    var tc=document.createElement('div');tc.className='tip-card';tc.innerHTML='<span class="tip-e">'+tip.e+'</span><span class="tip-t">'+tip.t+'</span>';body.appendChild(tc);
-  });
+function bGrow(body){
+  var sb=document.createElement('div');sb.className='skinbox';
+  sb.innerHTML='<div class="skt">SKIN STATUS</div><div class="skrow"><span class="skl">&#128167; Hydration</span><div class="skt2"><div class="skf fhyd" id="sk-hyd" style="width:'+SKIN.hyd+'%"></div></div><span class="skv" id="sv-hyd">'+~~SKIN.hyd+'</span></div><div class="skrow"><span class="skl">&#127807; Clarity</span><div class="skt2"><div class="skf fcla" id="sk-cla" style="width:'+SKIN.cla+'%"></div></div><span class="skv" id="sv-cla">'+~~SKIN.cla+'</span></div><div class="skrow"><span class="skl">&#127800; Glow</span><div class="skt2"><div class="skf fglo" id="sk-glo" style="width:'+SKIN.glo+'%"></div></div><span class="skv" id="sv-glo">'+~~SKIN.glo+'</span></div><div class="skrow"><span class="skl">&#11088; Radiance</span><div class="skt2"><div class="skf frad" id="sk-rad" style="width:'+SKIN.rad+'%"></div></div><span class="skv" id="sv-rad">'+~~SKIN.rad+'</span></div>';body.appendChild(sb);
+  var rt=document.createElement('div');rt.className='rtbox';
+  var rl=document.createElement('div');rl.className='rtlbl';rl.textContent='✦ Apply in order: Cleanser→Toner→Serum→Moisturizer→Mask→SPF for BONUS GLOW!';rt.appendChild(rl);
+  var rtr=document.createElement('div');rtr.className='rttrack';rtr.id='rt-track';rtr.innerHTML='<span style="font-size:7px;color:#6a4a7a;opacity:.7">steps appear here...</span>';rt.appendChild(rtr);
+  var rbt=document.createElement('div');rbt.className='rtbtns';
+  var ck=document.createElement('button');ck.className='rtbtn rtck';ck.textContent='CHECK ✓';ck.onclick=chkRoutine;
+  var cl=document.createElement('button');cl.className='rtbtn rtrst';cl.textContent='RESET ↺';cl.onclick=function(){skinR=[];var t=document.getElementById('rt-track');if(t)t.innerHTML='<span style="font-size:7px;color:#6a4a7a;opacity:.7">steps appear here...</span>';document.querySelectorAll('.sci').forEach(function(el){el.classList.remove('used');});};
+  rbt.appendChild(ck);rbt.appendChild(cl);rt.appendChild(rbt);body.appendChild(rt);
+  var gl=document.createElement('div');gl.style.cssText='font-size:clamp(8px,2.2vw,10px);color:var(--wine);margin-bottom:7px;text-align:center';gl.textContent='GLOW RITUAL ✨';body.appendChild(gl);
+  var scg=document.createElement('div');scg.className='sc-grid';
+  SKIN_DATA.forEach(function(sk){
+    var d=document.createElement('div');d.className='sci';d.innerHTML='<span class="scie">'+sk.e+'</span><span class="scin">'+sk.n+'</span><span class="scid">step '+sk.order+'</span>';
+    d.onclick=function(){if(d.classList.contains('used'))return;d.classList.add('used');skinR.push(sk.order);Object.keys(sk.ef).forEach(function(k){SKIN[k]=Math.min(100,SKIN[k]+sk.ef[k]);});var ac=G.activeCat;if(ac){ac.glow=Math.min(100,ac.glow+sk.ef.glo*.4);ac.mood=Math.min(100,ac.mood+3);ac.timesGroomed=(ac.timesGroomed||0)+1;}updSkinBars();updUI();var t=document.getElementById('rt-track');if(t){if(skinR.length===1)t.innerHTML='';var sp=document.createElement('span');sp.style.fontSize='20px';sp.textContent=sk.e;t.appendChild(sp);}toast(sk.e+' '+sk.tip.substring(0,40)+'...');};scg.appendChild(d);
+  });body.appendChild(scg);
+  var tl=document.createElement('div');tl.style.cssText='font-size:clamp(8px,2.2vw,10px);color:var(--wine);margin:8px 0 7px;text-align:center';tl.textContent='CAT CARE TIPS 🐱';body.appendChild(tl);
+  CAT_TIPS.forEach(function(tip){var tc=document.createElement('div');tc.className='tip-card';tc.innerHTML='<span class="tce">'+tip.e+'</span><span class="tct">'+tip.t+'</span>';body.appendChild(tc);});
 }
-function updSkinBars(){
-  ['hyd','cla','glo','rad'].forEach(function(k){var key=k==='glo'?'glo':k;var f=document.getElementById('sk-'+k);var v=document.getElementById('sv-'+k);if(f)f.style.width=Math.min(100,SKIN[key])+'%';if(v)v.textContent=~~SKIN[key];});
-}
-function checkRoutine(){
-  if(skinRoutine.length<3){toast('Apply at least 3 steps first!');return;}
-  var ok=true;for(var i=1;i<skinRoutine.length;i++){if(skinRoutine[i]<skinRoutine[i-1]){ok=false;break;}}
-  if(ok){SKIN.glo=Math.min(100,SKIN.glo+18);SKIN.rad=Math.min(100,SKIN.rad+14);updSkinBars();var ac=G.activeCat;if(ac){ac.glow=Math.min(100,ac.glow+15);updUI();}toast('✨ PERFECT ROUTINE!\nGlow +18 Radiance +14\nSkincare bonus unlocked!');}
-  else{toast('Wrong order! Try: Cleanse→Tone→Serum→Moisturize');}
-}
+function updSkinBars(){['hyd','cla','glo','rad'].forEach(function(k){var f=document.getElementById('sk-'+k),v=document.getElementById('sv-'+k);if(f)f.style.width=Math.min(100,SKIN[k])+'%';if(v)v.textContent=~~SKIN[k];});}
+function chkRoutine(){if(skinR.length<3){toast('Apply at least 3 steps first!');return;}var ok=true;for(var i=1;i<skinR.length;i++){if(skinR[i]<skinR[i-1]){ok=false;break;}}if(ok){SKIN.glo=Math.min(100,SKIN.glo+18);SKIN.rad=Math.min(100,SKIN.rad+14);updSkinBars();var ac=G.activeCat;if(ac){ac.glow=Math.min(100,ac.glow+15);updUI();}toast('✨ PERFECT ROUTINE!\nGlow +18 · Radiance +14!');}else{toast('Wrong order!\nCleanse→Tone→Serum→Moisturize');}}
 
-// ── ADOPT PANEL ───────────────────────────────────────────────────────────────
-function buildAdoptPanel(body) {
-  // Your cats section
-  if (G.cats.length > 0) {
-    var sect=document.createElement('div');sect.className='adopt-sect';
-    var st=document.createElement('div');st.className='a-sect-title';st.textContent='YOUR CATS ('+G.cats.length+')';sect.appendChild(st);
-    var grid=document.createElement('div');grid.className='my-cats-grid';
-    G.cats.forEach(function(cat, ci){
-      var card=document.createElement('div');card.className='adopt-card'+(G.activeCat===cat?' active-cat':'');
-      var cv=document.createElement('canvas');cv.width=52;cv.height=46;cv.style.cssText='width:52px;height:46px;image-rendering:pixelated';drawCat(cv,{stage:cat.stage||0,mood:'happy',color:cat.color});
-      var nm=document.createElement('div');nm.className='ac-n';nm.textContent=cat.name;
-      var zd=document.createElement('div');zd.className='ac-zod';zd.textContent=ZODIAC[cat.zodIdx].s+' '+ZODIAC[cat.zodIdx].n;
-      var setBtn=document.createElement('button');setBtn.style.cssText='display:block;width:100%;background:var(--lav);border:1.5px solid var(--lavdd);border-radius:5px;font-family:"Press Start 2P",monospace;font-size:clamp(4px,1.1vw,5px);color:var(--wine);padding:3px;cursor:pointer;margin-top:3px';setBtn.textContent=G.activeCat===cat?'ACTIVE ♡':'SET ACTIVE';
-      setBtn.onclick=function(){G.activeCat=cat;updUI();toast('Now playing with '+cat.name+'! '+ZODIAC[cat.zodIdx].s);closePanel();};
-      card.appendChild(cv);card.appendChild(nm);card.appendChild(zd);card.appendChild(setBtn);
-      grid.appendChild(card);
-    });
-    sect.appendChild(grid);body.appendChild(sect);
+function bAdopt(body){
+  if(G.cats.length>0){
+    var st=document.createElement('div');st.className='adopt-sect';
+    var sh=document.createElement('div');sh.className='asect-t';sh.textContent='YOUR CATS ('+G.cats.length+'/6)';st.appendChild(sh);
+    var mg=document.createElement('div');mg.className='my-cats';
+    G.cats.forEach(function(cat,ci){
+      var card=document.createElement('div');card.className='mc-card'+(G.activeCat===cat?' active':'');
+      var cv=document.createElement('canvas');cv.width=52;cv.height=46;cv.style.cssText='width:52px;height:46px';drawCat(cv,{stage:cat.stage||0,mood:'happy',color:cat.color});
+      var nm=document.createElement('div');nm.className='mcn';nm.textContent=cat.name;
+      var zd=document.createElement('div');zd.className='mcz';zd.textContent=ZOD[cat.zodIdx].s+' '+ZOD[cat.zodIdx].n;
+      var sb=document.createElement('button');sb.className='set-btn';sb.textContent=G.activeCat===cat?'ACTIVE ♡':'SET ACTIVE';
+      sb.onclick=function(){setActive(cat);closePanel();};
+      var vb=document.createElement('button');vb.className='set-btn';vb.style.marginTop='2px';vb.textContent='VIEW CARD';
+      vb.onclick=function(){closePanel();setTimeout(function(){showCatProfile(ci);},200);};
+      card.appendChild(cv);card.appendChild(nm);card.appendChild(zd);card.appendChild(sb);card.appendChild(vb);mg.appendChild(card);
+    });st.appendChild(mg);body.appendChild(st);
   }
-  // Adopt new cat
-  var sect2=document.createElement('div');sect2.className='adopt-sect';
-  var st2=document.createElement('div');st2.className='a-sect-title';st2.textContent='ADOPT A NEW KITTEN &#128149;';sect2.innerHTML='';sect2.appendChild(st2);
-  // Name input
-  var niw=document.createElement('div');niw.className='name-input-wrap';
-  var lbl=document.createElement('span');lbl.className='ni-label';lbl.textContent='STEP 1: Name your kitten';niw.appendChild(lbl);
-  var niRow=document.createElement('div');niRow.className='ni-row';
-  var nameIn=document.createElement('input');nameIn.className='ni-in';nameIn.type='text';nameIn.maxLength=12;nameIn.placeholder='enter name...';nameIn.id='adopt-name-in';
-  niRow.appendChild(nameIn);niw.appendChild(niRow);
-  // Zodiac select
-  var lbl2=document.createElement('span');lbl2.className='ni-label';lbl2.style.marginTop='8px';lbl2.textContent='STEP 2: Pick their birth sign';niw.appendChild(lbl2);
-  var zodSel=document.createElement('select');zodSel.className='ni-zsel';zodSel.style.cssText='width:100%;font-family:"Press Start 2P",monospace;font-size:clamp(5px,1.3vw,6px);padding:7px;background:var(--lav);border:2px solid var(--lavdd);border-radius:6px;color:var(--txt);outline:none;margin-top:4px';
-  ZODIAC.forEach(function(z,i){var opt=document.createElement('option');opt.value=i;opt.textContent=z.s+' '+z.n+' -- '+z.d.substring(0,30)+'...';zodSel.appendChild(opt);});
-  niw.appendChild(zodSel);
-  sect2.appendChild(niw);
-  // Color chooser
-  var lbl3=document.createElement('div');lbl3.style.cssText='font-size:clamp(6px,1.6vw,7px);color:var(--wine);margin-bottom:7px';lbl3.textContent='STEP 3: Choose their look';sect2.appendChild(lbl3);
-  var colorNames=['Gray-Lilac','Orange Tabby','Midnight','Cream','Calico','Blue-Grey'];var selectedColor=[0];
-  var cgrid=document.createElement('div');cgrid.className='adopt-grid';
-  colorNames.forEach(function(cn,ci){
-    var card=document.createElement('div');card.className='adopt-card';card.id='cc-'+ci;
-    var cv=document.createElement('canvas');cv.width=52;cv.height=46;cv.style.cssText='width:52px;height:46px;image-rendering:pixelated';drawCat(cv,{stage:0,mood:'happy',color:ci});
-    var nm=document.createElement('div');nm.className='ac-n';nm.textContent=cn;
-    card.appendChild(cv);card.appendChild(nm);
-    card.onclick=function(){
-      selectedColor[0]=ci;
-      document.querySelectorAll('[id^=cc-]').forEach(function(c){c.classList.remove('active-cat');});
-      card.classList.add('active-cat');
-    };
-    cgrid.appendChild(card);
-  });
-  sect2.appendChild(cgrid);
-  // Adopt button
-  var aBtn=document.createElement('button');aBtn.className='adopt-do-btn';aBtn.innerHTML='&#128149; ADOPT THIS KITTEN';
-  aBtn.onclick=function(){
-    var name=(document.getElementById('adopt-name-in')||{}).value||'';name=name.trim().toUpperCase()||'KITTY';
-    var zi=parseInt(zodSel.value)||0;
-    if(G.cats.length>=6){toast('Max 6 cats! Say goodbye to someone first 😢');return;}
-    var newCat=makeCat(name,selectedColor[0],zi);G.cats.push(newCat);G.activeCat=newCat;updUI();
-    showPop('🐱','WELCOME '+name+'!',ZODIAC[zi].s+' '+ZODIAC[zi].n+' has arrived.\n'+ZODIAC[zi].ep,'Their fave drink is: '+ZODIAC[zi].fav+'\nTip: '+EPISODES[0].tip);
-    closePanel();
-  };
-  sect2.appendChild(aBtn);
-  body.appendChild(sect2);
-  // Zodiac preview
-  var zLabel=document.createElement('div');zLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin:10px 0 7px;text-align:center';zLabel.textContent='ZODIAC PERSONALITIES ✦';body.appendChild(zLabel);
-  ZODIAC.forEach(function(z){
-    var zc=document.createElement('div');zc.className='zod-card';
-    zc.innerHTML='<div class="zod-title">'+z.s+' '+z.n+'</div><div class="zod-desc">'+z.d+'</div><div class="zod-fav">&#128155; Fave drink: '+z.fav+'</div>';
-    body.appendChild(zc);
+  var s2=document.createElement('div');s2.className='adopt-sect';
+  var h2=document.createElement('div');h2.className='asect-t';h2.textContent='ADOPT A NEW KITTEN ♡';s2.appendChild(h2);
+  var nl=document.createElement('span');nl.className='ni-lbl';nl.textContent='STEP 1: Name your kitten';s2.appendChild(nl);
+  var ni=document.createElement('input');ni.className='ni-in';ni.type='text';ni.maxLength=12;ni.placeholder='enter name...';ni.id='a-name';s2.appendChild(ni);
+  var zl=document.createElement('span');zl.className='ni-lbl';zl.textContent='STEP 2: Birth sign';s2.appendChild(zl);
+  var zs=document.createElement('select');zs.className='zodsel';ZOD.forEach(function(z,i){var o=document.createElement('option');o.value=i;o.textContent=z.s+' '+z.n+' -- '+z.m;zs.appendChild(o);});s2.appendChild(zs);
+  var cl=document.createElement('span');cl.className='ni-lbl';cl.textContent='STEP 3: Choose their look';s2.appendChild(cl);
+  var selC=[0];var cg=document.createElement('div');cg.className='cat-grid';CAT_NAMES.forEach(function(cn,ci){
+    var card=document.createElement('div');card.className='cat-card';card.id='cc'+ci;
+    var cv=document.createElement('canvas');cv.width=52;cv.height=46;cv.style.cssText='width:52px;height:46px';drawCat(cv,{stage:0,mood:'happy',color:ci});
+    var nm=document.createElement('div');nm.className='cn';nm.textContent=cn;card.appendChild(cv);card.appendChild(nm);
+    card.onclick=function(){selC[0]=ci;document.querySelectorAll('[id^=cc]').forEach(function(c){c.classList.remove('sel');});card.classList.add('sel');};cg.appendChild(card);
+  });s2.appendChild(cg);
+  var ab=document.createElement('button');ab.className='adopt-btn';ab.innerHTML='&#128149; ADOPT THIS KITTEN';
+  ab.onclick=function(){if(G.cats.length>=6){toast('Max 6 cats! 😢');return;}var name=(document.getElementById('a-name')||{}).value||'';name=name.trim().toUpperCase()||'KITTY';var zi=parseInt(zs.value)||0;var newC=mkCat(name,selC[0],zi);G.cats.push(newC);G.activeCat=newC;updUI();showPop('🐱','WELCOME '+name+'!',ZOD[zi].s+' '+ZOD[zi].n+' has arrived.\n'+ZOD[zi].ep,'Fave drink: '+ZOD[zi].fav+'\nDouble-tap the cat slot to see their profile card!');closePanel();};s2.appendChild(ab);body.appendChild(s2);
+  var zlab=document.createElement('div');zlab.style.cssText='font-size:clamp(8px,2.2vw,10px);color:var(--wine);margin:10px 0 7px;text-align:center';zlab.textContent='ALL ZODIAC PERSONALITIES ✦';body.appendChild(zlab);
+  ZOD.forEach(function(z){var zc=document.createElement('div');zc.className='zcard';zc.innerHTML='<div class="zt">'+z.s+' '+z.n+'</div><div class="zd">'+z.d+'</div><div class="zfav">&#128155; '+z.fav+'</div>';body.appendChild(zc);});
+}
+
+function bStory(body){
+  var ac=G.activeCat;if(ac){var zc=document.createElement('div');zc.className='zcard';zc.style.marginBottom='10px';zc.innerHTML='<div class="zt">'+ZOD[ac.zodIdx].s+' '+ZOD[ac.zodIdx].n+' &bull; '+ac.name+'</div><div class="zd">'+ZOD[ac.zodIdx].ep+'</div>';body.appendChild(zc);}
+  var sl=document.createElement('div');sl.style.cssText='font-size:clamp(8px,2.2vw,10px);color:var(--wine);margin-bottom:8px;text-align:center';sl.textContent='STORY EPISODES 📖';body.appendChild(sl);
+  EPS.forEach(function(ep){var unlocked=G.day>=ep.req;var card=document.createElement('div');card.className='ep'+(unlocked?'':' lk');
+    card.innerHTML='<div class="ep-head"><span class="ep-e">'+ep.e+'</span><div><div class="ep-t">'+ep.t+'</div><div class="ep-day">'+(unlocked?'day '+ep.req:'🔒 day '+ep.req)+'</div></div></div>'+(unlocked?'<div class="ep-b">'+ep.d+'</div><div class="ep-tip">💡 '+ep.tip+'</div>':'');
+    if(unlocked)card.onclick=function(){showPop(ep.e,ep.t,ep.d,ep.tip);};body.appendChild(card);
   });
 }
 
-// ── STORY PANEL ───────────────────────────────────────────────────────────────
-function buildStoryPanel(body) {
-  var ac=G.activeCat;
-  if(ac){
-    var zcard=document.createElement('div');zcard.className='zod-card';zcard.style.marginBottom='10px';
-    zcard.innerHTML='<div class="zod-title">'+ZODIAC[ac.zodIdx].s+' '+ZODIAC[ac.zodIdx].n+' &bull; '+ac.name+'</div><div class="zod-desc">'+ZODIAC[ac.zodIdx].ep+'</div>';
-    body.appendChild(zcard);
-  }
-  var sLabel=document.createElement('div');sLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin-bottom:8px;text-align:center';sLabel.textContent='STORY EPISODES &#128218;';body.appendChild(sLabel);
-  EPISODES.forEach(function(ep){
-    var unlocked=G.day>=ep.req;
-    var card=document.createElement('div');card.className='ep-card'+(unlocked?'':' locked');
-    card.innerHTML='<div class="ep-head"><span class="ep-e">'+ep.e+'</span><div><div class="ep-title">'+ep.t+'</div><div class="ep-day">'+(unlocked?'day '+ep.req:'[unlock on day '+ep.req+']')+'</div></div></div>'
-      +(unlocked?'<div class="ep-body">'+ep.d+'</div><div class="ep-tip">&#128149; Real tip: '+ep.tip+'</div>':'');
-    if(unlocked){card.onclick=function(){showPop(ep.e,ep.t,ep.d,ep.tip);};}
-    body.appendChild(card);
-  });
-}
-
-// ── GAMES PANEL ───────────────────────────────────────────────────────────────
-function buildGamesPanel(body) {
-  var hint=document.createElement('div');hint.style.cssText='font-size:clamp(5px,1.4vw,7px);color:var(--txts);text-align:center;margin-bottom:10px;line-height:1.9;background:rgba(255,255,255,.7);border-radius:8px;padding:7px';hint.textContent='Play 3 games daily to keep your cat happy!\n('+G.gamesPlayed+'/3 played today)';body.appendChild(hint);
-  MINIGAMES.forEach(function(mg){
-    var card=document.createElement('div');card.className='mg-card';
-    card.innerHTML='<span class="mg-e">'+mg.e+'</span><div class="mg-info"><div class="mg-t">'+mg.t+'</div><div class="mg-d">'+mg.d+'</div></div>';
-    card.onclick=function(){if(G.gamesPlayed>=3){toast('3 games played today!\nCome back tomorrow~ 💤');return;}closePanel();startGame(mg.type);};
-    body.appendChild(card);
-  });
-  // instructions
-  var iLabel=document.createElement('div');iLabel.style.cssText='font-size:clamp(6px,1.6vw,8px);color:var(--wine);margin:10px 0 7px;text-align:center';iLabel.textContent='HOW TO PLAY &#127911;';body.appendChild(iLabel);
-  var inst=[
-    {e:'🥤',t:'FEED: Tap FEED or the CAFÉ menu, then pick a drink. Zodiac-matching items give bonus stats!'},
-    {e:'🎮',t:'PLAY: Tap PLAY for instant fun, or visit GAMES for 3 minigame types with score bonuses.'},
-    {e:'✨',t:'GLOW: Tap LOVE/GLOW to open the skincare ritual. Apply all 6 steps in order for bonus glow!'},
-    {e:'🌟',t:'ADOPT: Adopt up to 6 cats with different zodiac signs! Tap any cat in ADOPT to set them active.'},
-    {e:'📖',t:'STORY: Read story episodes that unlock each day. Real cat care tips inside every episode!'},
-    {e:'⏰',t:'DAYS: Real time -- each in-game day is 5 minutes. Stats decay slowly, so check in regularly!'}
-  ];
-  inst.forEach(function(i){var tc=document.createElement('div');tc.className='tip-card';tc.innerHTML='<span class="tip-e">'+i.e+'</span><span class="tip-t">'+i.t+'</span>';body.appendChild(tc);});
+function bGames(body){
+  var h=document.createElement('div');h.className='hint';h.textContent='Play 3 games daily!\n('+G.gPlayed+'/3 played today)\nDOUBLE-TAP a cat slot to see their profile card!';body.appendChild(h);
+  MGS.forEach(function(mg){var card=document.createElement('div');card.className='mg-card';card.innerHTML='<span class="mg-e">'+mg.e+'</span><div><div class="mg-t">'+mg.t+'</div><div class="mg-d">'+mg.d+'</div></div>';card.onclick=function(){if(G.gPlayed>=3){toast('3 games done today!\nCome back tomorrow 💤');return;}closePanel();startGame(mg.id);};body.appendChild(card);});
+  var il=document.createElement('div');il.style.cssText='font-size:clamp(8px,2.2vw,10px);color:var(--wine);margin:10px 0 7px;text-align:center';il.textContent='HOW TO PLAY 🎮';body.appendChild(il);
+  [{e:'👆',t:'TAP cat slot = switch active cat'},{e:'👆👆',t:'DOUBLE-TAP cat slot = open profile card'},{e:'🥤',t:'FEED → café menu, zodiac bonus items marked ♡'},{e:'✨',t:'GLOW → skincare ritual, correct order = bonus!'},{e:'🎮',t:'PLAY → 3 daily minigames for mood + energy boost'},{e:'🌟',t:'Adopt up to 6 cats, each with their own zodiac story'}].forEach(function(i){var tc=document.createElement('div');tc.className='tip-card';tc.innerHTML='<span class="tce">'+i.e+'</span><span class="tct">'+i.t+'</span>';body.appendChild(tc);});
 }
 
 // ── MINIGAMES ─────────────────────────────────────────────────────────────────
-var mgState={hp:3,score:0,qi:0,active:false,starIv:null,stars:[]};
+var mgS={hp:3,score:0,active:false,starIv:null};
+function startGame(type){var sc=document.getElementById('mg-screen');sc.classList.add('show');mgS={hp:3,score:0,active:true,starIv:null};updHp();document.getElementById('mg-pf').style.width='0%';if(type==='quiz')startQuiz();else if(type==='seq')startSeq();else startStars();}
+function updHp(){var el=document.getElementById('mg-hp');if(el){el.innerHTML='';for(var i=0;i<3;i++){var h=document.createElement('span');h.className='hp';h.textContent=i<mgS.hp?'♦':'◇';el.appendChild(h);}}}
+function endGame(win){mgS.active=false;clearInterval(mgS.starIv);G.gPlayed++;if(win){var ac=G.activeCat;if(ac){ac.mood=Math.min(100,ac.mood+14);ac.energy=Math.min(100,ac.energy+8);}updUI();}var mc=document.getElementById('mg-cont');mc.innerHTML='';var r=document.createElement('div');r.className='mg-res';r.innerHTML=(win?'🎉 GREAT GAME!<br>mood +14 · energy +8':'💙 Good try!<br>Come back tomorrow~');mc.appendChild(r);document.getElementById('mg-ttl').textContent='GAME OVER';document.getElementById('mg-q').textContent='Score: '+mgS.score;}
+function startQuiz(){document.getElementById('mg-ttl').textContent='ZODIAC QUIZ 🔮';var z=getZod(),ac=G.activeCat;var qs=[{q:ac.name+' is feeling '+z.m+'.\nWhat drink do they want?',a:z.fav,opts:shfl([z.fav,ZOD[(ac.zodIdx+3)%12].fav,ZOD[(ac.zodIdx+7)%12].fav,ZOD[(ac.zodIdx+10)%12].fav])},{q:'Your '+z.n+' cat needs to GLOW.\nWhich step comes FIRST?',a:'Cleanser',opts:['Cleanser','Toner','Serum','Moisturizer']},{q:'Cat fact:\nHow many hours do kittens sleep?',a:'18-20 hours',opts:['8-10 hours','12-14 hours','18-20 hours','6-8 hours']},{q:ac.name+' is sad.\nBest action?',a:'Play + their fave food',opts:['Ignore them','Play + their fave food','Just wait','Give any random food']},{q:'Skincare step 3 of 6?',a:'Serum',opts:['Toner','SPF','Serum','Moisturizer']}];var qi=0;function showQ(){if(qi>=qs.length||mgS.hp<=0){endGame(mgS.score>=3);return;}var q=qs[qi];document.getElementById('mg-q').textContent=q.q;document.getElementById('mg-pf').style.width=(qi/qs.length*100)+'%';var mc=document.getElementById('mg-cont');mc.innerHTML='';var opts=document.createElement('div');opts.className='mg-opts';q.opts.forEach(function(opt){var b=document.createElement('button');b.className='mg-opt';b.textContent=opt;b.onclick=function(){var ok=opt===q.a;b.classList.add(ok?'ok':'no');if(ok){mgS.score++;}else{mgS.hp--;updHp();if(mgS.hp<=0){setTimeout(function(){endGame(false);},600);return;}}qi++;setTimeout(showQ,600);};opts.appendChild(b);});mc.appendChild(opts);}showQ();}
+function startSeq(){document.getElementById('mg-ttl').textContent='SKINCARE SEQUENCE ✨';document.getElementById('mg-q').textContent='Tap all 6 steps in the correct order!\nCleanse→Tone→Serum→Moisturize→Mask→SPF';var correct=[1,2,3,4,5,6];var current=[];var mc=document.getElementById('mg-cont');mc.innerHTML='';var g=document.createElement('div');g.className='seq-grid';shfl(SKIN_DATA.slice()).forEach(function(sk){var d=document.createElement('div');d.className='si2';d.innerHTML=sk.e+'<span>'+sk.n+'</span>';d.onclick=function(){if(d.classList.contains('used'))return;current.push(sk.order);d.classList.add('used');if(current.length===6){var ok=JSON.stringify(current)===JSON.stringify(correct);mgS.score=ok?6:3;if(ok){SKIN.glo=Math.min(100,SKIN.glo+12);SKIN.rad=Math.min(100,SKIN.rad+10);}setTimeout(function(){endGame(ok);},500);}};g.appendChild(d);});mc.appendChild(g);}
+function startStars(){document.getElementById('mg-ttl').textContent='STAR CATCHER ⭐';document.getElementById('mg-q').textContent='Tap the stars before they fade!';var mc=document.getElementById('mg-cont');mc.innerHTML='';var cw=Math.min(document.getElementById('app').offsetWidth-44,290),ch=160;var cv=document.createElement('canvas');cv.className='star-cv';cv.width=cw;cv.height=ch;cv.style.cssText='width:'+cw+'px;height:'+ch+'px';mc.appendChild(cv);var score=0,total=0,stars=[];var ctx=cv.getContext('2d');function addStar(){if(total>=12){setTimeout(function(){mgS.score=score;endGame(score>=7);},800);return;}total++;stars.push({x:20+Math.random()*(cw-40),y:20+Math.random()*(ch-40),born:Date.now(),life:1800,size:16+~~(Math.random()*12)});}function render(){ctx.clearRect(0,0,cw,ch);var now=Date.now();stars=stars.filter(function(s){var age=(now-s.born)/s.life;if(age>1){if(mgS.hp>0){mgS.hp--;updHp();}return false;}ctx.globalAlpha=1-age;ctx.font=s.size+'px serif';ctx.fillText('⭐',s.x-s.size/2,s.y+s.size/2);ctx.globalAlpha=1;return true;});document.getElementById('mg-pf').style.width=(total/12*100)+'%';if(mgS.hp>0&&total<12)requestAnimationFrame(render);else if(mgS.hp<=0){mgS.score=score;endGame(false);}}cv.onclick=function(e){var r=cv.getBoundingClientRect();var mx=(e.clientX-r.left)*(cw/r.width);var my=(e.clientY-r.top)*(ch/r.height);stars=stars.filter(function(s){var dx=mx-s.x,dy=my-s.y;if(Math.sqrt(dx*dx+dy*dy)<s.size*.9){score++;mgS.score=score;return false;}return true;});};mgS.starIv=setInterval(addStar,900);render();}
+function shfl(a){var ar=a.slice();for(var i=ar.length-1;i>0;i--){var j=~~(Math.random()*(i+1));var t=ar[i];ar[i]=ar[j];ar[j]=t;}return ar;}
+document.getElementById('mg-close-btn').onclick=function(){clearInterval(mgS.starIv);document.getElementById('mg-screen').classList.remove('show');};
 
-function startGame(type) {
-  var screen=document.getElementById('mg-screen');screen.classList.add('show');
-  mgState={hp:3,score:0,qi:0,active:true,starIv:null,stars:[]};
-  updMgHp();
-  document.getElementById('mg-prog').style.width='0%';
-  if(type==='quiz') startQuiz();
-  else if(type==='seq') startSeq();
-  else startStars();
-}
-function updMgHp(){var el=document.getElementById('mg-hp');if(el){el.innerHTML='';for(var i=0;i<3;i++){var h=document.createElement('span');h.className='hp';h.textContent=i<mgState.hp?'♦':'◇';el.appendChild(h);}}}
-function endGame(win){
-  mgState.active=false;clearInterval(mgState.starIv);
-  G.gamesPlayed++;if(win){var ac=G.activeCat;if(ac){ac.mood=Math.min(100,ac.mood+14);ac.energy=Math.min(100,ac.energy+8);}updUI();}
-  var mc=document.getElementById('mg-content');mc.innerHTML='';
-  var res=document.createElement('div');res.className='mg-result';res.innerHTML=(win?'&#127881; GREAT GAME!<br>mood +14 energy +8':'&#128153; Good effort!<br>Try again tomorrow~');mc.appendChild(res);
-  document.getElementById('mg-title').textContent='GAME OVER';
-  document.getElementById('mg-prompt').textContent='Score: '+mgState.score;
-}
+// ── WIRING ────────────────────────────────────────────────────────────────────
+function setTab(t){document.querySelectorAll('.tbb').forEach(function(b){b.classList.remove('on');});document.getElementById('tb-'+t).classList.add('on');}
+document.getElementById('pl-a').onclick=function(){openPanel('&#10022; ADOPT A KITTEN',bAdopt);};
+document.getElementById('pl-g').onclick=function(){openPanel('&#9825; GROW &amp; SKINCARE',bGrow);};
+document.getElementById('pl-gw').onclick=function(){openPanel('&#10024; GLOW RITUAL',bGrow);};
+document.getElementById('btn-feed').onclick=function(){openPanel('&#127858; KITTY CAF&#201; MENU',bCafe);};
+document.getElementById('btn-play').onclick=function(){openPanel('&#127905; GAMES &amp; PLAY',bGames);};
+document.getElementById('btn-love').onclick=function(){openPanel('&#10024; GLOW',bGrow);};
+document.getElementById('cta').onclick=function(){openPanel('&#10022; ADOPT A KITTEN',bAdopt);};
 
-// QUIZ
-function startQuiz(){
-  document.getElementById('mg-title').textContent='ZODIAC QUIZ &#128302;';
-  var zod=getZod();var ac=G.activeCat;
-  var qs=[
-    {q:ac.name+' is feeling '+zod.m+'...\nWhat do they want to drink?',a:zod.fav,opts:shuffle([zod.fav,ZODIAC[(ac.zodIdx+3)%12].fav,ZODIAC[(ac.zodIdx+7)%12].fav,ZODIAC[(ac.zodIdx+10)%12].fav])},
-    {q:'Your '+zod.n+' cat needs to GLOW.\nWhich step comes FIRST?',a:'Cleanser',opts:['Cleanser','Toner','Serum','Moisturizer']},
-    {q:'A fact about cats:\nHow many hours do kittens sleep?',a:'18-20 hours',opts:['8-10 hours','12-14 hours','18-20 hours','6-8 hours']},
-    {q:ac.name+" is sad (mood < 30).\nBest action?",a:'Play with them + fave food',opts:['Ignore them','Play with them + fave food','Just wait','Change their name']},
-    {q:'Correct skincare order\n(step 3 of 6)?',a:'Serum',opts:['Toner','SPF','Serum','Moisturizer']}
-  ];
-  var qi=0;
-  function showQ(){
-    if(qi>=qs.length||mgState.hp<=0){endGame(mgState.score>=3);return;}
-    var q=qs[qi];document.getElementById('mg-prompt').textContent=q.q;
-    document.getElementById('mg-prog').style.width=(qi/qs.length*100)+'%';
-    var mc=document.getElementById('mg-content');mc.innerHTML='';
-    var opts=document.createElement('div');opts.className='mg-opts';
-    q.opts.forEach(function(opt){
-      var b=document.createElement('button');b.className='mg-opt';b.textContent=opt;
-      b.onclick=function(){
-        var correct=opt===q.a;b.classList.add(correct?'correct':'wrong');
-        if(correct){mgState.score++;} else{mgState.hp--;updMgHp();if(mgState.hp<=0){setTimeout(function(){endGame(false);},600);return;}}
-        qi++;setTimeout(showQ,600);
-      };opts.appendChild(b);
-    });mc.appendChild(opts);
-  }showQ();
-}
-
-// SEQUENCE
-function startSeq(){
-  document.getElementById('mg-title').textContent='SKINCARE SEQUENCE &#10024;';
-  document.getElementById('mg-prompt').textContent='Tap the 6 steps in the correct order!\nCleanse → Tone → Serum → Moisturize → Mask → SPF';
-  var correct=[1,2,3,4,5,6];var current=[];
-  var mc=document.getElementById('mg-content');mc.innerHTML='';
-  var grid=document.createElement('div');grid.className='mg-seq-grid';
-  var shuffled=shuffle(SKINCARE.slice());
-  shuffled.forEach(function(sk){
-    var d=document.createElement('div');d.className='seq-item';d.innerHTML=sk.e+'<br><span style="font-size:8px">'+sk.n+'</span>';
-    d.onclick=function(){
-      if(d.classList.contains('used'))return;
-      current.push(sk.order);d.classList.add('used');
-      if(current.length===6){
-        var ok=JSON.stringify(current)===JSON.stringify(correct);
-        mgState.score=ok?6:3;
-        if(ok){SKIN.glo=Math.min(100,SKIN.glo+12);SKIN.rad=Math.min(100,SKIN.rad+10);}
-        setTimeout(function(){endGame(ok);},500);
-      }
-    };grid.appendChild(d);
-  });mc.appendChild(grid);
-}
-
-// STARS
-function startStars(){
-  document.getElementById('mg-title').textContent='STAR CATCHER &#11088;';
-  document.getElementById('mg-prompt').textContent='Tap the stars before they fade!';
-  var mc=document.getElementById('mg-content');mc.innerHTML='';
-  var cw=Math.min(document.getElementById('app').offsetWidth-44,280);
-  var ch=160;var cv=document.createElement('canvas');cv.className='star-canvas';cv.width=cw;cv.height=ch;cv.style.cssText='width:'+cw+'px;height:'+ch+'px';
-  mc.appendChild(cv);
-  var score=0,total=0,stars=[];
-  var ctx=cv.getContext('2d');
-  function addStar(){if(total>=12){setTimeout(function(){mgState.score=score;endGame(score>=7);},800);return;}total++;stars.push({x:20+Math.random()*(cw-40),y:20+Math.random()*(ch-40),born:Date.now(),life:1800,size:18+~~(Math.random()*12)});}
-  function render(){
-    ctx.clearRect(0,0,cw,ch);var now=Date.now();
-    stars=stars.filter(function(s){var age=(now-s.born)/s.life;if(age>1){if(mgState.hp>0){mgState.hp--;updMgHp();}return false;}ctx.globalAlpha=1-age;ctx.font=s.size+'px serif';ctx.fillText('⭐',s.x-s.size/2,s.y+s.size/2);ctx.globalAlpha=1;return true;});
-    document.getElementById('mg-prog').style.width=(total/12*100)+'%';
-    if(mgState.hp>0&&total<12)requestAnimationFrame(render);
-    else if(mgState.hp<=0){mgState.score=score;endGame(false);}
-  }
-  cv.onclick=function(e){var r=cv.getBoundingClientRect();var mx=(e.clientX-r.left)*(cw/r.width);var my=(e.clientY-r.top)*(ch/r.height);stars=stars.filter(function(s){var dx=mx-s.x,dy=my-s.y;if(Math.sqrt(dx*dx+dy*dy)<s.size*.9){score++;mgState.score=score;document.getElementById('mg-prog').style.width=(score/12*100)+'%';return false;}return true;});};
-  mgState.starIv=setInterval(addStar,900);render();
-}
-
-function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=~~(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-document.getElementById('mg-close-btn').onclick=function(){clearInterval(mgState.starIv);document.getElementById('mg-screen').classList.remove('show');};
-
-// ── TABS & PILLS ──────────────────────────────────────────────────────────────
-function setTab(t){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on');});document.getElementById('tb-'+t).classList.add('on');document.querySelectorAll('.tc-panel').forEach(function(p){p.classList.remove('on');});document.getElementById('tc-'+t).classList.add('on');}
-document.getElementById('pl-a').onclick=function(){openPanel('✦ ADOPT A KITTEN',buildAdoptPanel);};
-document.getElementById('pl-g').onclick=function(){openPanel('♡ GROW & SKINCARE',buildGrowPanel);};
-document.getElementById('pl-gw').onclick=function(){openPanel('✨ GLOW RITUAL',buildGrowPanel);};
-document.getElementById('btn-feed').onclick=function(){openPanel('🥤 KITTY CAFÉ MENU',buildCafePanel);};
-document.getElementById('btn-play').onclick=function(){openPanel('🎮 GAMES & PLAY',buildGamesPanel);};
-document.getElementById('btn-love').onclick=function(){openPanel('✨ GROW & GLOW',buildGrowPanel);};
-document.getElementById('adopt-cta').onclick=function(){openPanel('✦ ADOPT A KITTEN',buildAdoptPanel);};
-
-// ── POPUP ─────────────────────────────────────────────────────────────────────
-function showPop(ico,title,body,tip){document.getElementById('pu-ico').textContent=ico;document.getElementById('pu-title').textContent=title;document.getElementById('pu-body').textContent=body;var pt=document.getElementById('pu-tip');pt.textContent=tip||'';pt.style.display=tip?'block':'none';document.getElementById('popup').classList.add('show');}
-document.getElementById('pu-close').onclick=function(){document.getElementById('popup').classList.remove('show');};
+// ── POPUP & TOAST ─────────────────────────────────────────────────────────────
+function showPop(ico,t,b,tip){document.getElementById('pu-ico').textContent=ico;document.getElementById('pu-t').textContent=t;document.getElementById('pu-b').textContent=b;var pt=document.getElementById('pu-tip');pt.textContent=tip||'';pt.style.display=tip?'block':'none';document.getElementById('popup').classList.add('show');}
+document.getElementById('pu-ok').onclick=function(){document.getElementById('popup').classList.remove('show');};
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';setTimeout(function(){t.style.opacity='0';},3000);}
 
 // ── SPARKLE LAYER ─────────────────────────────────────────────────────────────
-(function(){
-  var sl=document.getElementById('sparkles');if(!sl)return;
-  ['✦','✧','♦','★','◆'].forEach(function(ic,i){var s=document.createElement('div');s.className='sp';s.textContent=ic;s.style.cssText='left:'+[8,88,4,92,46][i]+'%;top:'+[28,17,52,57,6][i]+'%;color:'+['#f0c840','#c8a8e8','#f0a8c8','#a8e8d0','#f8d8b0'][i]+';font-size:'+(8+i*2)+'px;animation-duration:'+(2.2+i*.6)+'s;animation-delay:'+(i*.5)+'s';sl.appendChild(s);});
-  ['♡','♥','💜','💛','🩷'].forEach(function(h,i){var hp=document.createElement('div');hp.className='sp';hp.textContent=h;hp.style.cssText='left:'+[6,91,93,4,49][i]+'%;top:'+[17,25,49,43,79][i]+'%;font-size:'+(10+i*2)+'px;animation-duration:'+(2.5+i*.45)+'s;animation-delay:'+(i*.6)+'s';sl.appendChild(hp);});
-})();
+(function(){var sl=document.getElementById('spl');if(!sl)return;['✦','✧','♦','★','◆'].forEach(function(ic,i){var s=document.createElement('div');s.className='sp';s.textContent=ic;s.style.cssText='left:'+[8,88,4,92,46][i]+'%;top:'+[28,17,52,57,6][i]+'%;color:'+['#f0c840','#c8a8e8','#f0a8c8','#a8e8d0','#f8d8b0'][i]+';animation-duration:'+(2.2+i*.6)+'s;animation-delay:'+(i*.5)+'s';sl.appendChild(s);});['♡','💜','💛','🩷','♥'].forEach(function(h,i){var hp=document.createElement('div');hp.className='sp';hp.textContent=h;hp.style.cssText='left:'+[6,91,93,4,49][i]+'%;top:'+[17,25,49,43,79][i]+'%;font-size:'+(11+i*2)+'px;animation-duration:'+(2.5+i*.45)+'s;animation-delay:'+(i*.6)+'s';sl.appendChild(hp);});})();
 
 // ── DAY CLOCK & DECAY ─────────────────────────────────────────────────────────
-var dayStart=Date.now(),decayTick=0;
-setInterval(function(){
-  var el=Date.now()-dayStart,pct=el/(5*60*1000);
-  if(pct>=1){
-    G.day++;G.cats.forEach(function(c){c.age++;});dayStart=Date.now();G.gamesPlayed=0;G.mealsToday=0;decayTick=0;
-    var ac=G.activeCat;if(ac)ac.stage=getStageObj().stage;
-    if(G.day===3&&G.cats.length===1)showPop('🐱','A FRIEND ARRIVED!','A cushion platform appeared for a second cat!\nVisit ADOPT to give them a companion.','Cats are social -- a friend helps them thrive!');
-    if(G.day===7)showPop('🎉','ONE WEEK TOGETHER!','Your kitten has grown so much.\n'+getZod().ep,'Cats need 1-2 weeks to fully settle into a new home. You\'re doing great!');
-    if(G.day===14)showPop('✨','TWO WEEKS OF GLOW!','Consistent skincare has paid off.\nTheir coat is visibly shinier.','Regular brushing distributes natural oils. Your cat knows this instinctively.');
-    var ep=EPISODES.find(function(e){return e.req===G.day&&G.completedEps.indexOf(e.id)<0;});if(ep){G.completedEps.push(ep.id);setTimeout(function(){showPop(ep.e,ep.t,ep.d,ep.tip);},1500);}
-    updUI();
-  }
-  var tick=~~(el/45000);
-  if(tick>decayTick){decayTick=tick;G.cats.forEach(function(c){c.hungry=Math.max(0,c.hungry-7);c.glow=Math.max(0,c.glow-5);c.energy=Math.max(0,c.energy-4);if(c.hungry<35)c.mood=Math.max(0,c.mood-5);if(c.glow<28)c.mood=Math.max(0,c.mood-3);});SKIN.hyd=Math.max(0,SKIN.hyd-3);SKIN.cla=Math.max(0,SKIN.cla-4);updUI();}
-},2000);
+var ds=Date.now(),dt=0;
+setInterval(function(){var el=Date.now()-ds,pct=el/(5*60*1000);if(pct>=1){G.day++;G.cats.forEach(function(c){c.age++;});ds=Date.now();G.gPlayed=0;G.meals=0;dt=0;var ac=G.activeCat;if(ac)ac.stage=getSt().stage;if(G.day===3&&G.cats.length===1)showPop('🐱','A FRIEND ARRIVED!','A cushion appeared for a second cat!\nVisit ADOPT to give them a companion.','Cats are social creatures!');if(G.day===7)showPop('🎉','ONE WEEK!','Your kitten has grown so much.\n'+getZod().ep,'Cats need 1-2 weeks to fully settle.');var ep=EPS.find(function(e){return e.req===G.day&&G.doneEps.indexOf(e.id)<0;});if(ep){G.doneEps.push(ep.id);setTimeout(function(){showPop(ep.e,ep.t,ep.d,ep.tip);},1500);}updUI();}var tick=~~(el/45000);if(tick>dt){dt=tick;G.cats.forEach(function(c){c.hungry=Math.max(0,c.hungry-7);c.glow=Math.max(0,c.glow-5);c.energy=Math.max(0,c.energy-4);if(c.hungry<35)c.mood=Math.max(0,c.mood-5);if(c.glow<28)c.mood=Math.max(0,c.mood-3);});SKIN.hyd=Math.max(0,SKIN.hyd-3);SKIN.cla=Math.max(0,SKIN.cla-4);updUI();}},2000);
 
-// ── ROOM LOOP ─────────────────────────────────────────────────────────────────
 function roomLoop(){drawRoom();requestAnimationFrame(roomLoop);}
-
-// ── INIT ──────────────────────────────────────────────────────────────────────
-setTimeout(function(){
-  updUI();roomLoop();
-  setTimeout(function(){
-    showPop('🏠','WELCOME TO KITTY CAFÉ!',
-      'Your tiny kitten has just arrived.\nThey are nervous but incredibly cute.',
-      'HOW TO PLAY:\n• FEED to open the café menu\n• LOVE/GLOW for skincare\n• PLAY for minigames\n• ADOPT to add more cats\nEach in-game day = 5 real minutes!');
-  },1200);
-},80);
+setTimeout(function(){updUI();roomLoop();setTimeout(function(){showPop('🏠','WELCOME TO KITTY CAF&#201;!','Your tiny kitten has just arrived!\nThey are nervous but very cute.','HOW TO PLAY:\n• FEED → café menu\n• LOVE/GLOW → skincare\n• PLAY → minigames\n• ADOPT → add more cats\n• TAP cat slot = switch cat\n• DOUBLE-TAP or TAP ROOM = profile card!\n5 real minutes = 1 in-game day!');},1200);},80);
 </script>
